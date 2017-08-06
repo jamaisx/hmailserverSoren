@@ -144,7 +144,7 @@ namespace HM
    File::WriteBOF()
    {
       // Write unicode beginner markers.
-      unsigned char charByteOrderMarker[2] = {-1, -2};
+	  unsigned char charByteOrderMarker[2] = { 0xFF, 0xFE };
 
       DWORD dwWritten = 0;
       Write(charByteOrderMarker, 2, dwWritten);

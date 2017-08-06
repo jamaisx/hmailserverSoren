@@ -284,7 +284,7 @@ namespace HM
       if (account_id_ != -1 && !pRS->IsEOF())
       {
          // Mark all messages as recent
-         String sql = "update hm_messages set messageflags = messageflags & ~ @FLAGS where messageaccountid = @ACCOUNTID ";
+		 String sql = "update hm_messages set messageflags = messageflags & ~ @FLAGS where messageaccountid = @ACCOUNTID and NOT messageflags = messageflags & ~ @FLAGS";
 
          SQLCommand updateCommand;
          updateCommand.AddParameter("@FLAGS", Message::FlagRecent);

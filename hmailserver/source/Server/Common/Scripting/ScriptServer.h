@@ -17,7 +17,7 @@ namespace HM
       {
          EventOnClientConnect = 1001,
          EventOnAcceptMessage = 1002,
-         EventOnMessageDeliver = 1003,
+		 EventOnDeliverMessage = 1003,
          EventOnBackupCompleted = 1004,
          EventOnBackupFailed = 1005,
          EventOnDeliveryStart = 1006,
@@ -28,6 +28,7 @@ namespace HM
          
          EventOnExternalAccountDownload = 1011,
          EventOnSMTPData = 1012,
+		 EventOnHELO = 1013
       };
 
       ScriptServer(void);
@@ -64,6 +65,7 @@ namespace HM
       bool has_on_delivery_failed_;
       bool has_on_external_account_download_;
       bool has_on_smtpdata_;
+	  bool has_on_helo_;
 
       String script_contents_;
       String script_extension_;

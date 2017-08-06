@@ -312,16 +312,6 @@ namespace HM
 
       sFirstWord.MakeUpper();
 
-      if (Configuration::Instance()->GetDisconnectInvalidClients() &&
-          cur_no_of_invalid_commands_ > Configuration::Instance()->GetMaximumIncorrectCommands())
-      {
-         // Disconnect
-         EnqueueWrite_("Too many invalid commands. Bye!");
-         pending_disconnect_ = true;
-         EnqueueDisconnect();
-         return;
-      }
-
       eSMTPCommandTypes eCommandType = GetCommandType_(sFirstWord);
 
       // The following commands are available regardless of of state.
@@ -475,7 +465,7 @@ namespace HM
          String sParam = (*iterParam);
          if (sParam.Left(4).CompareNoCase(_T("SIZE")) == 0)
             iEstimatedMessageSize = _ttoi(sParam.Mid(5));
-         if (sParam.Left(5).CompareNoCase(_T("AUTH")) == 0)
+         if (sParam.Left(4).CompareNoCase(_T("AUTH")) == 0)
             sAuthParam = sParam.Mid(5);
 
          iterParam++;
@@ -635,8 +625,8 @@ namespace HM
       if (dp != RecipientParser::DP_Possible)
       {
          AWStats::LogDeliveryFailure(GetIPAddressString(), current_message_->GetFromAddress(), sRecipientAddress, 550);
-         EnqueueWrite_(sErrMsg);
 
+		 SendErrorResponse_(550, sErrMsg);
          return;
       }
 
@@ -733,7 +723,7 @@ namespace HM
 
       if (!recipientOK)
       {
-         EnqueueWrite_("550 Unknown user");
+		 SendErrorResponse_(550, "Unknown user");
          return;
       }
    
@@ -1513,6 +1503,51 @@ namespace HM
          return;
       }
 
+	  //
+	  // Event OnHELO
+	  //
+	  if (Configuration::Instance()->GetUseScriptServer())
+	  {
+		  std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+		  std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+		  std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+
+		  pClientInfo->SetIPAddress(GetIPAddressString());
+		  pClientInfo->SetPort(GetLocalEndpointPort());
+		  pClientInfo->SetHELO(helo_host_);
+
+		  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+		  pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+
+		  String sEventCaller = "OnHELO(HMAILSERVER_CLIENT)";
+		  ScriptServer::Instance()->FireEvent(ScriptServer::EventOnHELO, sEventCaller, pContainer);
+
+		  switch (pResult->GetValue())
+		  {
+		  case 1:
+		  {
+			  String sErrorMessage = "554 Rejected";
+			  EnqueueWrite_(sErrorMessage);
+			  LogAwstatsMessageRejected_();
+			  return;
+		  }
+		  case 2:
+		  {
+			  String sErrorMessage = "554 " + pResult->GetMessage();
+			  EnqueueWrite_(sErrorMessage);
+			  LogAwstatsMessageRejected_();
+			  return;
+		  }
+		  case 3:
+		  {
+			  String sErrorMessage = "453 " + pResult->GetMessage();
+			  EnqueueWrite_(sErrorMessage);
+			  LogAwstatsMessageRejected_();
+			  return;
+		  }
+		  }
+	  }
+
       SendEHLOKeywords_();
 
       if (current_state_ == INITIAL)
@@ -1530,6 +1565,51 @@ namespace HM
          SendErrorResponse_(501, "HELO Invalid domain address.");
          return;
       }
+
+	  //
+	  // Event OnHELO
+	  //
+	  if (Configuration::Instance()->GetUseScriptServer())
+	  {
+		  std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+		  std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+		  std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+
+		  pClientInfo->SetIPAddress(GetIPAddressString());
+		  pClientInfo->SetPort(GetLocalEndpointPort());
+		  pClientInfo->SetHELO(helo_host_);
+
+		  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+		  pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+
+		  String sEventCaller = "OnHELO(HMAILSERVER_CLIENT)";
+		  ScriptServer::Instance()->FireEvent(ScriptServer::EventOnHELO, sEventCaller, pContainer);
+
+		  switch (pResult->GetValue())
+		  {
+		  case 1:
+		  {
+			  String sErrorMessage = "554 Rejected";
+			  EnqueueWrite_(sErrorMessage);
+			  LogAwstatsMessageRejected_();
+			  return;
+		  }
+		  case 2:
+		  {
+			  String sErrorMessage = "554 " + pResult->GetMessage();
+			  EnqueueWrite_(sErrorMessage);
+			  LogAwstatsMessageRejected_();
+			  return;
+		  }
+		  case 3:
+		  {
+			  String sErrorMessage = "453 " + pResult->GetMessage();
+			  EnqueueWrite_(sErrorMessage);
+			  LogAwstatsMessageRejected_();
+			  return;
+		  }
+		  }
+	  }
 
       EnqueueWrite_("250 Hello.");
 
@@ -1750,12 +1830,12 @@ namespace HM
       if (GetConnectionSecurity() == CSSTARTTLSOptional ||
           GetConnectionSecurity() == CSSTARTTLSRequired)
       {
-         const int commandLength = 8;
+		 const int commandLength = 8;
 
-         auto trimmedRequest = sRequest;
-         trimmedRequest.Trim();
+		 auto trimmedRequest = sRequest;
+		 trimmedRequest.Trim();
 
-         bool hasParameters = trimmedRequest.GetLength() > commandLength;
+		 bool hasParameters = trimmedRequest.GetLength() > commandLength;
 
          if (hasParameters)
          {
@@ -1952,13 +2032,25 @@ namespace HM
    void 
    SMTPConnection::SendErrorResponse_(int iErrorCode, const String &sResponse)
    {
-      String sData;
-      sData.Format(_T("%d %s"), iErrorCode, sResponse.c_str());
-      
-      EnqueueWrite_(sData);
+		if (iErrorCode >= 500 && iErrorCode <= 599)
+		{
+			cur_no_of_invalid_commands_++;
 
-      if (iErrorCode >= 500 && iErrorCode <= 599)
-         cur_no_of_invalid_commands_++;   
+			if (Configuration::Instance()->GetDisconnectInvalidClients() &&
+				cur_no_of_invalid_commands_ > Configuration::Instance()->GetMaximumIncorrectCommands())
+			{
+				// Disconnect
+				EnqueueWrite_("Too many invalid commands. Bye!");
+				pending_disconnect_ = true;
+				EnqueueDisconnect();
+				return;
+			}
+		}
+
+		String sData;
+		sData.Format(_T("%d %s"), iErrorCode, sResponse.c_str());
+
+		EnqueueWrite_(sData);
    }
 
    bool
@@ -2031,14 +2123,19 @@ namespace HM
    }
 
    /*
-      Returns true if 
-      - the domain-part of the email matches an active local domain.
-      - the sender address matches a route address.
+   Returns true if
+   - the domain-part of the email matches an active local domain.
+   - the sender address matches a route address.
+   - the sender is authenticated and AuthUserIsLocal=1 INI setting
    */
    bool
    SMTPConnection::GetIsLocalSender_()
    {
-       if (sender_domain_ && sender_domain_->GetIsActive())
+	   // the sender is authenticated and AuthUserIsLocal=1 INI setting
+	   if (IniFileSettings::Instance()->GetAuthUserIsLocal() && isAuthenticated_)
+		  return true;
+
+	   if (sender_domain_ && sender_domain_->GetIsActive())
           return true;
 
        const String senderAddress = current_message_->GetFromAddress();
