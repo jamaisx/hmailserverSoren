@@ -18,14 +18,14 @@ namespace HM
       void SetUsername(const String &sUsernme) { username_ = sUsernme; }
       String GetUsername() const { return username_; }
 
-      long GetPort() const {return port_; }
+      long GetPort() const { return port_; }
       void SetPort(long lNewVal) {port_ = lNewVal; }
 
       void SetHELO(const String &HELO) { helo_ = HELO; }
       String GetHELO() const { return helo_; }
 
 	  bool GetAUTH() const { return auth_; }
-	  void SetAUTH(bool &Authenticated) { auth_ = Authenticated; }
+	  void SetAUTH(bool bNewVal) { auth_ = bNewVal; };
 
    private:
 

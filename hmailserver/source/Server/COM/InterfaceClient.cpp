@@ -58,7 +58,7 @@ STDMETHODIMP InterfaceClient::get_HELO(BSTR *pVal)
 {
    try
    {
-	   *pVal = client_info_->GetHELO().AllocSysString();
+	  *pVal = client_info_->GetHELO().AllocSysString();
       return S_OK;
    }
    catch (...)
@@ -67,11 +67,11 @@ STDMETHODIMP InterfaceClient::get_HELO(BSTR *pVal)
    }
 }
 
-STDMETHODIMP InterfaceClient::get_Authenticated(BOOLEAN *pVal)
+STDMETHODIMP InterfaceClient::get_Authenticated(VARIANT_BOOL *pVal)
 {
 	try
 	{
-		*pVal = client_info_->GetAUTH();
+		*pVal = client_info_->GetAUTH() ? VARIANT_TRUE : VARIANT_FALSE;
 		return S_OK;
 	}
 	catch (...)
