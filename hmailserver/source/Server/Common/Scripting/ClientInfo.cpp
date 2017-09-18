@@ -11,8 +11,9 @@
 
 namespace HM
 {
-   ClientInfo::ClientInfo() :
-      port_(0)
+	ClientInfo::ClientInfo() :
+		port_(0),
+		auth_(false)
    {
 
    }

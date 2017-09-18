@@ -1206,6 +1206,7 @@ namespace HM
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
          pClientInfo->SetHELO(helo_host_);
+		 pClientInfo->SetAUTH(isAuthenticated_);
 
          pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
@@ -1659,6 +1660,7 @@ namespace HM
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
          pClientInfo->SetHELO(helo_host_);
+		 pClientInfo->SetAUTH(isAuthenticated_);
 
          pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
@@ -1968,6 +1970,8 @@ namespace HM
       AccountLogon accountLogon;
       bool disconnect;
 
+	  String sUsername = username_;
+
       std::shared_ptr<const Account> pAccount = accountLogon.Logon(GetRemoteEndpointAddress(), username_, password_, disconnect);
          
       if (disconnect)
@@ -1977,18 +1981,36 @@ namespace HM
          EnqueueDisconnect();
          return;
       }
-     
-      if (pAccount)
-      {
-         EnqueueWrite_("235 authenticated.");
 
-         isAuthenticated_ = true;
-         current_state_ = HEADER;
-      }
-      else
-      {
-         RestartAuthentication_();
-      }
+	  if (pAccount)
+	  {
+		  EnqueueWrite_("235 authenticated.");
+
+		  isAuthenticated_ = true;
+		  current_state_ = HEADER;
+	  }
+	  else
+	  {
+		  RestartAuthentication_();
+	  }
+
+	  if (Configuration::Instance()->GetUseScriptServer())
+	  {
+		  std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+		  std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+
+		  pClientInfo->SetUsername(sUsername);
+		  pClientInfo->SetIPAddress(GetIPAddressString());
+		  pClientInfo->SetPort(GetLocalEndpointPort());
+		  pClientInfo->SetHELO(helo_host_);
+		  pClientInfo->SetAUTH(isAuthenticated_);
+
+		  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+
+		  String sEventCaller = "OnClientLogon(HMAILSERVER_CLIENT)";
+		  ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
+	  }
+
    }
 
    void 

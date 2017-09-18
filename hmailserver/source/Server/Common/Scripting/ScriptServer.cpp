@@ -30,7 +30,8 @@ namespace HM
       has_on_delivery_failed_(false),
       has_on_external_account_download_(false),
       has_on_smtpdata_(false),
-	  has_on_helo_(false)
+	  has_on_helo_(false),
+	  has_on_client_logon_(false)
    {
       
    }
@@ -99,6 +100,7 @@ namespace HM
          has_on_external_account_download_ = DoesFunctionExist_("OnExternalAccountDownload");
          has_on_smtpdata_ = DoesFunctionExist_("OnSMTPData");
 		 has_on_helo_ = DoesFunctionExist_("OnHELO");
+		 has_on_client_logon_ = DoesFunctionExist_("OnClientLogon");
 
       }
       catch (...)
@@ -206,6 +208,11 @@ namespace HM
 		  if (!has_on_client_connect_)
 			  return;
 		  event_name = _T("OnClientConnect");
+		  break;
+	  case EventOnClientLogon:
+		  if (!has_on_client_logon_)
+			  return;
+		  event_name = _T("OnClientLogon");
 		  break;
 	  case EventOnAcceptMessage:
 		  if (!has_on_accept_message_)

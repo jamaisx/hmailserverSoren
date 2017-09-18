@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.7"
-#define HMAILSERVER_BUILD "2415.10"
+#define HMAILSERVER_BUILD "2415.11"
 
 
 /*
@@ -15,5 +15,6 @@
 - Speed up 'update hm_messages set messageflags' #221 https://github.com/hmailserver/hmailserver/issues/221
 - https://www.hmailserver.com/forum/viewtopic.php?f=7&p=196733#p196733 (Ofice 2016 Read-Receipt Bug)
 - Add Return-Path as topmost header before sending the message to SA (+ delete Return-Path header after the SA check completes) https://github.com/hmailserver/hmailserver/issues/116
+- Experimental Sub OnClientLogon(oClient), New ClientInfo property oClient.Authenticated (Boolean)
 */
 

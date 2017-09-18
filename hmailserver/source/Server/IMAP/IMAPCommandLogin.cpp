@@ -10,6 +10,10 @@
 #include "../common/BO/Account.h"
 #include "../common/BO/SecurityRange.h"
 
+#include "../common/Scripting/ClientInfo.h"
+#include "../Common/Scripting/ScriptServer.h"
+#include "../Common/Scripting/ScriptObjectContainer.h"
+
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW
@@ -47,6 +51,7 @@ namespace HM
       String sPassword = pParser->GetParamValue(pArgument, 1);
 
       AccountLogon accountLogon;
+	  bool isAuthenticated_ = false;
       bool disconnect = false;
       std::shared_ptr<const Account> pAccount = accountLogon.Logon(pConnection->GetRemoteEndpointAddress(), sUsername, sPassword, disconnect);
 
@@ -59,6 +64,26 @@ namespace HM
          return IMAPResult(IMAPResult::ResultOKSupressRead, "");
       } 
 
+	  if (pAccount)
+		  isAuthenticated_ = true;
+
+	  if (Configuration::Instance()->GetUseScriptServer())
+	  {
+		  std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+		  std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+
+		  pClientInfo->SetUsername(sUsername);
+		  pClientInfo->SetIPAddress(pConnection->GetRemoteEndpointAddress().ToString());
+		  pClientInfo->SetPort(pConnection->GetLocalEndpointPort());
+		  pClientInfo->SetHELO("");
+		  pClientInfo->SetAUTH(isAuthenticated_);
+
+		  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+
+		  String sEventCaller = "OnClientLogon(HMAILSERVER_CLIENT)";
+		  ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
+	  }
+
       if (!pAccount)
       {
          if (sUsername.Find(_T("@")) == -1)
@@ -66,7 +91,7 @@ namespace HM
          else
             return IMAPResult(IMAPResult::ResultNo, "Invalid user name or password.");
       }
-      
+
       // Load mail boxes
       pConnection->Login(pAccount);
 

@@ -24,11 +24,15 @@ namespace HM
       void SetHELO(const String &HELO) { helo_ = HELO; }
       String GetHELO() const { return helo_; }
 
+	  bool GetAUTH() const { return auth_; }
+	  void SetAUTH(bool &Authenticated) { auth_ = Authenticated; }
+
    private:
 
       String IPAddress;
       long port_;
       String username_;
       String helo_;
+	  bool auth_;
    };
 }
