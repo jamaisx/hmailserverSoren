@@ -1983,16 +1983,7 @@ namespace HM
       }
 
 	  if (pAccount)
-	  {
-		  EnqueueWrite_("235 authenticated.");
-
 		  isAuthenticated_ = true;
-		  current_state_ = HEADER;
-	  }
-	  else
-	  {
-		  RestartAuthentication_();
-	  }
 
 	  if (Configuration::Instance()->GetUseScriptServer())
 	  {
@@ -2011,6 +2002,15 @@ namespace HM
 		  ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
 	  }
 
+	  if (pAccount)
+	  {
+		  EnqueueWrite_("235 authenticated.");
+		  current_state_ = HEADER;
+	  }
+	  else
+	  {
+		  RestartAuthentication_();
+	  }
    }
 
    void 
