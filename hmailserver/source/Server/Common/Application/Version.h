@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.7"
-#define HMAILSERVER_BUILD "2415.11"
+#define HMAILSERVER_BUILD "2420.11"
 
 
 /*
