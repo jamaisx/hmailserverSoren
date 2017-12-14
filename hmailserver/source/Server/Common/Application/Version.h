@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.7"
-#define HMAILSERVER_BUILD "2420.11"
+#define HMAILSERVER_BUILD "2425.12"
 
 
 /*
@@ -16,5 +16,6 @@
 - https://www.hmailserver.com/forum/viewtopic.php?f=7&p=196733#p196733 (Ofice 2016 Read-Receipt Bug)
 - Add Return-Path as topmost header before sending the message to SA (+ delete Return-Path header after the SA check completes) https://github.com/hmailserver/hmailserver/issues/116
 - Experimental Sub OnClientLogon(oClient), New ClientInfo property oClient.Authenticated (Boolean)
+- Handling of long UIDL response lists was too slow. #93 https://github.com/hmailserver/hmailserver/issues/93
 */
 
