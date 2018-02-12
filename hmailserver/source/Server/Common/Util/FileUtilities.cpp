@@ -197,7 +197,8 @@ namespace HM
    FileUtilities::ReadCompleteTextFile(const String &sFilename)
    {
       File oFile;
-      oFile.Open(sFilename, File::OTReadOnly);
+      if (!oFile.Open(sFilename, File::OTReadOnly))
+         return "";
 
       // Read file
       std::shared_ptr<ByteBuffer> pBuffer = oFile.ReadFile();
@@ -258,7 +259,7 @@ namespace HM
       File file;
       if (!file.Open(sFilename, File::OTReadOnly))
       {
-         throw new std::logic_error(Formatter::FormatAsAnsi("Unable to open file {0}", sFilename));
+         throw std::logic_error(Formatter::FormatAsAnsi("Unable to open file {0}", sFilename));
       }
 
       file.SetPosition(iStart);
@@ -501,7 +502,18 @@ namespace HM
       {
          boost::filesystem::path current(file->path());
          if (boost::filesystem::is_directory(current))
-            boost::filesystem::remove_all(current);
+         {
+            boost::system::error_code error_code;
+            boost::filesystem::remove_all(current, error_code);
+
+            if (error_code)
+            {
+               String sErrorMessage;
+               sErrorMessage.Format(_T("Could not delete the directory %s."), file->path().string());
+               ErrorManager::Instance()->ReportError(ErrorManager::High, 5700, "FileUtilities::DeleteDirectoriesInDirectory", sErrorMessage, error_code);
+               return false;
+            }
+         }
       }
 
       return true;

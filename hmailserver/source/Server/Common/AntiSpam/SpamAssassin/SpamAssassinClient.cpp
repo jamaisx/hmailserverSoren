@@ -6,6 +6,7 @@
 
 #include "../../Util/ByteBuffer.h"
 #include "../../Util/File.h"
+#include "../../Util/FileUtilities.h"
 
 #include "../../Application/TimeoutCalculator.h"
 
@@ -38,7 +39,14 @@ namespace HM
 
    SpamAssassinClient::~SpamAssassinClient(void)
    {
-
+      try
+      {
+         Cleanup_();
+      }
+      catch (...)
+      {
+         
+      }
    }
 
    void
@@ -181,7 +189,6 @@ namespace HM
          {
             // Copy temp file to message file
             FileUtilities::Copy(sTempFile, message_file_, false);
-            FileUtilities::DeleteFile(sTempFile);
             LOG_DEBUG("SA - Copy+Delete used");
          }
 	  } 
@@ -272,11 +279,16 @@ namespace HM
 
       ErrorManager::Instance()->ReportError(ErrorManager::Medium, 5157, "SpamAssassinClient::OnReadError", errorMessage);
 
-      if (result_)
+   }
+
+   void 
+   SpamAssassinClient::Cleanup_()
+   {
+      if (result_ != nullptr)
       {
          result_->Close();
          FileUtilities::DeleteFile(result_->GetName());
-         result_.reset();
+         result_ = nullptr;
       }
    }
 }
