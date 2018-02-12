@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.7"
-#define HMAILSERVER_BUILD "2425.12"
+#define HMAILSERVER_BUILD "2425.15.1"
 
 
 /*
@@ -17,5 +17,8 @@
 - Add Return-Path as topmost header before sending the message to SA (+ delete Return-Path header after the SA check completes) https://github.com/hmailserver/hmailserver/issues/116
 - Experimental Sub OnClientLogon(oClient), New ClientInfo property oClient.Authenticated (Boolean)
 - Handling of long UIDL response lists was too slow. #93 https://github.com/hmailserver/hmailserver/issues/93
+- When calling SpamAssassin and there was a connection failure, sometimes temporary files were left behind #100 https://github.com/hmailserver/hmailserver/issues/100
+- SURBL detection properly fails to detect url's ending with a query string #108 https://github.com/hmailserver/hmailserver/issues/108
+- If a route is set up, but the recipient does not match an address in the route address list, the domain catch-all should be used if specified. #74 https://github.com/hmailserver/hmailserver/issues/74
 */
 
