@@ -35,7 +35,7 @@ namespace HM
       queue_randomness_minutes_(0),
       mxtries_factor_(0),
       sqldbtype_(HM::DatabaseSettings::TypeUnknown),
-	  treat_authenticated_as_local_(false),
+      treat_authenticated_as_local_(false),
       rewrite_envelope_from_when_forwarding_(false)
    {
 
@@ -62,6 +62,7 @@ namespace HM
       password_ = ReadIniSettingString_("Database", "Password", "");
       is_internal_database_ = ReadIniSettingInteger_("Database", "Internal", 0) == 1;
       database_server_FailoverPartner = ReadIniSettingString_("Database", "ServerFailoverPartner", "");
+      database_provider_ = ReadIniSettingString_("Database", "Provider", "");
 
       String sDatabaseType = ReadIniSettingString_("Database", "Type", "");
       
