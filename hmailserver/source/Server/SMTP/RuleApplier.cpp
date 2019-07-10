@@ -175,7 +175,7 @@ namespace HM
          }
       case RuleAction::Reply:
          {
-			ApplyAction_Reply(pAction, account, pMsgData);
+            ApplyAction_Reply(pAction, pMsgData);
             break;
          }
       case RuleAction::ScriptFunction:
@@ -247,7 +247,7 @@ namespace HM
       // We need to update the SMTP envelope from address, if this
       // message is forwarded by a user-level account.
       std::shared_ptr<CONST Account> pAccount = CacheContainer::Instance()->GetAccount(rule_account_id_);
-	  if (pAccount && IniFileSettings::Instance()->GetRewriteEnvelopeFromWhenForwarding())
+      if (pAccount)
          pMsg->SetFromAddress(pAccount->GetAddress());
       
       // Add new recipients
@@ -374,7 +374,7 @@ namespace HM
    }
 
    void 
-   RuleApplier::ApplyAction_Reply(std::shared_ptr<RuleAction> pAction, std::shared_ptr<const Account> account, std::shared_ptr<MessageData> pMsgData) const
+   RuleApplier::ApplyAction_Reply(std::shared_ptr<RuleAction> pAction, std::shared_ptr<MessageData> pMsgData) const
    {
       // true = check AutoSubmitted header and do not respond if set
       if (!IsGeneratedResponseAllowed(pMsgData, true))
@@ -394,19 +394,15 @@ namespace HM
 
       std::shared_ptr<Account> emptyAccount;
 
-      // Send a copy of this email.
+      // Sen d a copy of this email.
       std::shared_ptr<Message> pMsg = std::shared_ptr<Message>(new Message());
       pMsg->SetState(Message::Delivering);
       
       String newMessageFileName = PersistentMessage::GetFileName(pMsg);
 
-	  // check if this us a user-level account rule or global rule.
-	  std::shared_ptr<CONST Account> pAccount = CacheContainer::Instance()->GetAccount(rule_account_id_);
-
       std::shared_ptr<MessageData> pNewMsgData = std::shared_ptr<MessageData>(new MessageData());
       pNewMsgData->LoadFromMessage(newMessageFileName, pMsg);
-	  if (!pAccount)
-		  pNewMsgData->SetReturnPath("");
+      pNewMsgData->SetReturnPath("");
       pNewMsgData->GenerateMessageID();
       pNewMsgData->SetTo(sReplyRecipientAddress);
       pNewMsgData->SetFrom(pAction->GetFromName() + " <" + pAction->GetFromAddress() + ">");
@@ -416,11 +412,7 @@ namespace HM
       pNewMsgData->SetAutoReplied();
 	  pNewMsgData->IncreaseRuleLoopCount();
       pNewMsgData->Write(newMessageFileName);
-
-	  // We need to update the SMTP envelope from address, if this
-	  // message is replied to by a user-level account.
-	  if (pAccount)
-		  pMsg->SetFromAddress(pAccount->GetAddress());
+	  
 
       // Add recipients.
       bool recipientOK = false;
