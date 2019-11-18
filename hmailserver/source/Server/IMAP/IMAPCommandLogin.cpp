@@ -51,7 +51,6 @@ namespace HM
       String sPassword = pParser->GetParamValue(pArgument, 1);
 
       AccountLogon accountLogon;
-	  bool isAuthenticated_ = false;
       bool disconnect = false;
       std::shared_ptr<const Account> pAccount = accountLogon.Logon(pConnection->GetRemoteEndpointAddress(), sUsername, sPassword, disconnect);
 
@@ -64,24 +63,23 @@ namespace HM
          return IMAPResult(IMAPResult::ResultOKSupressRead, "");
       } 
 
-	  if (pAccount)
-		  isAuthenticated_ = true;
+      const bool isAuthenticated = pAccount != nullptr;
 
-	  if (Configuration::Instance()->GetUseScriptServer())
-	  {
-		  std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-		  std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+      if (Configuration::Instance()->GetUseScriptServer())
+      {
+         std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+         std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-		  pClientInfo->SetUsername(sUsername);
-		  pClientInfo->SetIPAddress(pConnection->GetRemoteEndpointAddress().ToString());
-		  pClientInfo->SetPort(pConnection->GetLocalEndpointPort());
-		  pClientInfo->SetAUTH(isAuthenticated_);
+         pClientInfo->SetUsername(sUsername);
+         pClientInfo->SetIPAddress(pConnection->GetRemoteEndpointAddress().ToString());
+         pClientInfo->SetPort(pConnection->GetLocalEndpointPort());
+         pClientInfo->SetIsAuthenticated(isAuthenticated);
 
-		  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+         pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
 
-		  String sEventCaller = "OnClientLogon(HMAILSERVER_CLIENT)";
-		  ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
-	  }
+         String sEventCaller = "OnClientLogon(HMAILSERVER_CLIENT)";
+         ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
+      }
 
       if (!pAccount)
       {

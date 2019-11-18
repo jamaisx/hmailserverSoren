@@ -632,24 +632,25 @@ namespace HM
 
       bool localSender = GetIsLocalSender_();
 
-	  int iRelayOption = 0;
-	  if (localSender && localDelivery)
-		  iRelayOption = SecurityRange::IPRANGE_RELAY_LOCAL_TO_LOCAL;
-	  else if (localSender && !localDelivery)
-		  iRelayOption = SecurityRange::IPRANGE_RELAY_LOCAL_TO_REMOTE;
-	  else if (!localSender && localDelivery)
-		  iRelayOption = SecurityRange::IPRANGE_RELAY_REMOTE_TO_LOCAL;
-	  else if (!localSender && !localDelivery)
-		  iRelayOption = SecurityRange::IPRANGE_RELAY_REMOTE_TO_REMOTE;
+      int iRelayOption = 0;
+      if (localSender && localDelivery)
+	      iRelayOption = SecurityRange::IPRANGE_RELAY_LOCAL_TO_LOCAL;
+      else if (localSender && !localDelivery)
+	      iRelayOption = SecurityRange::IPRANGE_RELAY_LOCAL_TO_REMOTE;
+      else if (!localSender && localDelivery)
+	      iRelayOption = SecurityRange::IPRANGE_RELAY_REMOTE_TO_LOCAL;
+      else if (!localSender && !localDelivery)
+	      iRelayOption = SecurityRange::IPRANGE_RELAY_REMOTE_TO_REMOTE;
 
-	  bool bAllowRelay = GetSecurityRange()->GetAllowOption(iRelayOption);
-	  if (bAllowRelay == false)
-	  {
-		  // User is not allowed to send this email.
-		  SendErrorResponse_(550, "Delivery is not allowed to this address.");
-		  AWStats::LogDeliveryFailure(GetIPAddressString(), current_message_->GetFromAddress(), sRecipientAddress, 550);
-		  return;
-	  }
+      bool bAllowRelay = GetSecurityRange()->GetAllowOption(iRelayOption);
+
+      if (bAllowRelay == false)
+      {
+	      // User is not allowed to send this email.
+	      SendErrorResponse_(550, "Delivery is not allowed to this address.");
+	      AWStats::LogDeliveryFailure(GetIPAddressString(), current_message_->GetFromAddress(), sRecipientAddress, 550);
+	      return;
+      }
 
       bool authenticationRequired = true;
       if (localSender && localDelivery)
@@ -1204,7 +1205,7 @@ namespace HM
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
          pClientInfo->SetHELO(helo_host_);
-		 pClientInfo->SetAUTH(isAuthenticated_);
+         pClientInfo->SetIsAuthenticated(isAuthenticated_);
 
          pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
@@ -1502,50 +1503,50 @@ namespace HM
          return;
       }
 
-	  //
-	  // Event OnHELO
-	  //
-	  if (Configuration::Instance()->GetUseScriptServer())
-	  {
-		  std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-		  std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
-		  std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+      //
+      // Event OnHELO
+      //
+      if (Configuration::Instance()->GetUseScriptServer())
+      {
+	      std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+	      std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+	      std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-		  pClientInfo->SetIPAddress(GetIPAddressString());
-		  pClientInfo->SetPort(GetLocalEndpointPort());
-		  pClientInfo->SetHELO(helo_host_);
+	      pClientInfo->SetIPAddress(GetIPAddressString());
+	      pClientInfo->SetPort(GetLocalEndpointPort());
+	      pClientInfo->SetHELO(helo_host_);
 
-		  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
-		  pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+	      pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+	      pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
 
-		  String sEventCaller = "OnHELO(HMAILSERVER_CLIENT)";
-		  ScriptServer::Instance()->FireEvent(ScriptServer::EventOnHELO, sEventCaller, pContainer);
+	      String sEventCaller = "OnHELO(HMAILSERVER_CLIENT)";
+	      ScriptServer::Instance()->FireEvent(ScriptServer::EventOnHELO, sEventCaller, pContainer);
 
-		  switch (pResult->GetValue())
-		  {
-		  case 1:
-		  {
-			  String sErrorMessage = "554 Rejected";
-			  EnqueueWrite_(sErrorMessage);
-			  LogAwstatsMessageRejected_();
-			  return;
-		  }
-		  case 2:
-		  {
-			  String sErrorMessage = "554 " + pResult->GetMessage();
-			  EnqueueWrite_(sErrorMessage);
-			  LogAwstatsMessageRejected_();
-			  return;
-		  }
-		  case 3:
-		  {
-			  String sErrorMessage = "453 " + pResult->GetMessage();
-			  EnqueueWrite_(sErrorMessage);
-			  LogAwstatsMessageRejected_();
-			  return;
-		  }
-		  }
-	  }
+	      switch (pResult->GetValue())
+	      {
+	         case 1:
+	         {
+		         String sErrorMessage = "554 Rejected";
+		         EnqueueWrite_(sErrorMessage);
+		         LogAwstatsMessageRejected_();
+		         return;
+	         }
+	         case 2:
+	         {
+		         String sErrorMessage = "554 " + pResult->GetMessage();
+		         EnqueueWrite_(sErrorMessage);
+		         LogAwstatsMessageRejected_();
+		         return;
+	         }
+	         case 3:
+	         {
+		         String sErrorMessage = "453 " + pResult->GetMessage();
+		         EnqueueWrite_(sErrorMessage);
+		         LogAwstatsMessageRejected_();
+		         return;
+	         }
+	      }
+      }
 
       SendEHLOKeywords_();
 
@@ -1565,50 +1566,50 @@ namespace HM
          return;
       }
 
-	  //
-	  // Event OnHELO
-	  //
-	  if (Configuration::Instance()->GetUseScriptServer())
-	  {
-		  std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-		  std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
-		  std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+      //
+      // Event OnHELO
+      //
+      if (Configuration::Instance()->GetUseScriptServer())
+      {
+	      std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+	      std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+	      std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-		  pClientInfo->SetIPAddress(GetIPAddressString());
-		  pClientInfo->SetPort(GetLocalEndpointPort());
-		  pClientInfo->SetHELO(helo_host_);
+	      pClientInfo->SetIPAddress(GetIPAddressString());
+	      pClientInfo->SetPort(GetLocalEndpointPort());
+	      pClientInfo->SetHELO(helo_host_);
 
-		  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
-		  pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+	      pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+	      pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
 
-		  String sEventCaller = "OnHELO(HMAILSERVER_CLIENT)";
-		  ScriptServer::Instance()->FireEvent(ScriptServer::EventOnHELO, sEventCaller, pContainer);
+	      String sEventCaller = "OnHELO(HMAILSERVER_CLIENT)";
+	      ScriptServer::Instance()->FireEvent(ScriptServer::EventOnHELO, sEventCaller, pContainer);
 
-		  switch (pResult->GetValue())
-		  {
-		  case 1:
-		  {
-			  String sErrorMessage = "554 Rejected";
-			  EnqueueWrite_(sErrorMessage);
-			  LogAwstatsMessageRejected_();
-			  return;
-		  }
-		  case 2:
-		  {
-			  String sErrorMessage = "554 " + pResult->GetMessage();
-			  EnqueueWrite_(sErrorMessage);
-			  LogAwstatsMessageRejected_();
-			  return;
-		  }
-		  case 3:
-		  {
-			  String sErrorMessage = "453 " + pResult->GetMessage();
-			  EnqueueWrite_(sErrorMessage);
-			  LogAwstatsMessageRejected_();
-			  return;
-		  }
-		  }
-	  }
+	      switch (pResult->GetValue())
+	      {
+	         case 1:
+	         {
+		         String sErrorMessage = "554 Rejected";
+		         EnqueueWrite_(sErrorMessage);
+		         LogAwstatsMessageRejected_();
+		         return;
+	         }
+	         case 2:
+	         {
+		         String sErrorMessage = "554 " + pResult->GetMessage();
+		         EnqueueWrite_(sErrorMessage);
+		         LogAwstatsMessageRejected_();
+		         return;
+	         }
+	         case 3:
+	         {
+		         String sErrorMessage = "453 " + pResult->GetMessage();
+		         EnqueueWrite_(sErrorMessage);
+		         LogAwstatsMessageRejected_();
+		         return;
+	         }
+	      }
+      }
 
       EnqueueWrite_("250 Hello.");
 
@@ -1658,7 +1659,7 @@ namespace HM
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
          pClientInfo->SetHELO(helo_host_);
-		 pClientInfo->SetAUTH(isAuthenticated_);
+         pClientInfo->SetIsAuthenticated(isAuthenticated_);
 
          pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
@@ -1980,35 +1981,34 @@ namespace HM
          return;
       }
 
-	  if (pAccount)
-		  isAuthenticated_ = true;
+      isAuthenticated_ = pAccount != nullptr;
 
-	  if (Configuration::Instance()->GetUseScriptServer())
-	  {
-		  std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-		  std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+      if (Configuration::Instance()->GetUseScriptServer())
+      {
+         std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+         std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-		  pClientInfo->SetUsername(sUsername);
-		  pClientInfo->SetIPAddress(GetIPAddressString());
-		  pClientInfo->SetPort(GetLocalEndpointPort());
-		  pClientInfo->SetHELO(helo_host_);
-		  pClientInfo->SetAUTH(isAuthenticated_);
+         pClientInfo->SetUsername(sUsername);
+         pClientInfo->SetIPAddress(GetIPAddressString());
+         pClientInfo->SetPort(GetLocalEndpointPort());
+         pClientInfo->SetHELO(helo_host_);
+         pClientInfo->SetIsAuthenticated(isAuthenticated_);
 
-		  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+         pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
 
-		  String sEventCaller = "OnClientLogon(HMAILSERVER_CLIENT)";
-		  ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
-	  }
+         String sEventCaller = "OnClientLogon(HMAILSERVER_CLIENT)";
+         ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
+      }
 
-	  if (pAccount)
-	  {
-		  EnqueueWrite_("235 authenticated.");
-		  current_state_ = HEADER;
-	  }
-	  else
-	  {
-		  RestartAuthentication_();
-	  }
+      if (pAccount)
+      {
+	      EnqueueWrite_("235 authenticated.");
+	      current_state_ = HEADER;
+      }
+      else
+      {
+	      RestartAuthentication_();
+      }
    }
 
    void 
@@ -2146,34 +2146,29 @@ namespace HM
    Returns true if
    - the domain-part of the email matches an active local domain.
    - the sender address matches a route address.
-   - the sender is authenticated and AuthUserIsLocal=1 INI setting
    */
    bool
-   SMTPConnection::GetIsLocalSender_()
+      SMTPConnection::GetIsLocalSender_()
    {
-	   // the sender is authenticated and AuthUserIsLocal=1 INI setting
-	   if (IniFileSettings::Instance()->GetAuthUserIsLocal() && isAuthenticated_)
-		  return true;
+      if (sender_domain_ && sender_domain_->GetIsActive())
+         return true;
 
-	   if (sender_domain_ && sender_domain_->GetIsActive())
-          return true;
+      const String senderAddress = current_message_->GetFromAddress();
 
-       const String senderAddress = current_message_->GetFromAddress();
+      String senderDomainName = StringParser::ExtractDomain(senderAddress);
+      std::shared_ptr<Route> route = Configuration::Instance()->GetSMTPConfiguration()->GetRoutes()->GetItemByNameWithWildcardMatch(senderDomainName);
 
-       String senderDomainName = StringParser::ExtractDomain(senderAddress);
-       std::shared_ptr<Route> route = Configuration::Instance()->GetSMTPConfiguration()->GetRoutes()->GetItemByNameWithWildcardMatch(senderDomainName);
+      if (route)
+      {
+         if (route->ToAllAddresses() || route->GetAddresses()->GetItemByName(senderAddress))
+         {
+            if (route->GetTreatSenderAsLocalDomain())
+               return true;
+         }
+      }
 
-       if (route)
-       {
-          if (route->ToAllAddresses() || route->GetAddresses()->GetItemByName(senderAddress))
-          {
-             if (route->GetTreatSenderAsLocalDomain())
-                return true;
-          }
-       }       
-
-       // Does not match a local domain or route.
-       return false;
+      // Does not match a local domain or route.
+      return false;
    }
 
    bool 
