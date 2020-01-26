@@ -46,7 +46,7 @@ namespace hMailServer.Administrator
 
             checkEnable.Checked = antiSpamSettings.GreyListingEnabled;
             textGreyListingInitialDelay.Number = antiSpamSettings.GreyListingInitialDelay;
-            textGreyListingInitialDelete.Number = antiSpamSettings.GreyListingInitialDelete / 24;
+            textGreyListingInitialDelete.Number = antiSpamSettings.GreyListingInitialDelete;
             textGreyListingFinalDelete.Number = antiSpamSettings.GreyListingFinalDelete / 24;
 
             checkBypassGreylistingOnSPFSuccess.Checked = antiSpamSettings.BypassGreylistingOnSPFSuccess;
@@ -97,7 +97,7 @@ namespace hMailServer.Administrator
 
             antiSpamSettings.GreyListingEnabled = checkEnable.Checked;
             antiSpamSettings.GreyListingInitialDelay = textGreyListingInitialDelay.Number;
-            antiSpamSettings.GreyListingInitialDelete = textGreyListingInitialDelete.Number * 24;
+            antiSpamSettings.GreyListingInitialDelete = textGreyListingInitialDelete.Number;
             antiSpamSettings.GreyListingFinalDelete = textGreyListingFinalDelete.Number * 24;
             antiSpamSettings.BypassGreylistingOnMailFromMX = checkBypassGreyListingOnMailFromMX.Checked;
             antiSpamSettings.BypassGreylistingOnSPFSuccess = checkBypassGreylistingOnSPFSuccess.Checked;
@@ -195,8 +195,5 @@ namespace hMailServer.Administrator
         {
             EnableDisable();
         }
-
-
-
     }
 }

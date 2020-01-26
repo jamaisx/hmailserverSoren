@@ -1431,7 +1431,12 @@ namespace HM
          sData += sAuth;
       }
 
-      sData += "\r\n250 HELP";
+      // sData += "\r\n250 HELP";
+
+      // Replace last dash with space.
+      unsigned iPos = sData.rfind('-');
+      String sBlank = " ";
+      sData = sData.replace(iPos, 1, sBlank);
 
       EnqueueWrite_(sData);
    

@@ -30,6 +30,7 @@ namespace hMailServer.Administrator
         {
            this.tabControl = new System.Windows.Forms.TabControl();
            this.tabPage1 = new System.Windows.Forms.TabPage();
+           this.checkBypassGreyListingOnMailFromMX = new hMailServer.Administrator.Controls.ucCheckbox();
            this.checkBypassGreylistingOnSPFSuccess = new hMailServer.Administrator.Controls.ucCheckbox();
            this.labelDaysBeforeRemovingUsed = new System.Windows.Forms.Label();
            this.textGreyListingFinalDelete = new hMailServer.Shared.ucText();
@@ -43,9 +44,8 @@ namespace hMailServer.Administrator
            this.buttonDeleteWhiteList = new System.Windows.Forms.Button();
            this.buttonAddWhiteList = new System.Windows.Forms.Button();
            this.listWhitelistingRecords = new hMailServer.Administrator.ucListView();
-           this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-           this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-           this.checkBypassGreyListingOnMailFromMX = new hMailServer.Administrator.Controls.ucCheckbox();
+           this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+           this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
            this.tabControl.SuspendLayout();
            this.tabPage1.SuspendLayout();
            this.tabPage2.SuspendLayout();
@@ -81,6 +81,16 @@ namespace hMailServer.Administrator
            this.tabPage1.Text = "General";
            this.tabPage1.UseVisualStyleBackColor = true;
            // 
+           // checkBypassGreyListingOnMailFromMX
+           // 
+           this.checkBypassGreyListingOnMailFromMX.AutoSize = true;
+           this.checkBypassGreyListingOnMailFromMX.Location = new System.Drawing.Point(16, 209);
+           this.checkBypassGreyListingOnMailFromMX.Name = "checkBypassGreyListingOnMailFromMX";
+           this.checkBypassGreyListingOnMailFromMX.Size = new System.Drawing.Size(319, 17);
+           this.checkBypassGreyListingOnMailFromMX.TabIndex = 37;
+           this.checkBypassGreyListingOnMailFromMX.Text = "Bypass Greylisting when message arrives from A or MX record.";
+           this.checkBypassGreyListingOnMailFromMX.UseVisualStyleBackColor = true;
+           // 
            // checkBypassGreylistingOnSPFSuccess
            // 
            this.checkBypassGreylistingOnSPFSuccess.AutoSize = true;
@@ -99,12 +109,14 @@ namespace hMailServer.Administrator
            this.labelDaysBeforeRemovingUsed.Size = new System.Drawing.Size(174, 13);
            this.labelDaysBeforeRemovingUsed.TabIndex = 35;
            this.labelDaysBeforeRemovingUsed.Text = "Days before removing used records";
+           this.labelDaysBeforeRemovingUsed.Click += new System.EventHandler(this.labelDaysBeforeRemovingUsed_Click);
            // 
            // textGreyListingFinalDelete
            // 
            this.textGreyListingFinalDelete.Location = new System.Drawing.Point(35, 147);
            this.textGreyListingFinalDelete.Name = "textGreyListingFinalDelete";
            this.textGreyListingFinalDelete.Number = 0;
+           this.textGreyListingFinalDelete.Number64 = ((long)(0));
            this.textGreyListingFinalDelete.Numeric = true;
            this.textGreyListingFinalDelete.Size = new System.Drawing.Size(90, 20);
            this.textGreyListingFinalDelete.TabIndex = 34;
@@ -116,13 +128,14 @@ namespace hMailServer.Administrator
            this.labelDaysBeforeRemovingUnused.Name = "labelDaysBeforeRemovingUnused";
            this.labelDaysBeforeRemovingUnused.Size = new System.Drawing.Size(186, 13);
            this.labelDaysBeforeRemovingUnused.TabIndex = 33;
-           this.labelDaysBeforeRemovingUnused.Text = "Days before removing unused records";
+           this.labelDaysBeforeRemovingUnused.Text = "Hours before removing unused records";
            // 
            // textGreyListingInitialDelete
            // 
            this.textGreyListingInitialDelete.Location = new System.Drawing.Point(35, 101);
            this.textGreyListingInitialDelete.Name = "textGreyListingInitialDelete";
            this.textGreyListingInitialDelete.Number = 0;
+           this.textGreyListingInitialDelete.Number64 = ((long)(0));
            this.textGreyListingInitialDelete.Numeric = true;
            this.textGreyListingInitialDelete.Size = new System.Drawing.Size(90, 20);
            this.textGreyListingInitialDelete.TabIndex = 32;
@@ -141,6 +154,7 @@ namespace hMailServer.Administrator
            this.textGreyListingInitialDelay.Location = new System.Drawing.Point(35, 56);
            this.textGreyListingInitialDelay.Name = "textGreyListingInitialDelay";
            this.textGreyListingInitialDelay.Number = 0;
+           this.textGreyListingInitialDelay.Number64 = ((long)(0));
            this.textGreyListingInitialDelay.Numeric = true;
            this.textGreyListingInitialDelay.Size = new System.Drawing.Size(90, 20);
            this.textGreyListingInitialDelay.TabIndex = 30;
@@ -231,16 +245,6 @@ namespace hMailServer.Administrator
            // 
            this.columnHeader2.Text = "Description";
            this.columnHeader2.Width = 210;
-           // 
-           // checkBypassGreyListingOnMailFromMX
-           // 
-           this.checkBypassGreyListingOnMailFromMX.AutoSize = true;
-           this.checkBypassGreyListingOnMailFromMX.Location = new System.Drawing.Point(16, 209);
-           this.checkBypassGreyListingOnMailFromMX.Name = "checkBypassGreyListingOnMailFromMX";
-           this.checkBypassGreyListingOnMailFromMX.Size = new System.Drawing.Size(319, 17);
-           this.checkBypassGreyListingOnMailFromMX.TabIndex = 37;
-           this.checkBypassGreyListingOnMailFromMX.Text = "Bypass Greylisting when message arrives from A or MX record.";
-           this.checkBypassGreyListingOnMailFromMX.UseVisualStyleBackColor = true;
            // 
            // ucGreyListing
            // 

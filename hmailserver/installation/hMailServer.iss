@@ -1,11 +1,11 @@
 [Setup]
 AppName=hMailServer
-AppVerName=hMailServer 5.4-B1929
-AppCopyright=Copyright (C) 2008
+AppVerName=hMailServer 5.6.8-B2494.23
+AppCopyright=Copyright (C) 2020
 DefaultDirName={pf}\hMailServer
 DefaultGroupName=hMailServer
 PrivilegesRequired=admin
-OutputBaseFilename=hMailServer-5.4-B1929
+OutputBaseFilename=hMailServer-5.6.8-B2494.23
 SolidCompression=yes
 WizardImageFile=setup.bmp
 LicenseFile=license.rtf
@@ -75,8 +75,8 @@ Source: "System files\dnsapi.dll"; DestDir: "{sys}"; Flags: uninsneveruninstall 
 Source: "System files\ATL\atl70.dll"; DestDir: "{sys}";  Components: server;
 Source: "SQLCE\SSCERuntime-ENU.msi"; Flags: deleteafterinstall ; Excludes: ".svn"; DestDir: "{tmp}"; Components: server;
 Source: ".\Extras\7za.exe"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server;
-Source: "{#HMAILSERVERLIBS}\openssl-1.1.1c\out32\bin\libcrypto-1_1.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
-Source: "{#HMAILSERVERLIBS}\openssl-1.1.1c\out32\bin\libssl-1_1.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
+Source: "..\..\..\Libs\openssl-1.1.1d\out32\bin\libcrypto-1_1.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
+Source: "..\..\..\Libs\openssl-1.1.1d\out32\bin\libssl-1_1.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
 Source: "Microsoft.VC120.CRT\*"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
 
 ; Main server
