@@ -2146,10 +2146,15 @@ namespace HM
    Returns true if
    - the domain-part of the email matches an active local domain.
    - the sender address matches a route address.
+   - the sender is authenticated and AuthUserIsLocal=1 INI setting
    */
    bool
-      SMTPConnection::GetIsLocalSender_()
+   SMTPConnection::GetIsLocalSender_()
    {
+      // the sender is authenticated and AuthUserIsLocal=1 INI setting
+      if (IniFileSettings::Instance()->GetAuthUserIsLocal() && isAuthenticated_)
+         return true;
+      
       if (sender_domain_ && sender_domain_->GetIsActive())
          return true;
 

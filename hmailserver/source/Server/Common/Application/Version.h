@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2437.21"
+#define HMAILSERVER_BUILD "2494.23"
 
 /*
 [list=1]
@@ -13,7 +13,7 @@
 [*]SMTP server error "550 Unsupported ESMTP extension" on MAIL FROM:... AUTH=<> [with fix] [url=https://github.com/hmailserver/hmailserver/issues/164]issue #164[/url]
 [*]Removed warning if backup was more than 1,5GB and 15GB limit. There's no longer a recommended max-size - the time will vary with the installation size. [url=https://github.com/hmailserver/hmailserver/issues/69]issue #69[/url]
 [*]Speed up 'update hm_messages set messageflags' [url=https://github.com/hmailserver/hmailserver/issues/221]issue  #221[/url]
-[*]Treat authenticated users as localsender if the sender is authenticated and AuthUserIsLocal=1 INI setting [url=https://www.hmailserver.com/forum/viewtopic.php?f=7&p=196733#p196733]Office 2016 Bug[/url]
+[*]Treat authenticated users as localsender if the sender is authenticated and AuthUserIsLocal=1 INI setting [url=https://www.hmailserver.com/forum/viewtopic.php?f=7&p=196733#p196733]Office 2016/2019 Bug[/url]
 [*]Add [url=https://www.hmailserver.com/forum/viewtopic.php?p=177487#p177487]Return-Path header[/url] as topmost header before sending the message to SA (+ delete Return-Path header after the SA check completes) [url=https://github.com/hmailserver/hmailserver/issues/116]issue #116[/url]
 [*]Experimental eventhandler OnClientLogon(oClient), New ClientInfo property oClient.Authenticated (Boolean)
 [*]Handling of long UIDL response lists was too slow. [url=https://github.com/hmailserver/hmailserver/issues/93]issue #93[/url]
@@ -26,5 +26,7 @@
 [*]DKIM on acccount-rule 'reply' not applied #172 [url=https://github.com/hmailserver/hmailserver/issues/172]issue #172[/url]
 [*]preserve RewriteEnvelopeFromWhenForwarding setting [url=https://www.hmailserver.com/forum/viewtopic.php?f=7&t=34026]when forwarding from account rule[/url]
 [*]The logical flow should be to disregard "Require SMTP authentication" if "Allow deliveries from" is unselected [url=https://github.com/hmailserver/hmailserver/issues/287]issue #287[/url]
+[*]Add ability to DKIM sign NDR messages (forwarded to external) [url=https://github.com/hmailserver/hmailserver/pull/301]pull #301[/url]
+[*]Use custom daemonaddressdomain from INI [url=https://github.com/hmailserver/hmailserver/pull/301]pull #301[/url]
 [/list]
 */
