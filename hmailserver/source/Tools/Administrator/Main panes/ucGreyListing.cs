@@ -195,5 +195,10 @@ namespace hMailServer.Administrator
         {
             EnableDisable();
         }
+
+        private void labelDaysBeforeRemovingUsed_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
