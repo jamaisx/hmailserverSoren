@@ -38,10 +38,8 @@ namespace HM
       String sBody = pMessageData->GetBody() + pMessageData->GetHTMLBody(); 
 
       // Extract URL's from the mail body:
-      // Original: https?:\/\/([^?><\\ \"'\/]*)
-	  // Original: (?:(?>https?)?(?>:\/\/|\%3A\%2F\%2F))(?:www\.)?([a-z0-9\-\.\=\r\n]+)
+      // Original: // Original: (?:(?>https?)?(?>:\/\/|\%3A\%2F\%2F))(?:www\.)?([a-z0-9\-\.\=\r\n]+)
 
-      // String sRegex = "https?:\\/\\/([^?><\\\\ \\\"'\\/]*)";
 	  String sRegex = "(?:(?>https?)?(?>:\\/\\/|\\%3A\\%2F\\%2F))(?:www\\.)?([a-z0-9\\-\\=\\.\\r\\n]+)";
 
       std::set<String> addresses;
@@ -50,7 +48,6 @@ namespace HM
 
       try
       {
-         // boost::wregex expression(sRegex);
          boost::wregex expression(sRegex, boost::wregex::icase);
 		 boost::wsmatch matches;
 
