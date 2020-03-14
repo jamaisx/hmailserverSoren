@@ -53,8 +53,8 @@ namespace HM
 
       if (LocalIPAddresses::Instance()->IsLocalIPAddress(iIPAdress))
       {
-          // Ignore this test if send thru localhost.
-          return setSpamTestResults;
+         // Ignore this test if send thru localhost.
+         return setSpamTestResults;
       }
 
       if (!CheckHostInHelo_(sHeloHost, iIPAdress))
