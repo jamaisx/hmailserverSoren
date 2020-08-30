@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2505.26"
+#define HMAILSERVER_BUILD "2505.27"
 
 /*
 [list=1]
@@ -28,5 +28,7 @@
 [*]The logical flow should be to disregard "Require SMTP authentication" if "Allow deliveries from" is unselected [url=https://github.com/hmailserver/hmailserver/issues/287]issue #287[/url]
 [*]Add ability to DKIM sign NDR messages (forwarded to external) [url=https://github.com/hmailserver/hmailserver/pull/301]pull #301[/url]
 [*]Use custom daemonaddressdomain from INI [url=https://github.com/hmailserver/hmailserver/pull/301]pull #301[/url]
+[*]Update ListViewColumnSorter.cs [url=https://github.com/hmailserver/hmailserver/pull/348]pull #348[/url]348
+[*]Add OnClientValidatePassword event [url=https://github.com/hmailserver/hmailserver/pull/338]pull #338[/url]
 [/list]
 */
