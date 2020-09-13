@@ -38,6 +38,8 @@ namespace HM
 
       int GetThreadID() const;
 
+	  int GetProcessID() const;
+
    private:
 
       int processed_messages_;

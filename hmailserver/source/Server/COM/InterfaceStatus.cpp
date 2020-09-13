@@ -141,3 +141,20 @@ InterfaceStatus::get_ThreadID(long *pVal)
       return COMError::GenerateGenericMessage();
    }
 }
+
+STDMETHODIMP
+InterfaceStatus::get_ProcessID(long *pVal)
+{
+   try
+   {
+      if (!status_)
+         return GetAccessDenied();
+
+      *pVal = status_->GetProcessID();
+      return S_OK;
+   }
+   catch (...)
+   {
+      return COMError::GenerateGenericMessage();
+   }
+}

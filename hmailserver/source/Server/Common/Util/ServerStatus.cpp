@@ -164,4 +164,12 @@ namespace HM
       DWORD dwThreadID = GetCurrentThreadId();
       return dwThreadID;
    }
+
+   int
+   ServerStatus::GetProcessID() const
+   {
+      DWORD dwProcessID = GetCurrentProcessId();
+      return dwProcessID;
+   }
+
 }
