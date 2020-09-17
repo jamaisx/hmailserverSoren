@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2505.28"
+#define HMAILSERVER_BUILD "2505.29"
 
 /*
 [list=1]
@@ -29,6 +29,5 @@
 [*]Add ability to DKIM sign NDR messages (forwarded to external) [url=https://github.com/hmailserver/hmailserver/pull/301]pull #301[/url]
 [*]Use custom daemonaddressdomain from INI [url=https://github.com/hmailserver/hmailserver/pull/301]pull #301[/url]
 [*]Update ListViewColumnSorter.cs [url=https://github.com/hmailserver/hmailserver/pull/348]pull #348[/url]348
-[*]Add OnClientValidatePassword event [url=https://github.com/hmailserver/hmailserver/pull/338]pull #338[/url]
 [/list]
 */
