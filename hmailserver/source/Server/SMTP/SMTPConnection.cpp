@@ -2003,8 +2003,24 @@ namespace HM
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
 		 pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
 
-         String sEventCaller = "OnClientLogon(HMAILSERVER_CLIENT)";
-         ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
+		 String sEventCaller;
+
+		 String sPasswordCopy = password_;
+
+		 String sScriptLanguage = Configuration::Instance()->GetScriptLanguage();
+
+		 if (sScriptLanguage == _T("VBScript"))
+		 {
+			 sPasswordCopy.Replace(_T("\""), _T("\"\""));
+		 }
+		 else if (sScriptLanguage == _T("JScript"))
+		 {
+			 sPasswordCopy.Replace(_T("'"), _T("\'"));
+		 }
+
+		 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , \"%s\")"), sPasswordCopy.c_str());
+
+		 ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
 
 		 switch (pResult->GetValue())
 		 {
