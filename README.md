@@ -12,9 +12,9 @@ Compiling hMailServer
 
 Required software:
 
-   * Visual Studio 2013 Update 3
+   * Visual Studio 2013 Update 3 or Visual Studio 2013 Community Update 5
    * InnoSetup (to build installation program)
-   * Perl (ActiveState ActivePerl Communityedition 32 bit works fine)
+   * Perl (ActiveState ActivePerl Community edition 32 bit works fine)
    
 **NOTE**
 
@@ -55,8 +55,8 @@ Building OpenSSL
 
 Building Boost
 --------------
-1. Download Boost 1.70.0 from http://www.boost.org/ and put it into %hMailServerLibs%\<Boost-Version>.  
-   You should now have a folder named %hMailServerLibs%\<Boost-Version>, for example C:\Dev\hMailLibs\boost_1_63_0
+1. Download Boost 1.72.0 from http://www.boost.org/ and put it into %hMailServerLibs%\<Boost-Version>.  
+   You should now have a folder named %hMailServerLibs%\<Boost-Version>, for example C:\Dev\hMailLibs\boost_1_72_0
 2. Start a VS2013 x86 Native Tools Command Prompt
 3. Change dir to %hMailServerLibs%\<Boost-Version>.
 4. Run the following commands:
