@@ -36,6 +36,7 @@
 #include "../common/Scripting/ClientInfo.h"
 #include "../Common/Scripting/ScriptServer.h"
 #include "../Common/Scripting/ScriptObjectContainer.h"
+#include "../Common/Scripting/Result.h"
 
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -457,7 +458,8 @@ namespace HM
       if (Configuration::Instance()->GetUseScriptServer())
       {
          std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-         std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+		 std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+		 std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
          pClientInfo->SetUsername(sUsername);
          pClientInfo->SetIPAddress(GetIPAddressString());
@@ -465,11 +467,10 @@ namespace HM
          pClientInfo->SetIsAuthenticated(isAuthenticated);
 
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+		 pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
 
 		 String sEventCaller;
-
 		 String sPasswordCopy = password_;
-
 		 String sScriptLanguage = Configuration::Instance()->GetScriptLanguage();
 
 		 if (sScriptLanguage == _T("VBScript"))
@@ -482,9 +483,17 @@ namespace HM
 		 }
 
 		 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , \"%s\")"), sPasswordCopy.c_str());
-
 		 ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
-      }
+
+		 switch (pResult->GetValue())
+		 {
+		    case 1:
+		    {
+			   EnqueueWrite_("-ERR Invalid user name or password. Please use full email address as user name.");
+		       return ResultNormalResponse;
+		    }
+		 }
+	  }
 
       if (!account_)
       {

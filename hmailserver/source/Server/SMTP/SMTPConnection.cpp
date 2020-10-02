@@ -2004,9 +2004,7 @@ namespace HM
 		 pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
 
 		 String sEventCaller;
-
 		 String sPasswordCopy = password_;
-
 		 String sScriptLanguage = Configuration::Instance()->GetScriptLanguage();
 
 		 if (sScriptLanguage == _T("VBScript"))
@@ -2019,24 +2017,13 @@ namespace HM
 		 }
 
 		 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , \"%s\")"), sPasswordCopy.c_str());
-
 		 ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
 
 		 switch (pResult->GetValue())
 		 {
 		    case 1:
 		    {
-			   String sErrorMessage = "554 Rejected";
-			   EnqueueWrite_(sErrorMessage);
-			   LogAwstatsMessageRejected_();
-			   return;
-		    }
-		    case 2:
-		    {
-			   String sErrorMessage = "554 " + pResult->GetMessage();
-			   EnqueueWrite_(sErrorMessage);
-			   LogAwstatsMessageRejected_();
-			   return;
+			   RestartAuthentication_();
 		    }
 		 }
 	  }
