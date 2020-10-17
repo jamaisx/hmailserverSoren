@@ -48,7 +48,7 @@ namespace HM
    }
 
    SPF::Result
-   SPF::Test(const String &sSenderIP, const String &sSenderEmail, String &sExplanation)
+	   SPF::Test(const String &sSenderIP, const String &sSenderEmail, const String &sHeloHost, String &sExplanation)
    {
       USES_CONVERSION;
       String sDomain = StringParser::ExtractDomain(sSenderEmail);
@@ -68,7 +68,10 @@ namespace HM
          return Neutral;
 
       const char* explain;
-      int result=SPFQuery(family,BinaryIP,T2A(sSenderEmail),NULL,NULL,NULL,&explain);
+
+	  LOG_DEBUG("Spam test: SpamTestSPF " + sSenderIP + " " + sSenderEmail + " " + sHeloHost);
+
+	  int result = SPFQuery(family, BinaryIP, T2A(sSenderEmail), NULL, T2A(sHeloHost), NULL, &explain);
 
       if (explain != NULL)
       {
@@ -95,13 +98,13 @@ namespace HM
    {
       String sExplanation;
 
-      if (SPF::Instance()->Test("5.189.183.138", "example@hmailserver.com", sExplanation) != SPF::Pass)
+	  if (SPF::Instance()->Test("5.189.183.138", "example@hmailserver.com", "hmailserver.com", sExplanation) != SPF::Pass)
       {
          // Should be allowed. The sub domain instantpayroll.advantagepayroll.com does not have a SPF record.
          throw;
       }
 
-      if (SPF::Instance()->Test("1.2.3.4", "example@hmailserver.com", sExplanation) != SPF::Fail)
+	  if (SPF::Instance()->Test("1.2.3.4", "example@hmailserver.com", "hmailserver.com", sExplanation) != SPF::Fail)
       {
          // Should not be allowed. advantagepayroll.com has SPF records.
          throw;
