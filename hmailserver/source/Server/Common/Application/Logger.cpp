@@ -442,13 +442,6 @@ namespace HM
    }
 
    int 
-   Logger::GetProcessID_()
-   {
-      DWORD dwProcessID = GetCurrentProcessId();
-      return dwProcessID;
-   }
-
-   int 
    Logger::GetThreadID_()
    {
       DWORD dwThreadID = GetCurrentThreadId();
