@@ -31,6 +31,6 @@
 [*]Fix SURBL regex [url=https://github.com/hmailserver/hmailserver/pull/320]pull #320[/url]
 [*]Add RMSPF library SpamTestSPF Result to DEBUG logging, see [url=https://www.hmailserver.com/forum/viewtopic.php?p=218710#p218710]this[/url] forum topic
 [*]Ignore SpamTestSPF and SpamTestHeloHost when send thru local IP Address, see [url=https://www.hmailserver.com/forum/viewtopic.php?f=10&t=34865]this[/url] forum topic 
-[*]SPF test to include HELO host ...
+[*]SPF test to include "HELO/EHLO host" used by DNS macros [url=https://github.com/hmailserver/hmailserver/pull/353]pull 353[/url]
 [/list]
 */
