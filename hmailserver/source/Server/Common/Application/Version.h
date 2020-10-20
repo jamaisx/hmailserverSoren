@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2494.23"
+#define HMAILSERVER_BUILD "2505.27"
 
 /*
 [list=1]
@@ -28,5 +28,9 @@
 [*]The logical flow should be to disregard "Require SMTP authentication" if "Allow deliveries from" is unselected [url=https://github.com/hmailserver/hmailserver/issues/287]issue #287[/url]
 [*]Add ability to DKIM sign NDR messages (forwarded to external) [url=https://github.com/hmailserver/hmailserver/pull/301]pull #301[/url]
 [*]Use custom daemonaddressdomain from INI [url=https://github.com/hmailserver/hmailserver/pull/301]pull #301[/url]
+[*]Fix SURBL regex [url=https://github.com/hmailserver/hmailserver/pull/320]pull #320[/url]
+[*]Add RMSPF library SpamTestSPF Result to DEBUG logging, see [url=https://www.hmailserver.com/forum/viewtopic.php?p=218710#p218710]this[/url] forum topic
+[*]Ignore SpamTestSPF and SpamTestHeloHost when send thru local IP Address, see [url=https://www.hmailserver.com/forum/viewtopic.php?f=10&t=34865]this[/url] forum topic 
+[*]SPF test to include HELO host ...
 [/list]
 */
