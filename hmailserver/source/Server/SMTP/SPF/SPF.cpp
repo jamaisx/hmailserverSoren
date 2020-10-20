@@ -48,7 +48,7 @@ namespace HM
    }
 
    SPF::Result
-	   SPF::Test(const String &sSenderIP, const String &sSenderEmail, const String &sHeloHost, String &sExplanation)
+   SPF::Test(const String &sSenderIP, const String &sSenderEmail, const String &sHeloHost, String &sExplanation)
    {
       USES_CONVERSION;
       String sDomain = StringParser::ExtractDomain(sSenderEmail);
@@ -109,13 +109,5 @@ namespace HM
          // Should not be allowed. advantagepayroll.com has SPF records.
          throw;
       }
-
- 
-     
-
-
-
    }
-
-
 }

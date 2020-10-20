@@ -153,17 +153,8 @@ public class ListViewColumnSorter : IComparer
         }
 
 		// Compare the two items
-		DateTime dateX;
-		DateTime dateY;
-		if (DateTime.TryParse(subItemX.Text, out dateX) && DateTime.TryParse(subItemY.Text, out dateY))
-		{
-			compareResult = ObjectCompare.Compare(dateX, dateY);
-		}
-		else
-		{
-			compareResult = ObjectCompare.Compare(subItemX.Text, subItemY.Text);
-		}
-
+        compareResult = ObjectCompare.Compare(subItemX.Text, subItemY.Text);
+			
 		// Calculate correct return value based on object comparison
 		if (OrderOfSort == SortOrder.Ascending)
 		{
