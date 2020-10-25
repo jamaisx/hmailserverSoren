@@ -72,6 +72,7 @@
 using System.Collections;	
 using System.Windows.Forms;
 using System;
+using System.Net;
 
 /// <summary>
 /// This class is an implementation of the 'IComparer' interface.
@@ -91,7 +92,11 @@ public class ListViewColumnSorter : IComparer
 	/// </summary>
 	private CaseInsensitiveComparer ObjectCompare;
 
-   private bool _numericSort;
+    private bool _numericSort;
+
+    private bool _datetimeSort;
+
+    private bool _ipaddressSort;
 
 	/// <summary>
 	/// Class constructor.  Initializes various elements
@@ -152,7 +157,64 @@ public class ListViewColumnSorter : IComparer
            }
         }
 
-		// Compare the two items
+        if (_datetimeSort)
+        {
+            try
+            {
+                DateTime dateX;
+                DateTime dateY;
+
+                if (DateTime.TryParse(subItemX.Text, out dateX) && DateTime.TryParse(subItemY.Text, out dateY))
+                    compareResult = ObjectCompare.Compare(dateX, dateY);
+
+                if (OrderOfSort == SortOrder.Descending)
+                    compareResult = -compareResult;
+
+                return compareResult;
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        if (_ipaddressSort)
+        {
+            try
+            {
+                IPAddress ipaddressX;
+                IPAddress ipaddressY;
+
+                if (IPAddress.TryParse(subItemX.Text, out ipaddressX) && IPAddress.TryParse(subItemY.Text, out ipaddressY))
+                {
+                    compareResult = ipaddressX.AddressFamily.CompareTo(ipaddressY.AddressFamily);
+                    if (compareResult != 0)
+                        return compareResult;
+
+                    var xBytes = ipaddressX.GetAddressBytes();
+                    var yBytes = ipaddressY.GetAddressBytes();
+
+                    var octets = Math.Min(xBytes.Length, yBytes.Length);
+                    for (var i = 0; i < octets; i++)
+                    {
+                        compareResult = xBytes[i].CompareTo(yBytes[i]);
+                        if (compareResult != 0)
+
+                            if (OrderOfSort == SortOrder.Descending)
+                                compareResult = -compareResult;
+
+                        return compareResult;
+                    }
+                    return compareResult;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        // Compare the two items
         compareResult = ObjectCompare.Compare(subItemX.Text, subItemY.Text);
 			
 		// Calculate correct return value based on object comparison
@@ -180,7 +242,9 @@ public class ListViewColumnSorter : IComparer
 	{
 		set
 		{
-         NumericSort = false;
+            NumericSort = false;
+            DateTimeSort = false;
+            IPAddressSort = false;
 			ColumnToSort = value;
 		}
 		get
@@ -199,6 +263,30 @@ public class ListViewColumnSorter : IComparer
       {
          return _numericSort;
       }
+   }
+
+   public bool DateTimeSort
+   {
+       set
+       {
+           _datetimeSort = value;
+       }
+       get
+       {
+           return _datetimeSort;
+       }
+   }
+
+   public bool IPAddressSort
+   {
+       set
+       {
+           _ipaddressSort = value;
+       }
+       get
+       {
+           return _ipaddressSort;
+       }
    }
 
 	/// <summary>

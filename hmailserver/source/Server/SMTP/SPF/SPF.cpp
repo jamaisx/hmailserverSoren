@@ -68,9 +68,6 @@ namespace HM
          return Neutral;
 
       const char* explain;
-
-	  LOG_DEBUG("Spam test: SpamTestSPF " + sSenderIP + " " + sSenderEmail + " " + sHeloHost);
-
 	  int result = SPFQuery(family, BinaryIP, T2A(sSenderEmail), NULL, T2A(sHeloHost), NULL, &explain);
 
       if (explain != NULL)
