@@ -95,13 +95,13 @@ namespace HM
    {
       String sExplanation;
 
-	  if (SPF::Instance()->Test("5.189.183.138", "example@hmailserver.com", "hmailserver.com", sExplanation) != SPF::Pass)
+      if (SPF::Instance()->Test("5.189.183.138", "example@hmailserver.com", "hmailserver.com", sExplanation) != SPF::Pass)
       {
          // Should be allowed. The sub domain instantpayroll.advantagepayroll.com does not have a SPF record.
          throw;
       }
 
-	  if (SPF::Instance()->Test("1.2.3.4", "example@hmailserver.com", "hmailserver.com", sExplanation) != SPF::Fail)
+      if (SPF::Instance()->Test("1.2.3.4", "example@hmailserver.com", "hmailserver.com", sExplanation) != SPF::Fail)
       {
          // Should not be allowed. advantagepayroll.com has SPF records.
          throw;
