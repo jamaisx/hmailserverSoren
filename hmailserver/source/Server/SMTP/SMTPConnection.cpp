@@ -1524,7 +1524,7 @@ namespace HM
 	      pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
 	      pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
 
-	      String sEventCaller = "OnHELO(HMAILSERVER_CLIENT)";
+		  String sEventCaller = "OnHELO(HMAILSERVER_CLIENT, \"EHLO\")";
 	      ScriptServer::Instance()->FireEvent(ScriptServer::EventOnHELO, sEventCaller, pContainer);
 
 	      switch (pResult->GetValue())
@@ -1587,7 +1587,7 @@ namespace HM
 	      pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
 	      pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
 
-	      String sEventCaller = "OnHELO(HMAILSERVER_CLIENT)";
+	      String sEventCaller = "OnHELO(HMAILSERVER_CLIENT, \"HELO\")";
 	      ScriptServer::Instance()->FireEvent(ScriptServer::EventOnHELO, sEventCaller, pContainer);
 
 	      switch (pResult->GetValue())
@@ -2010,13 +2010,14 @@ namespace HM
 		 if (sScriptLanguage == _T("VBScript"))
 		 {
 			 sPasswordCopy.Replace(_T("\""), _T("\"\""));
+			 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , \"%s\")"), sPasswordCopy.c_str());
 		 }
 		 else if (sScriptLanguage == _T("JScript"))
 		 {
 			 sPasswordCopy.Replace(_T("'"), _T("\'"));
+			 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , '%s')"), sPasswordCopy.c_str());
 		 }
 
-		 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , \"%s\")"), sPasswordCopy.c_str());
 		 ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
 
 		 switch (pResult->GetValue())

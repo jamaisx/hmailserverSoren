@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2505.32"
+#define HMAILSERVER_BUILD "2505.33"
 
 /*
 [list=1]
@@ -31,7 +31,9 @@
 [*]Fix SURBL regex [url=https://github.com/hmailserver/hmailserver/pull/320]pull #320[/url]
 [*]Add RMSPF library SpamTestSPF Result to DEBUG logging, see [url=https://www.hmailserver.com/forum/viewtopic.php?p=218710#p218710]this[/url] forum topic
 [*]Ignore SpamTestSPF and SpamTestHeloHost when send thru local IP Address, see [url=https://www.hmailserver.com/forum/viewtopic.php?f=10&t=34865]this[/url] forum topic 
+[*]Experimental eventhandler OnClientLogon(oClient, sPassword) now include password as string.
 [*]SPF test to include "HELO/EHLO host" used by DNS macros [url=https://github.com/hmailserver/hmailserver/pull/353]pull 353[/url]
 [*]Add header "X-SA-hMail-Mail-From" containing the SMTP "MAIL FROM:" address
+[*]Add HELO/EHLO as string to OnHELO(oClient, sTxt)
 [/list]
 */

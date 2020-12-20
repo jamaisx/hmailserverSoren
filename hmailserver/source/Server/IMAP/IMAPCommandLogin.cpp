@@ -87,13 +87,14 @@ namespace HM
          if (sScriptLanguage == _T("VBScript"))
          {
             sPasswordCopy.Replace(_T("\""), _T("\"\""));
+			 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , \"%s\")"), sPasswordCopy.c_str());
          }
          else if (sScriptLanguage == _T("JScript"))
          {
 			 sPasswordCopy.Replace(_T("'"), _T("\'"));
+			 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , '%s')"), sPasswordCopy.c_str());
 		 }
 
-		 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , \"%s\")"), sPasswordCopy.c_str());
          ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
 
 		 switch (pResult->GetValue())
