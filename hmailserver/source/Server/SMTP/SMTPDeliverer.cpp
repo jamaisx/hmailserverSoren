@@ -164,10 +164,10 @@ namespace HM
          return false;
       }
 
-      if (AWStats::GetEnabled())
-      {
+      //if (AWStats::GetEnabled())
+      //{
          sendersIP = MessageUtilities::GetSendersIP(pMessage);
-      }
+      //}
 
       // Create recipient list.
       String sRecipientList = pMessage->GetRecipients()->GetCommaSeperatedRecipientList();
@@ -464,7 +464,8 @@ namespace HM
    //---------------------------------------------------------------------------()
    {
       // Check that message exists, and that the awstats log is enabled.
-      if (!pMessage || !AWStats::GetEnabled())
+      //if (!pMessage || !AWStats::GetEnabled())
+      if (!pMessage)
          return;
 
       // Go through the recipients and log one row for each of them.
