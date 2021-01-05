@@ -33,6 +33,7 @@
 [*]Ignore SpamTestSPF and SpamTestHeloHost when send thru local IP Address, see [url=https://www.hmailserver.com/forum/viewtopic.php?f=10&t=34865]this[/url] forum topic 
 [*]Experimental eventhandler OnClientLogon(oClient, sPassword) now include password as string.
 [*]SPF test to include "HELO/EHLO host" used by DNS macros [url=https://github.com/hmailserver/hmailserver/pull/353]pull 353[/url]
+[*]Fix 'Unencrypted Cleartext Login' vulnerability detection [url=https://github.com/hmailserver/hmailserver/pull/342]pull 242[/url]
 [*]Add header "X-SA-hMail-Mail-From" containing the SMTP "MAIL FROM:" address
 [*]Add HELO/EHLO as string to OnHELO(oClient, sTxt)
 [/list]

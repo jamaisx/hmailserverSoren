@@ -199,8 +199,8 @@ public class ListViewColumnSorter : IComparer
                     {
                         compareResult = xBytes[i].CompareTo(yBytes[i]);
 
-                            if (OrderOfSort == SortOrder.Descending)
-                                compareResult = -compareResult;
+                        if (OrderOfSort == SortOrder.Descending)
+                            compareResult = -compareResult;
 
 						if (compareResult != 0)
 							return compareResult;

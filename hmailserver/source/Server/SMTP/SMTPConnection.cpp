@@ -406,6 +406,11 @@ namespace HM
    void
    SMTPConnection::ProtocolRSET_()
    {
+      // 530 Must issue STARTTLS first
+      // to every command other than NOOP, EHLO, STARTTLS, or QUIT.
+      if (!CheckStartTlsRequired_())
+         return;
+
       ResetCurrentMessage_();
 
       EnqueueWrite_("250 OK");
@@ -416,6 +421,8 @@ namespace HM
    void
    SMTPConnection::ProtocolMAIL_(const String &Request)
    {
+      // 530 Must issue STARTTLS first
+      // to every command other than NOOP, EHLO, STARTTLS, or QUIT.
       if (!CheckStartTlsRequired_())
          return;
 
@@ -579,9 +586,14 @@ namespace HM
    {
       cur_no_of_rcptto_ ++;
 
+      // 530 Must issue STARTTLS first
+      // to every command other than NOOP, EHLO, STARTTLS, or QUIT.
+      if (!CheckStartTlsRequired_())
+         return;
+
       if (!current_message_) 
       {
-         EnqueueWrite_("503 must have sender first."); 
+         EnqueueWrite_("503 Must have sender first."); 
          return;
       }
 
@@ -1421,7 +1433,7 @@ namespace HM
          }
       }
 
-      if (GetAuthIsEnabled_())
+      if (GetAuthIsEnabled_() && (IsSSLConnection() || GetConnectionSecurity() != CSSTARTTLSRequired))
       {
          String sAuth = "\r\n250-AUTH LOGIN";
 
@@ -1626,6 +1638,11 @@ namespace HM
    void
    SMTPConnection::ProtocolHELP_()
    {
+      // 530 Must issue STARTTLS first
+      // to every command other than NOOP, EHLO, STARTTLS, or QUIT.
+      if (!CheckStartTlsRequired_())
+         return;
+
       // The following code is to test the error handling in production environments.
       // Crash simulation mode can be enabled in hMailServer.ini. 
       int crash_simulation_mode = Configuration::Instance()->GetCrashSimulationMode();
@@ -1638,6 +1655,11 @@ namespace HM
    void
    SMTPConnection::ProtocolDATA_()
    {
+      // 530 Must issue STARTTLS first
+      // to every command other than NOOP, EHLO, STARTTLS, or QUIT.
+      if (!CheckStartTlsRequired_())
+         return;
+
       if (!current_message_)
       {
          // User tried to send a mail without specifying a correct mail from or rcpt to.
@@ -1733,14 +1755,16 @@ namespace HM
    void 
    SMTPConnection::ProtocolAUTH_(const String &sRequest)
    {
+      // 530 Must issue STARTTLS first
+      // to every command other than NOOP, EHLO, STARTTLS, or QUIT.
+      if (!CheckStartTlsRequired_())
+         return;
+
       if (!GetAuthIsEnabled_())
       {
          SendErrorResponse_(504, "Authentication not enabled.");
          return;
       }
-
-      if (!CheckStartTlsRequired_())
-         return;
 
       if (GetSecurityRange()->GetRequireTLSForAuth() && !IsSSLConnection())
       {
