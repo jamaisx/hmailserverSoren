@@ -1,11 +1,11 @@
 [Setup]
 AppName=hMailServer
-AppVerName=hMailServer 5.6.8-B2535.34
-AppCopyright=Copyright (C) 2020
+AppVerName=hMailServer 5.6.8-B2535.35
+AppCopyright=Copyright (C) 2021
 DefaultDirName={pf}\hMailServer
 DefaultGroupName=hMailServer
 PrivilegesRequired=admin
-OutputBaseFilename=hMailServer-5.6.8-B2535.34
+OutputBaseFilename=hMailServer-5.6.8-B2535.35
 SolidCompression=yes
 WizardImageFile=setup.bmp
 LicenseFile=license.rtf

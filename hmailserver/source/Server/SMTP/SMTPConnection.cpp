@@ -93,7 +93,9 @@ namespace HM
       type_(SPNone),
       pending_disconnect_(false),
       isAuthenticated_(false),
-      start_tls_used_(false)
+      start_tls_used_(false),
+// *SR*
+	  is_esmtp_(false)
    {
 
       smtpconf_ = Configuration::Instance()->GetSMTPConfiguration();
@@ -1213,11 +1215,20 @@ namespace HM
          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
          std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-         pClientInfo->SetUsername(username_);
+// *SR*
+//		 CipherInfo cipher_info_;
+
+		 pClientInfo->SetUsername(username_);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
          pClientInfo->SetHELO(helo_host_);
          pClientInfo->SetIsAuthenticated(isAuthenticated_);
+         pClientInfo->SetIsESMTP(is_esmtp_);
+         pClientInfo->SetIsTLS(start_tls_used_);
+// *SR*
+//		 pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
+//		 pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
+//		 pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
          pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
@@ -1525,18 +1536,28 @@ namespace HM
       //
       if (Configuration::Instance()->GetUseScriptServer())
       {
-	      std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-	      std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
-	      std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+          std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+          std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-	      pClientInfo->SetIPAddress(GetIPAddressString());
-	      pClientInfo->SetPort(GetLocalEndpointPort());
-	      pClientInfo->SetHELO(helo_host_);
+		  is_esmtp_ = true;
+// *SR*
+//		  CipherInfo cipher_info_;
 
-	      pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
-	      pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+		  pClientInfo->SetIPAddress(GetIPAddressString());
+          pClientInfo->SetPort(GetLocalEndpointPort());
+          pClientInfo->SetHELO(helo_host_);
+          pClientInfo->SetIsESMTP(is_esmtp_);
+		  pClientInfo->SetIsTLS(start_tls_used_);
+// *SR*
+// 		  pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
+// 		  pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
+// 		  pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
-		  String sEventCaller = "OnHELO(HMAILSERVER_CLIENT, \"EHLO\")";
+			  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+          pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+
+		  String sEventCaller = "OnHELO(HMAILSERVER_CLIENT)";
 	      ScriptServer::Instance()->FireEvent(ScriptServer::EventOnHELO, sEventCaller, pContainer);
 
 	      switch (pResult->GetValue())
@@ -1588,18 +1609,28 @@ namespace HM
       //
       if (Configuration::Instance()->GetUseScriptServer())
       {
-	      std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-	      std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
-	      std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+          std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+          std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-	      pClientInfo->SetIPAddress(GetIPAddressString());
-	      pClientInfo->SetPort(GetLocalEndpointPort());
-	      pClientInfo->SetHELO(helo_host_);
+		  is_esmtp_ = false;
+// *SR*
+//		  CipherInfo cipher_info_;
 
-	      pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
-	      pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+          pClientInfo->SetIPAddress(GetIPAddressString());
+          pClientInfo->SetPort(GetLocalEndpointPort());
+          pClientInfo->SetHELO(helo_host_);
+          pClientInfo->SetIsESMTP(is_esmtp_);
+          pClientInfo->SetIsTLS(start_tls_used_);
+// *SR*
+//		  pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
+//		  pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
+//		  pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
-	      String sEventCaller = "OnHELO(HMAILSERVER_CLIENT, \"HELO\")";
+          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+          pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+
+	      String sEventCaller = "OnHELO(HMAILSERVER_CLIENT)";
 	      ScriptServer::Instance()->FireEvent(ScriptServer::EventOnHELO, sEventCaller, pContainer);
 
 	      switch (pResult->GetValue())
@@ -1682,11 +1713,21 @@ namespace HM
          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
          std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-         pClientInfo->SetUsername(username_);
+// *SR*
+//		 CipherInfo cipher_info_;
+
+		 pClientInfo->SetUsername(username_);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
          pClientInfo->SetHELO(helo_host_);
          pClientInfo->SetIsAuthenticated(isAuthenticated_);
+         pClientInfo->SetIsESMTP(is_esmtp_);
+         pClientInfo->SetIsTLS(start_tls_used_);
+         pClientInfo->SetPasswd(password_);
+// *SR*
+//		 pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
+//		 pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
+//		 pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
          pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
@@ -2015,32 +2056,29 @@ namespace HM
       if (Configuration::Instance()->GetUseScriptServer())
       {
          std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-		 std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
-		 std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+         std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+         std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-         pClientInfo->SetUsername(sUsername);
+// *SR*
+//		 CipherInfo cipher_info_;
+
+		 pClientInfo->SetUsername(sUsername);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
          pClientInfo->SetHELO(helo_host_);
          pClientInfo->SetIsAuthenticated(isAuthenticated_);
+         pClientInfo->SetIsESMTP(is_esmtp_);
+         pClientInfo->SetIsTLS(start_tls_used_);
+         pClientInfo->SetPasswd(password_);
+// *SR*
+//		 pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
+//		 pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
+//		 pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
-		 pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+         pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
 
-		 String sEventCaller;
-		 String sPasswordCopy = password_;
-		 String sScriptLanguage = Configuration::Instance()->GetScriptLanguage();
-
-		 if (sScriptLanguage == _T("VBScript"))
-		 {
-			 sPasswordCopy.Replace(_T("\""), _T("\"\""));
-			 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , \"%s\")"), sPasswordCopy.c_str());
-		 }
-		 else if (sScriptLanguage == _T("JScript"))
-		 {
-			 sPasswordCopy.Replace(_T("'"), _T("\'"));
-			 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , '%s')"), sPasswordCopy.c_str());
-		 }
+		 String sEventCaller = "OnClientLogon(HMAILSERVER_CLIENT)";
 
 		 ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
 

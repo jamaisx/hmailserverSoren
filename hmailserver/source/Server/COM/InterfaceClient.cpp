@@ -69,13 +69,92 @@ STDMETHODIMP InterfaceClient::get_HELO(BSTR *pVal)
 
 STDMETHODIMP InterfaceClient::get_Authenticated(VARIANT_BOOL *pVal)
 {
-   try
-   {
-      *pVal = client_info_->GetIsAuthenticated() ? VARIANT_TRUE : VARIANT_FALSE;
-      return S_OK;
-   }
-   catch (...)
-   {
-      return COMError::GenerateGenericMessage();
-   }
+	try
+	{
+		*pVal = client_info_->GetIsAuthenticated() ? VARIANT_TRUE : VARIANT_FALSE;
+		return S_OK;
+	}
+	catch (...)
+	{
+		return COMError::GenerateGenericMessage();
+	}
+}
+
+STDMETHODIMP InterfaceClient::get_Passwd(BSTR *pVal)
+{
+	try
+	{
+		*pVal = client_info_->GetPasswd().AllocSysString();
+		return S_OK;
+	}
+	catch (...)
+	{
+		return COMError::GenerateGenericMessage();
+	}
+}
+
+STDMETHODIMP InterfaceClient::get_ESMTP(VARIANT_BOOL *pVal)
+{
+	try
+	{
+		*pVal = client_info_->GetIsESMTP() ? VARIANT_TRUE : VARIANT_FALSE;
+		return S_OK;
+	}
+	catch (...)
+	{
+		return COMError::GenerateGenericMessage();
+	}
+}
+
+STDMETHODIMP InterfaceClient::get_TLS(VARIANT_BOOL *pVal)
+{
+	try
+	{
+		*pVal = client_info_->GetIsTLS() ? VARIANT_TRUE : VARIANT_FALSE;
+		return S_OK;
+	}
+	catch (...)
+	{
+		return COMError::GenerateGenericMessage();
+	}
+}
+
+// *SR*
+STDMETHODIMP InterfaceClient::get_CipherVersion(BSTR *pVal)
+{
+	try
+	{
+		*pVal = client_info_->GetCipherVersion().AllocSysString();
+		return S_OK;
+	}
+	catch (...)
+	{
+		return COMError::GenerateGenericMessage();
+	}
+}
+
+STDMETHODIMP InterfaceClient::get_CipherName(BSTR *pVal)
+{
+	try
+	{
+		*pVal = client_info_->GetCipherName().AllocSysString();
+		return S_OK;
+	}
+	catch (...)
+	{
+		return COMError::GenerateGenericMessage();
+	}
+}
+
+STDMETHODIMP InterfaceClient::get_CipherBits(long *pVal)
+{
+	try
+	{
+		*pVal = client_info_->GetCipherBits();
+		return S_OK;
+	}
+	catch (...)
+	{
+		return COMError::GenerateGenericMessage();
+	}
 }

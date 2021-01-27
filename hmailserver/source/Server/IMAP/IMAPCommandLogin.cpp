@@ -69,31 +69,20 @@ namespace HM
       if (Configuration::Instance()->GetUseScriptServer())
       {
          std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-		 std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
-		 std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+         std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+         std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
          pClientInfo->SetUsername(sUsername);
          pClientInfo->SetIPAddress(pConnection->GetRemoteEndpointAddress().ToString());
          pClientInfo->SetPort(pConnection->GetLocalEndpointPort());
          pClientInfo->SetIsAuthenticated(isAuthenticated);
+         pClientInfo->SetPasswd(sPassword);
+         pClientInfo->SetIsTLS(pConnection->IsSSLConnection());
 
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
-		 pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+         pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
 
-         String sEventCaller;
-		 String sPasswordCopy = sPassword;
-		 String sScriptLanguage = Configuration::Instance()->GetScriptLanguage();
-
-         if (sScriptLanguage == _T("VBScript"))
-         {
-            sPasswordCopy.Replace(_T("\""), _T("\"\""));
-			 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , \"%s\")"), sPasswordCopy.c_str());
-         }
-         else if (sScriptLanguage == _T("JScript"))
-         {
-			 sPasswordCopy.Replace(_T("'"), _T("\'"));
-			 sEventCaller.Format(_T("OnClientLogon(HMAILSERVER_CLIENT , '%s')"), sPasswordCopy.c_str());
-		 }
+		 String sEventCaller = "OnClientLogon(HMAILSERVER_CLIENT)";
 
          ScriptServer::Instance()->FireEvent(ScriptServer::EventOnClientLogon, sEventCaller, pContainer);
 

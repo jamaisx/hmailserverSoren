@@ -57,10 +57,10 @@ namespace HM
       std::shared_ptr<Message> pMessage = pTestData->GetMessageData()->GetMessage();
       const String sFilename = PersistentMessage::GetFileName(pMessage);
 
-      // -> Add envelope-from header "X-SA-hMail-Mail-From"
+      // -> Add envelope-from header "Envelope-Sender"
       std::vector<std::pair<AnsiString, AnsiString> > fieldsToWrite;
 
-      fieldsToWrite.push_back(std::make_pair("X-SA-hMail-Mail-From", pTestData->GetEnvelopeFrom()));
+      fieldsToWrite.push_back(std::make_pair("Envelope-Sender", pTestData->GetEnvelopeFrom()));
 
       TraceHeaderWriter writer;
       writer.Write(sFilename, pMessage, fieldsToWrite);

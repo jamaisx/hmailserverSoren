@@ -226,5 +226,6 @@ namespace HM
 
       RecipientParser recipientParser_;
       bool start_tls_used_;
+	  bool is_esmtp_;
    };
 }
