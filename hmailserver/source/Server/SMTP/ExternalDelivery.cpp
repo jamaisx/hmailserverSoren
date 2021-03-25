@@ -370,8 +370,8 @@ namespace HM
       {
          // Temp change to force non fatal no matter DNS result
          // Messages bouncing immediately due to no mail servers due to DNS issue
-         recipient->SetDeliveryResult(MessageRecipient::ResultNonFatalError);
-         // recipient->SetDeliveryResult(bDNSQueryOK ? MessageRecipient::ResultFatalError : MessageRecipient::ResultNonFatalError);
+         // recipient->SetDeliveryResult(MessageRecipient::ResultNonFatalError);
+         recipient->SetDeliveryResult(bDNSQueryOK ? MessageRecipient::ResultFatalError : MessageRecipient::ResultNonFatalError);
          recipient->SetErrorMessage(bounceMessageText);
       }  
    }

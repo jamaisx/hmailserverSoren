@@ -95,7 +95,7 @@ namespace hMailServer.Administrator
             this.labelAttribution.Name = "labelAttribution";
             this.labelAttribution.Size = new System.Drawing.Size(199, 65);
             this.labelAttribution.TabIndex = 14;
-            this.labelAttribution.Text = "Boost 1.72.0 \r\nOpenSSL 1.1.1i \r\nRMSPF 1.12 \r\nPlease run installation program for " +
+            this.labelAttribution.Text = "Boost 1.72.0 \r\nOpenSSL 1.1.1k \r\nRMSPF 1.12 \r\nPlease run installation program for " +
     "full list \r\nof copyrights and attributions.";
             // 
             // formAbout
