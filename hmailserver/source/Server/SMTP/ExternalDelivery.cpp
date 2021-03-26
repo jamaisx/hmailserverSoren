@@ -368,10 +368,17 @@ namespace HM
       // Update the recipients with the bounce message text and delivery result.
       for(std::shared_ptr<MessageRecipient> recipient : vecRecipients)
       {
-         // Temp change to force non fatal no matter DNS result
-         // Messages bouncing immediately due to no mail servers due to DNS issue
-         // recipient->SetDeliveryResult(MessageRecipient::ResultNonFatalError);
-         recipient->SetDeliveryResult(bDNSQueryOK ? MessageRecipient::ResultFatalError : MessageRecipient::ResultNonFatalError);
+         bool use_dns_cache = IniFileSettings::Instance()->GetUseDNSCache();
+         if (use_dns_cache = 0)
+		 {
+			 recipient->SetDeliveryResult(bDNSQueryOK ? MessageRecipient::ResultFatalError : MessageRecipient::ResultNonFatalError);
+		 }
+		 else
+		 {
+             // Temp change to force non fatal no matter DNS result
+             // Messages bouncing immediately due to no mail servers due to DNS issue
+			 recipient->SetDeliveryResult(MessageRecipient::ResultNonFatalError);
+         }
          recipient->SetErrorMessage(bounceMessageText);
       }  
    }
