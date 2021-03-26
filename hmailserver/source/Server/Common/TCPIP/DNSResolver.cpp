@@ -107,9 +107,13 @@ namespace HM
       DWORD fOptions;
       fOptions = DNS_QUERY_STANDARD;
 
-      // We need this if not using system dns servers
-      //      fOptions = DNS_QUERY_BYPASS_CACHE;
-      
+	  bool use_dns_cache = IniFileSettings::Instance()->GetUseDNSCache();
+	  if (use_dns_cache = 0)
+	  {
+		  // We need this if not using system dns servers
+		  fOptions = DNS_QUERY_BYPASS_CACHE;
+	  }
+
       DNS_STATUS nDnsStatus = DnsQuery(sSearchFor, wType, fOptions, NULL, &pDnsRecords,NULL);
 
       PDNS_RECORD pDnsRecordsToDelete = pDnsRecords;

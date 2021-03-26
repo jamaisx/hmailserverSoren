@@ -174,6 +174,7 @@ namespace HM
 
       rewrite_envelope_from_when_forwarding_ = ReadIniSettingInteger_("Settings", "RewriteEnvelopeFromWhenForwarding", 0) == 1;
       m_sDisableAUTHList = ReadIniSettingString_("Settings", "DisableAUTHList", "");
+	  use_dns_cache_ = ReadIniSettingInteger_("Settings", "UseDNSCache", 1) == 1;
    }
 
    bool 

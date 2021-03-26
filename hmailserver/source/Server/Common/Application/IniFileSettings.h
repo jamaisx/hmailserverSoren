@@ -112,6 +112,7 @@ namespace HM
       bool GetAddXAuthUserIP () const { return add_xauth_user_ip_; }
       bool GetRewriteEnvelopeFromWhenForwarding() const { return rewrite_envelope_from_when_forwarding_; }
       std::set<int> GetAuthDisabledOnPorts();
+	  bool GetUseDNSCache() const { return use_dns_cache_; }
 
    private:   
 
@@ -193,5 +194,6 @@ namespace HM
       String database_provider_;
 
       String m_sDisableAUTHList;
+	  bool use_dns_cache_;
    };
 }
