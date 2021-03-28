@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2535.37"
+#define HMAILSERVER_BUILD "2538.37"
 
 /*
 [list=1]
@@ -35,7 +35,7 @@
 [*]Fix 'Unencrypted Cleartext Login' vulnerability detection [url=https://github.com/hmailserver/hmailserver/pull/342]pull 242[/url]
 [*]Add header "Envelope-Sender" containing the SMTP "MAIL FROM:" address
 [*]New ClientInfo properties oClient.ESMTP(boolean), oClient.TLS(boolean) and oClient.Passwd(string)
-[*]Removed temporary fix; Messages bouncing immediately due to no mail servers due to DNS issue "ExternalDelivery.cpp"
 [*]Added "UseDNSCache" option to [Settings]. 1 = Use cache in DNS Client service. 0 = Bypass cache in DNS Client service.
+[*]"UseDNSCache" control temporary fix; Messages bouncing immediately due to no mail servers due to DNS issue "ExternalDelivery.cpp"
 [/list]
 */
