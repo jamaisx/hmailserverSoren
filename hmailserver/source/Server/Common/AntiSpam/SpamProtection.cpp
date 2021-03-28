@@ -104,7 +104,8 @@ namespace HM
       int maxSizeToScanKB = 1024 * 5;
 
       if (config.GetAntiSpamMaxSizeKB() > 0)
-         maxSizeToScanKB = min(config.GetAntiSpamMaxSizeKB(), maxSizeToScanKB);
+		  maxSizeToScanKB = config.GetAntiSpamMaxSizeKB();
+		  // maxSizeToScanKB = min(config.GetAntiSpamMaxSizeKB(), maxSizeToScanKB);
 
       int messageSizeKB = FileUtilities::FileSize(fileName) / 1024;
       if (messageSizeKB > maxSizeToScanKB)

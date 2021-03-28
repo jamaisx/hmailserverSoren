@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2538.37"
+#define HMAILSERVER_BUILD "2538.38"
 
 /*
 [list=1]
@@ -37,5 +37,6 @@
 [*]New ClientInfo properties oClient.ESMTP(boolean), oClient.TLS(boolean) and oClient.Passwd(string)
 [*]Added "UseDNSCache" option to [Settings]. 1 = Use cache in DNS Client service. 0 = Bypass cache in DNS Client service.
 [*]"UseDNSCache" control temporary fix; Messages bouncing immediately due to no mail servers due to DNS issue "ExternalDelivery.cpp"
+[*]Anti-spam; Maximum message to scan (KB) is now limited to 5 MB if entered value = 0, otherwise whatever is entered into GUI.
 [/list]
 */
