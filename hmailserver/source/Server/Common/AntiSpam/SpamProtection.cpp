@@ -100,15 +100,20 @@ namespace HM
       // If the user has configured a maximum message size to scan, use that size.
       // If not, limit scanning to messages smaller than 5 MB. Messages larger than
       // this is very unlikely to be spam.
+	  // Maximum allowed size to scan limited to 50 MB
 
-      int maxSizeToScanKB = 1024 * 5;
+	  int defaultSizeToScanKB = 1024 * 5;
+	  int maxSizeToScanKB = defaultSizeToScanKB * 10;
 
-      if (config.GetAntiSpamMaxSizeKB() > 0)
-		  maxSizeToScanKB = config.GetAntiSpamMaxSizeKB();
-		  // maxSizeToScanKB = min(config.GetAntiSpamMaxSizeKB(), maxSizeToScanKB);
+	  if (config.GetAntiSpamMaxSizeKB() > maxSizeToScanKB)
+		  config.SetAntiSpamMaxSizeKB(maxSizeToScanKB);
+
+	  if (config.GetAntiSpamMaxSizeKB() > 0)
+		  defaultSizeToScanKB = config.GetAntiSpamMaxSizeKB();
+		  // defaultSizeToScanKB = min(config.GetAntiSpamMaxSizeKB(), defaultSizeToScanKB);
 
       int messageSizeKB = FileUtilities::FileSize(fileName) / 1024;
-      if (messageSizeKB > maxSizeToScanKB)
+      if (messageSizeKB > defaultSizeToScanKB)
       {
          // The message is larger than the max message size to scan, so we'll skip scanning it.
          std::set<std::shared_ptr<SpamTestResult> > emptySet;
