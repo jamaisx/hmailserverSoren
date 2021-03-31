@@ -100,10 +100,10 @@ namespace HM
       // If the user has configured a maximum message size to scan, use that size.
       // If not, limit scanning to messages smaller than 5 MB. Messages larger than
       // this is very unlikely to be spam.
-	  // Maximum allowed size to scan limited to 50 MB
+	  // Maximum allowed size to scan limited to 256 MB like SPAMC.
 
 	  int defaultSizeToScanKB = 1024 * 5;
-	  int maxSizeToScanKB = defaultSizeToScanKB * 10;
+	  int maxSizeToScanKB = 262144;
 
 	  if (config.GetAntiSpamMaxSizeKB() > maxSizeToScanKB)
 		  config.SetAntiSpamMaxSizeKB(maxSizeToScanKB);
