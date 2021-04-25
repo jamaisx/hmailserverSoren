@@ -57,9 +57,10 @@ namespace HM
 
             LOG_APPLICATION(sMessage);
 
-            PersistentMessage::DeleteObject(pMessage);             
+            //Moved to PreprocessMessage_() in SMTPDeliverer.cpp
+            //PersistentMessage::DeleteObject(pMessage);
 
-            return false;
+			return false;
          }
       }
 
