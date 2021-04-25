@@ -33,7 +33,7 @@
 [*]Ignore SpamTestSPF and SpamTestHeloHost when send thru local IP Address, see [url=https://www.hmailserver.com/forum/viewtopic.php?f=10&t=34865]this[/url] forum topic 
 [*]SPF test to include "HELO/EHLO host" used by DNS macros [url=https://github.com/hmailserver/hmailserver/pull/353]pull 353[/url]
 [*]Fix 'Unencrypted Cleartext Login' vulnerability detection [url=https://github.com/hmailserver/hmailserver/pull/342]pull 242[/url]
-[*]Add header "Envelope-Sender" containing the SMTP "MAIL FROM:" address
+[*]Add SMTP MAIL FROM header: X-SA-HMS-Mail-From. Add following to SpamAssassin local.cf: envelope_sender_header X-SA-HMS-Mail-From
 [*]New ClientInfo properties oClient.ESMTP(boolean), oClient.TLS(boolean) and oClient.Passwd(string)
 [*]Added "UseDNSCache" option to [Settings]. 1 = Use cache in DNS Client service. 0 = Bypass cache in DNS Client service.
 [*]"UseDNSCache" control temporary fix; Messages bouncing immediately due to no mail servers due to DNS issue "ExternalDelivery.cpp"

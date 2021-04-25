@@ -57,10 +57,11 @@ namespace HM
       std::shared_ptr<Message> pMessage = pTestData->GetMessageData()->GetMessage();
       const String sFilename = PersistentMessage::GetFileName(pMessage);
 
-      // -> Add envelope-from header "Envelope-Sender"
+      // -> Add SMTP MAIL FROM header: X-SA-HMS-Mail-From
+      // -> Add following to SpamAssassin local.cf: envelope_sender_header X-SA-HMS-Mail-From
       std::vector<std::pair<AnsiString, AnsiString> > fieldsToWrite;
 
-      fieldsToWrite.push_back(std::make_pair("Envelope-Sender", pTestData->GetEnvelopeFrom()));
+      fieldsToWrite.push_back(std::make_pair("X-SA-HMS-Mail-From", pTestData->GetEnvelopeFrom()));
 
       TraceHeaderWriter writer;
       writer.Write(sFilename, pMessage, fieldsToWrite);
