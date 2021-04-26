@@ -61,7 +61,8 @@ namespace HM
       // -> Add following to SpamAssassin local.cf: envelope_sender_header X-SA-HMS-Mail-From
       std::vector<std::pair<AnsiString, AnsiString> > fieldsToWrite;
 
-      fieldsToWrite.push_back(std::make_pair("X-SA-HMS-Mail-From", pTestData->GetEnvelopeFrom()));
+      String sEnvelopeFrom = pTestData->GetEnvelopeFrom();
+      fieldsToWrite.push_back(std::make_pair("X-SA-HMS-Mail-From", sEnvelopeFrom));
 
       TraceHeaderWriter writer;
       writer.Write(sFilename, pMessage, fieldsToWrite);
@@ -69,8 +70,6 @@ namespace HM
       // Add Return-Path header if none exist (ExternalAccount download?)
       if (pTestData->GetMessageData()->GetReturnPath().IsEmpty())
       {
-         String sEnvelopeFrom = pTestData->GetEnvelopeFrom();
-
          std::vector<std::pair<AnsiString, AnsiString>> fieldsToWrite;
          fieldsToWrite.push_back(std::make_pair("Return-Path", sEnvelopeFrom));
 
