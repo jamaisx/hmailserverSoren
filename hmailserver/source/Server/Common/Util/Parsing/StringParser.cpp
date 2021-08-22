@@ -55,9 +55,10 @@ namespace HM
    bool
    StringParser::IsValidEmailAddress(const String &sEmailAddress)
    {
+      // Original: ^(("[^<>@\\]+")|([^<> @\\"]+))@[^<>"\\/@\?\*| ]+\.[^<>"\\/@\?\*| ]+$
       // Original: ^(("[^<>@\\]+")|([^<> @\\"]+))@(\[([0-9]{1,3}\.){3}[0-9]{1,3}\]|(?=.{1,255}$)((?!-|\.)[a-zA-Z0-9-]{0,62}[a-zA-Z0-9])(|\.(?!-|\.)[a-zA-Z0-9-]{0,62}[a-zA-Z0-9]){1,126})$
       // 
-      // Conversion:
+      // Escape string:
       // 1) Replace \ with \\
       // 2) Replace " with \"
 
@@ -71,8 +72,10 @@ namespace HM
    bool
    StringParser::IsValidDomainName(const String &sDomainName)
    {
+      // Original: ^[^<>"\\/@\?\*| ]+\.[^<>"\\/@\?\*| ]+$
       // Original: ^(\[([0-9]{1,3}\.){3}[0-9]{1,3}\]|(?=.{1,255}$)((?!-|\.)[a-zA-Z0-9-]{0,62}[a-zA-Z0-9])(|\.(?!-|\.)[a-zA-Z0-9-]{0,62}[a-zA-Z0-9]){1,126})$
-      // Conversion:
+      //
+      // Escape string:
       // 1) Replace \ with \\
       // 2) Replace " with \"
 
