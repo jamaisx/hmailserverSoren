@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2555.40"
+#define HMAILSERVER_BUILD "2555.42"
 
 /*
 [list=1]
@@ -40,5 +40,7 @@
 [*]Anti-spam; Maximum message to scan (KB) is now limited to 5 MB if entered value = 0, otherwise whatever is entered into GUI.
 [*]AWStats::LogDeliveryFailure was called twice for each message in OnDeliveryFailed
 [*]oMessage object was empty when called from OnDeliveryFailed in SMTPDeliverer.cpp
+[*]Fix Auto Submitted header for auto-generated messages
+[*]New event OnClientValidatePassword
 [/list]
 */
