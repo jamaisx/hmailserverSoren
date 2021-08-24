@@ -17,7 +17,7 @@
 #include "../../SMTP/RecipientParser.h"
 
 #define XHMAILSERVER_LOOPCOUNT _T("X-hMailServer-LoopCount")
-#define AUTOSUBMITTED_HEADER "Auto-Submitted"
+#define AUTOSUBMITTED_HEADER _T("Auto-Submitted")
 
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
