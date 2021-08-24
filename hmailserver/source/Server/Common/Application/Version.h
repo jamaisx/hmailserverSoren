@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2555.41"
+#define HMAILSERVER_BUILD "2555.42"
 
 /*
 [list=1]
@@ -41,5 +41,6 @@
 [*]AWStats::LogDeliveryFailure was called twice for each message in OnDeliveryFailed
 [*]oMessage object was empty when called from OnDeliveryFailed in SMTPDeliverer.cpp
 [*]Fix Auto Submitted header for auto-generated messages
+[*]Sub OnClientLogon(oClient) only show password for failed login
 [/list]
 */

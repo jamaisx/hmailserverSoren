@@ -65,6 +65,7 @@ namespace HM
       } 
 
       const bool isAuthenticated = pAccount != nullptr;
+      String sPasswordCopy = !isAuthenticated ? sPassword : "***";
 
       if (Configuration::Instance()->GetUseScriptServer())
       {
@@ -76,7 +77,7 @@ namespace HM
          pClientInfo->SetIPAddress(pConnection->GetRemoteEndpointAddress().ToString());
          pClientInfo->SetPort(pConnection->GetLocalEndpointPort());
          pClientInfo->SetIsAuthenticated(isAuthenticated);
-         pClientInfo->SetPasswd(sPassword);
+         pClientInfo->SetPasswd(sPasswordCopy);
          pClientInfo->SetIsTLS(pConnection->IsSSLConnection());
 
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);

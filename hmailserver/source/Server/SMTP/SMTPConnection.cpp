@@ -2052,6 +2052,7 @@ namespace HM
       }
 
       isAuthenticated_ = pAccount != nullptr;
+      String sPasswordCopy = !isAuthenticated_ ? password_ : "***";
 
       if (Configuration::Instance()->GetUseScriptServer())
       {
@@ -2069,7 +2070,7 @@ namespace HM
          pClientInfo->SetIsAuthenticated(isAuthenticated_);
          pClientInfo->SetIsESMTP(is_esmtp_);
          pClientInfo->SetIsTLS(start_tls_used_);
-         pClientInfo->SetPasswd(password_);
+         pClientInfo->SetPasswd(sPasswordCopy);
 // *SR*
 //		 pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
 //		 pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
