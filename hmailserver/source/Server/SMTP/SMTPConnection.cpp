@@ -67,8 +67,6 @@
 #include "SMTPDeliveryManager.h"
 #include "SMTPMessageHeaderCreator.h"
 
-
-
 using namespace std;
 
 #ifdef _DEBUG
@@ -94,8 +92,7 @@ namespace HM
       pending_disconnect_(false),
       isAuthenticated_(false),
       start_tls_used_(false),
-// *SR*
-	  is_esmtp_(false)
+      is_esmtp_(false)
    {
 
       smtpconf_ = Configuration::Instance()->GetSMTPConfiguration();
@@ -1215,9 +1212,6 @@ namespace HM
          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
          std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-// *SR*
-//		 CipherInfo cipher_info_;
-
 		 pClientInfo->SetUsername(username_);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
@@ -1225,10 +1219,6 @@ namespace HM
          pClientInfo->SetIsAuthenticated(isAuthenticated_);
          pClientInfo->SetIsESMTP(is_esmtp_);
          pClientInfo->SetIsTLS(start_tls_used_);
-// *SR*
-//		 pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
-//		 pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
-//		 pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
          pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
@@ -1541,18 +1531,12 @@ namespace HM
           std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
 		  is_esmtp_ = true;
-// *SR*
-//		  CipherInfo cipher_info_;
 
 		  pClientInfo->SetIPAddress(GetIPAddressString());
           pClientInfo->SetPort(GetLocalEndpointPort());
           pClientInfo->SetHELO(helo_host_);
           pClientInfo->SetIsESMTP(is_esmtp_);
 		  pClientInfo->SetIsTLS(start_tls_used_);
-// *SR*
-// 		  pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
-// 		  pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
-// 		  pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
 			  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
           pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
@@ -1614,18 +1598,12 @@ namespace HM
           std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
 		  is_esmtp_ = false;
-// *SR*
-//		  CipherInfo cipher_info_;
 
           pClientInfo->SetIPAddress(GetIPAddressString());
           pClientInfo->SetPort(GetLocalEndpointPort());
           pClientInfo->SetHELO(helo_host_);
           pClientInfo->SetIsESMTP(is_esmtp_);
           pClientInfo->SetIsTLS(start_tls_used_);
-// *SR*
-//		  pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
-//		  pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
-//		  pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
           pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
           pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
@@ -1713,9 +1691,6 @@ namespace HM
          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
          std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-// *SR*
-//		 CipherInfo cipher_info_;
-
 		 pClientInfo->SetUsername(username_);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
@@ -1724,10 +1699,6 @@ namespace HM
          pClientInfo->SetIsESMTP(is_esmtp_);
          pClientInfo->SetIsTLS(start_tls_used_);
          pClientInfo->SetPasswd(password_);
-// *SR*
-//		 pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
-//		 pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
-//		 pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
          pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
@@ -2060,9 +2031,6 @@ namespace HM
          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
          std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-// *SR*
-//		 CipherInfo cipher_info_;
-
 		 pClientInfo->SetUsername(sUsername);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
@@ -2071,10 +2039,6 @@ namespace HM
          pClientInfo->SetIsESMTP(is_esmtp_);
          pClientInfo->SetIsTLS(start_tls_used_);
          pClientInfo->SetPasswd(sPasswordCopy);
-// *SR*
-//		 pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
-//		 pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
-//		 pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
          pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
          pContainer->AddObject("Result", pResult, ScriptObject::OTResult);

@@ -14,9 +14,8 @@ namespace HM
    ClientInfo::ClientInfo() :
       port_(0),
       is_authenticated_(false),
-	  is_esmtp_(false),
-	  is_tls_(false),
-	  cipher_bits_(0)
+      is_esmtp_(false),
+      is_tls_(false)
    {
 
    }

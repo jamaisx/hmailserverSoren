@@ -56,10 +56,6 @@ public:
    STDMETHOD(get_Passwd)(BSTR* pVal);
    STDMETHOD(get_ESMTP)(VARIANT_BOOL* pVal);
    STDMETHOD(get_TLS)(VARIANT_BOOL* pVal);
-// *SR*
-   STDMETHOD(get_CipherVersion)(BSTR* pVal);
-   STDMETHOD(get_CipherName)(BSTR* pVal);
-   STDMETHOD(get_CipherBits)(LONG* pVal);
 
 private:
 

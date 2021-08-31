@@ -251,15 +251,8 @@ namespace HM
       std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
       std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-// *SR*
-//    CipherInfo cipher_info_;
-
 	  pClientInfo->SetIPAddress(remoteAddress.ToString());
       pClientInfo->SetPort(port);
-// *SR*
-//    pClientInfo->SetCipherVersion(cipher_info_.GetVersion().c_str());
-//    pClientInfo->SetCipherName(cipher_info_.GetName().c_str());
-//    pClientInfo->SetCipherBits(cipher_info_.GetBits());
 
       pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
       pContainer->AddObject("Result", pResult, ScriptObject::OTResult);

@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2555.42"
+#define HMAILSERVER_BUILD "2555.43"
 
 /*
 [list=1]
@@ -43,5 +43,7 @@
 [*]Fix Auto Submitted header for auto-generated messages
 [*]Sub OnClientLogon(oClient) only show password for failed login
 [*]Added: "DNSServer" INI setting. Single (local) DNS server IPv4 addresses to use within hMailServer instead of default system DNS.
+[*]Added: #251 External Fetch - First try (X-)Envelope-To and X-RCPT-TO headers and ExternalFetcher DELE when no RETR
+[*]Added: #337 Set the JScript version to use
 [/list]
 */

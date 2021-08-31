@@ -1580,11 +1580,6 @@ interface IInterfaceClient : IDispatch{
    [propget, id(6), helpstring("The password used by the client.")] HRESULT Passwd([out, retval] BSTR* pVal);
    [propget, id(7), helpstring("The SMTP status of the client.")] HRESULT ESMTP([out, retval] VARIANT_BOOL* pVal);
    [propget, id(8), helpstring("The TLS status of the client.")] HRESULT TLS([out, retval] VARIANT_BOOL* pVal);
-// *SR*
-   [propget, id(9), helpstring("The SSL/TLS cipher version of the client connection.")] HRESULT CipherVersion([out, retval] BSTR* pVal);
-   [propget, id(10), helpstring("The SSL/TLS cipher name of the client connection.")] HRESULT CipherName([out, retval] BSTR* pVal);
-   [propget, id(11), helpstring("The SSL/TLS bits of the client connection.")] HRESULT CipherBits([out, retval] LONG* pVal);
-
 };
 [
 	object,
