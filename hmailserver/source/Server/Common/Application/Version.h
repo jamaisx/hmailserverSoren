@@ -42,5 +42,6 @@
 [*]oMessage object was empty when called from OnDeliveryFailed in SMTPDeliverer.cpp
 [*]Fix Auto Submitted header for auto-generated messages
 [*]Sub OnClientLogon(oClient) only show password for failed login
+[*]Added: "DNSServer" INI setting. Single (local) DNS server IPv4 addresses to use within hMailServer instead of default system DNS.
 [/list]
 */
