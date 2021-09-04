@@ -277,12 +277,12 @@ namespace HM
       }
       catch (boost::system::system_error& error)
       {
-         ErrorManager::Instance()->ReportError(ErrorManager::High, 4208, "File::ReadFile()", "An error occured when reading file.", error);
+         ErrorManager::Instance()->ReportError(ErrorManager::High, 4208, "File::ReadFile()", "An error occured when reading file. boost::system::system_error", error);
          throw;
       }
       catch (std::exception& error)
       {
-         ErrorManager::Instance()->ReportError(ErrorManager::High, 4208, "File::ReadFile()", "An error occured when reading file.", error);
+         ErrorManager::Instance()->ReportError(ErrorManager::High, 4208, "File::ReadFile()", "An error occured when reading file. std::exception", error);
          throw;
       }
       catch (...)

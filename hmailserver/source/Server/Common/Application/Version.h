@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2555.45"
+#define HMAILSERVER_BUILD "2555.46"
 
 /*
 [list=1]
@@ -47,5 +47,6 @@
 [*]Added: #337 Set the JScript version to use
 [*]Added: Experimental events OnRecipientUnknown(oClient, oMessage) and OnTooManyInvalidCommands(oClient, oMessage)
 [*]Added: #383 DKIM signature for domain aliases
+[*]Added: New ClientInfo properties oClient.EncryptedConnection (Boolean), oClient.CipherVersion, oClient.CipherName and oClient.CipherBits
 [/list]
 */
