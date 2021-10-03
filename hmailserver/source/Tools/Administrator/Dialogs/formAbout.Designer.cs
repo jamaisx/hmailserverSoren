@@ -75,7 +75,7 @@ namespace hMailServer.Administrator
             this.labelCopyright.Name = "labelCopyright";
             this.labelCopyright.Size = new System.Drawing.Size(200, 13);
             this.labelCopyright.TabIndex = 12;
-            this.labelCopyright.Text = "Copyright 2020 Martin Knafve and others";
+            this.labelCopyright.Text = "Copyright 2021 Martin Knafve and others";
             // 
             // linkVisitors
             // 
@@ -95,8 +95,7 @@ namespace hMailServer.Administrator
             this.labelAttribution.Name = "labelAttribution";
             this.labelAttribution.Size = new System.Drawing.Size(199, 65);
             this.labelAttribution.TabIndex = 14;
-            this.labelAttribution.Text = "boost 1.77.0 \r\nOpenSSL 3.0.0 \r\nRMSPF 1.12 \r\nPlease run installation program for " +
-    "full list \r\nof copyrights and attributions.";
+            this.labelAttribution.Text = "boost 1.77.0\r\nOpenSSL 1.1.1l\r\nRMSPF 1.12\r\nPlease run installation program for full list\r\nof copyrights and attributions.";
             // 
             // formAbout
             // 

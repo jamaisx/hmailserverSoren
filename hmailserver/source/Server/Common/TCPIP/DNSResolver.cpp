@@ -112,16 +112,6 @@ namespace HM
          fOptions += DNS_QUERY_BYPASS_CACHE;
       }
 
-      // ?? if (IniFileSettings::Instance()->GetUseDNSCache())
-      // ?? {
-      // ??    fOptions = DNS_QUERY_STANDARD;
-      // ?? }
-      // ?? else
-      // ?? {
-      // ??    // We need this if not using system dns servers
-      // ??    fOptions = DNS_QUERY_BYPASS_CACHE;
-      // ?? }
-
       AnsiString sCustomDNS;
       sCustomDNS = IniFileSettings::Instance()->GetDNSServer().Trim();
       if (!sCustomDNS.IsEmpty())
