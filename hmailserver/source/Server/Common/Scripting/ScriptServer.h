@@ -17,7 +17,7 @@ namespace HM
       {
          EventOnClientConnect = 1001,
          EventOnAcceptMessage = 1002,
-		 EventOnDeliverMessage = 1003,
+         EventOnDeliverMessage = 1003,
          EventOnBackupCompleted = 1004,
          EventOnBackupFailed = 1005,
          EventOnDeliveryStart = 1006,
@@ -30,8 +30,8 @@ namespace HM
          EventOnSMTPData = 1012,
          EventOnHELO = 1013,
          EventOnClientLogon = 1014,
-         EventOnRecipientUnknown = 1015,
-         EventOnTooManyInvalidCommands = 1016
+
+         EventOnRecipientError = 1015
       };
 
       ScriptServer(void);
@@ -70,8 +70,7 @@ namespace HM
       bool has_on_smtpdata_;
       bool has_on_helo_;
       bool has_on_client_logon_;
-      bool has_on_recipient_unknown_;
-      bool has_on_too_many_invalid_comands_;
+      bool has_on_recipient_error_;
 
       String script_contents_;
       String script_extension_;

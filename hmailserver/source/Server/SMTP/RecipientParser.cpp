@@ -25,6 +25,10 @@
 #include "../common/BO/Account.h"
 #include "../Common/BO/DomainAliases.h"
 
+#include "../Common/Scripting/ScriptServer.h"
+#include "../Common/Scripting/ScriptObjectContainer.h"
+#include "../Common/Scripting/Result.h"
+
 #include "../Common/Persistence/PersistentDistributionListRecipient.h"
 
 
@@ -35,8 +39,6 @@
 
 namespace HM
 {
-
-   const String CONST_UNKNOWN_USER = "Unknown user";
 
    RecipientParser::RecipientParser()
    {
@@ -69,6 +71,7 @@ namespace HM
          {
             // Extreme aliasing. disallow
             sErrMsg = "Mail server configuration error. Too many recursive forwards.";
+            RecipientParser::RecipientError(Low, 0000, "VOID", "Mail server configuration error. Too many recursive forwards.");
             return DP_RecipientUnknown;
          }
 
@@ -97,6 +100,7 @@ namespace HM
             if (!pDomain->GetIsActive())
             {
                sErrMsg = "Domain has been disabled.";
+               RecipientParser::RecipientError(Low, 0000, "VOID", "Domain has been disabled.");
                return DP_RecipientUnknown;
             }
 
@@ -112,6 +116,7 @@ namespace HM
                else
                {
                   sErrMsg = "Account is not active.";
+                  RecipientParser::RecipientError(Low, 0000, "VOID", "Account is not active.");
                   return DP_RecipientUnknown;
                }
             }
@@ -128,6 +133,7 @@ namespace HM
                else
                {
                   sErrMsg = "Alias is not active.";
+                  RecipientParser::RecipientError(Low, 0000, "VOID", "Alias is not active.");
                   return DP_RecipientUnknown;
                }
             }
@@ -139,13 +145,15 @@ namespace HM
                if (!pList->GetActive())
                {
                   sErrMsg = "Distribution list is not active.";
+                  RecipientParser::RecipientError(Low, 0000, "VOID", "Distribution list is not active.");
                   return DP_RecipientUnknown;
                }
 
                // Need to check if this sender is authorized to send
                // to this distribution list.
                if (UserCanSendToList_(sSender, bSenderIsAuthed, pList, sErrMsg, iRecursionLevel) == DP_PermissionDenied)
-                  return DP_PermissionDenied;
+               RecipientParser::RecipientError(Low, 0000, "VOID", "Sender is not authorized to send to this distribution list #need to add more info#");
+               return DP_PermissionDenied;
 
 
                bDomainIsLocal = true;
@@ -173,7 +181,8 @@ namespace HM
 			{
 				// The recipient is not configured in the route, and the domain is external.
 				sErrMsg = "Recipient not in route list.";
-				return DP_RecipientUnknown;
+            RecipientParser::RecipientError(Low, 0000, "VOID", "Recipient not in route list.");
+            return DP_RecipientUnknown;
 			}
          }
 
@@ -200,7 +209,8 @@ namespace HM
             return DP_Possible;
          }
 
-         sErrMsg = CONST_UNKNOWN_USER;
+         sErrMsg = "Unknown user";
+         RecipientParser::RecipientError(Low, 0000, "VOID", "Unknown user");
          return DP_RecipientUnknown;
       }
    }
@@ -371,6 +381,7 @@ namespace HM
       if (pList->GetRequireAuth() && !bSenderIsAuthenticated)
       {
          sErrMsg = "SMTP authentication required.";
+         RecipientParser::RecipientError(Low, 0000, "VOID", "SMTP authentication required.");
          return DP_PermissionDenied;
       }
 
@@ -390,6 +401,7 @@ namespace HM
 	    // Let's adjust reason to better explain sender is not seen as OWNER
 	    // and differentiate from SENDER like list member etc
             sErrMsg = "Not authorized owner.";
+            RecipientParser::RecipientError(Low, 0000, "VOID", "Not authorized owner.");
             return DP_PermissionDenied;
          }
 
@@ -410,6 +422,7 @@ namespace HM
             // Let's adjust reason to better explain sender is not seen as OWNER
             // and differentiate from SENDER like list member etc
             sErrMsg = "Not authorized domain.";
+            RecipientParser::RecipientError(Low, 0000, "VOID", "Not authorized domain.");
             return DP_PermissionDenied;
          }
 
@@ -447,6 +460,7 @@ namespace HM
          {
 	         // Let's adjust reason to better explain sender is not seen as allowed SENDER
             sErrMsg = "Not authorized sender.";
+            RecipientParser::RecipientError(Low, 0000, "VOID", "Not authorized sender.");
             return DP_PermissionDenied;
          }
       }
@@ -470,6 +484,7 @@ namespace HM
             // Log the reason the message to the list is rejected which helps a ton with lists on lists
             Logger::Instance()->LogDebug("RecipientParser::UserCanSendToList_::PermissionDENIED");
 
+            RecipientParser::RecipientError(Low, 0000, "VOID", "RecipientParser::UserCanSendToList_::PermissionDENIED");
             return DP_PermissionDenied;
          }
          iterRecipient++;
@@ -498,5 +513,75 @@ namespace HM
       }
 
       pRecipients->Add(pRecipient);
+   }
+
+   //
+   // Playing with a new version of "OnReccipientUnknown" to include all "Recipient" errors...
+   //
+
+   //void
+   //RecipientParser::RecipientError(eSeverity iSeverity, int iErrorID, const String &sSource, const String &sDescription, const boost::system::system_error &error)
+   //{
+   //   String formatted_message
+   //      = Formatter::Format(_T("{0}, Error code: {1}, Message: {2}"), sDescription, error.code().value(), error.what());
+
+   //   RecipientError(iSeverity, iErrorID, sSource, formatted_message);
+   //}
+
+   void
+   RecipientParser::RecipientError(eSeverity iSeverity, int iErrorID, const String &sSource, const String &sDescription)
+   {
+      //String sSeverityStr = GetSeverity(iSeverity);
+      String sSeverityStr = "VOID";
+
+      //String sTempDesc = sDescription;
+      //sTempDesc.Replace(_T("\r\n"), _T("[nl]"));
+
+      //String sErrorToLog;
+      //sErrorToLog.Format(_T("Severity: %d (%s), Code: HM%d, Source: %s, Description: %s"),
+      //   iSeverity, sSeverityStr.c_str(), iErrorID, sSource.c_str(), sTempDesc);
+
+      //Logger::Instance()->LogError(sErrorToLog);
+
+      // Send an event if we've been able to load our settings. During database
+      // creation, we don't have any PropertySet in the cache but we should still
+      // be able to report errors. During server start up, we have a property set (?)
+      // but it's not initialized. So we need to be a bit careful here.
+      if (Configuration::Instance() &&
+         Configuration::Instance()->GetPropertySet() &&
+         Configuration::Instance()->GetUseScriptServer())
+      {
+         String sEventCaller;
+
+         String sScriptLanguage = Configuration::Instance()->GetScriptLanguage();
+
+         if (sScriptLanguage == _T("VBScript"))
+         {
+            String tempSource = sSource;
+            String tempDescription = sDescription;
+
+            tempSource.Replace(_T("\""), _T("\"\""));
+            tempDescription.Replace(_T("\""), _T("\"\""));
+
+            sEventCaller.Format(_T("OnRecipientError(%d, %d, \"%s\", \"%s\")"),
+               iSeverity, iErrorID, tempSource.c_str(), tempDescription.c_str());
+         }
+         else if (sScriptLanguage == _T("JScript"))
+         {
+            String tempSource = sSource;
+            String tempDescription = sDescription;
+
+            tempSource.Replace(_T("'"), _T("\\'"));
+            tempDescription.Replace(_T("'"), _T("\\'"));
+
+            sEventCaller.Format(_T("OnRecipientError(%d, %d, '%s', '%s')"),
+               iSeverity, iErrorID, tempSource.c_str(), tempDescription.c_str());
+         }
+
+         std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+
+         ScriptServer::Instance()->FireEvent(ScriptServer::EventOnRecipientError, sEventCaller, pContainer);
+
+      }
    }
 }
