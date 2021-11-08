@@ -25,7 +25,6 @@
 #include "../common/BO/Account.h"
 #include "../Common/BO/DomainAliases.h"
 
-#include "../common/Scripting/ClientInfo.h"
 #include "../Common/Scripting/ScriptServer.h"
 #include "../Common/Scripting/ScriptObjectContainer.h"
 #include "../Common/Scripting/Result.h"
@@ -552,57 +551,34 @@ namespace HM
          Configuration::Instance()->GetPropertySet() &&
          Configuration::Instance()->GetUseScriptServer())
       {
-//         String sEventCaller;
-//
-//         String sScriptLanguage = Configuration::Instance()->GetScriptLanguage();
-//
-//         if (sScriptLanguage == _T("VBScript"))
-//         {
-//            String tempSource = sSource;
-//            String tempDescription = sDescription;
-//
-//            tempSource.Replace(_T("\""), _T("\"\""));
-//            tempDescription.Replace(_T("\""), _T("\"\""));
-//
-//            sEventCaller.Format(_T("OnRecipientError(%d, %d, \"%s\", \"%s\")"),
-//               iSeverity, iErrorID, tempSource.c_str(), tempDescription.c_str());
-//         }
-//         else if (sScriptLanguage == _T("JScript"))
-//         {
-//            String tempSource = sSource;
-//            String tempDescription = sDescription;
-//
-//            tempSource.Replace(_T("'"), _T("\\'"));
-//            tempDescription.Replace(_T("'"), _T("\\'"));
-//
-//            sEventCaller.Format(_T("OnRecipientError(%d, %d, '%s', '%s')"),
-//               iSeverity, iErrorID, tempSource.c_str(), tempDescription.c_str());
-//         }
+         String sEventCaller;
+
+         String sScriptLanguage = Configuration::Instance()->GetScriptLanguage();
+
+         if (sScriptLanguage == _T("VBScript"))
+         {
+            String tempSource = sSource;
+            String tempDescription = sDescription;
+
+            tempSource.Replace(_T("\""), _T("\"\""));
+            tempDescription.Replace(_T("\""), _T("\"\""));
+
+            sEventCaller.Format(_T("OnRecipientError(%d, %d, \"%s\", \"%s\")"),
+               iSeverity, iErrorID, tempSource.c_str(), tempDescription.c_str());
+         }
+         else if (sScriptLanguage == _T("JScript"))
+         {
+            String tempSource = sSource;
+            String tempDescription = sDescription;
+
+            tempSource.Replace(_T("'"), _T("\\'"));
+            tempDescription.Replace(_T("'"), _T("\\'"));
+
+            sEventCaller.Format(_T("OnRecipientError(%d, %d, '%s', '%s')"),
+               iSeverity, iErrorID, tempSource.c_str(), tempDescription.c_str());
+         }
 
          std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-
-// *START*
-
-         std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
-         std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
-
-//         pClientInfo->SetUsername(username_);
-//         pClientInfo->SetIPAddress(GetIPAddressString());
-//         pClientInfo->SetPort(GetLocalEndpointPort());
-//         pClientInfo->SetHELO(helo_host_);
-//         pClientInfo->SetIsAuthenticated(isAuthenticated_);
-//         pClientInfo->SetIsESMTP(is_esmtp_);
-//         pClientInfo->SetIsTLS(start_tls_used_);
-//         pClientInfo->SetPasswd(sPasswordCopy);
-//         pClientInfo->SetIsEncryptedConnection(IsSSLConnection());
-
-         pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
-         pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
-         pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
-
-         String sEventCaller = "OnRecipientError(HMAILSERVER_CLIENT, HMAILSERVER_MESSAGE, \"" + sSource + "\", \"" + sDescription + "\")";
-
-// *END*
 
          ScriptServer::Instance()->FireEvent(ScriptServer::EventOnRecipientError, sEventCaller, pContainer);
 
