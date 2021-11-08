@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2574.48x"
+#define HMAILSERVER_BUILD "2574.48"
 
 /*
 [list=1]
@@ -45,6 +45,7 @@
 [*]Added: "DNSServer" INI setting. Single (local) DNS server IPv4 addresses to use within hMailServer instead of default system DNS.
 [*]Added: #251 External Fetch - First try (X-)Envelope-To and X-RCPT-TO headers and ExternalFetcher DELE when no RETR
 [*]Added: #337 Set the JScript version to use
+[*]Added: Experimental events OnRecipientUnknown(oClient, oMessage) and OnTooManyInvalidCommands(oClient, oMessage)
 [*]Added: #383 DKIM signature for domain aliases
 [*]Added: New ClientInfo properties oClient.EncryptedConnection (Boolean), oClient.CipherVersion, oClient.CipherName and oClient.CipherBits
 [*]Added: DomainMembers DistributionList mode [url=https://github.com/hmailserver/hmailserver/pull/392]pull #392[/url]

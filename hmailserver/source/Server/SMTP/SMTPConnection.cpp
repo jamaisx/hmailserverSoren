@@ -78,6 +78,9 @@ using namespace std;
 
 namespace HM
 {
+
+   const String CONST_UNKNOWN_USER = "Unknown user";
+
    SMTPConnection::SMTPConnection(ConnectionSecurity connection_security,
       boost::asio::io_service& io_service, 
       boost::asio::ssl::context& context) :  
@@ -735,7 +738,7 @@ namespace HM
 
       if (!recipientOK)
       {
-         SendErrorResponse_(550, "Unknown user");
+         SendErrorResponse_(550, CONST_UNKNOWN_USER);
          return;
       }
    
@@ -2163,8 +2166,66 @@ namespace HM
 				EnqueueWrite_("Too many invalid commands. Bye!");
 				pending_disconnect_ = true;
 				EnqueueDisconnect();
+
+            if (Configuration::Instance()->GetUseScriptServer())
+            {
+               std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+               std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+
+               pClientInfo->SetUsername(username_);
+               pClientInfo->SetIPAddress(GetIPAddressString());
+               pClientInfo->SetPort(GetLocalEndpointPort());
+               pClientInfo->SetHELO(helo_host_);
+               pClientInfo->SetIsAuthenticated(isAuthenticated_);
+               pClientInfo->SetIsEncryptedConnection(IsSSLConnection());
+               if (IsSSLConnection())
+               {
+                  auto cipher_info = GetCipherInfo();
+                  pClientInfo->SetCipherVersion(cipher_info.GetVersion().c_str());
+                  pClientInfo->SetCipherName(cipher_info.GetName().c_str());
+                  pClientInfo->SetCipherBits(cipher_info.GetBits());
+               }
+
+               pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
+               pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+
+               String sEventCaller = "OnTooManyInvalidCommands(HMAILSERVER_CLIENT, HMAILSERVER_MESSAGE)";
+               ScriptServer::Instance()->FireEvent(ScriptServer::EventOnTooManyInvalidCommands, sEventCaller, pContainer);
+            }
+
 				return;
 			}
+         else 
+         {
+            if (!sResponse.compare(CONST_UNKNOWN_USER))
+            {
+               if (Configuration::Instance()->GetUseScriptServer())
+               {
+                  std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+                  std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+
+                  pClientInfo->SetUsername(username_);
+                  pClientInfo->SetIPAddress(GetIPAddressString());
+                  pClientInfo->SetPort(GetLocalEndpointPort());
+                  pClientInfo->SetHELO(helo_host_);
+                  pClientInfo->SetIsAuthenticated(isAuthenticated_);
+                  pClientInfo->SetIsEncryptedConnection(IsSSLConnection());
+                  if (IsSSLConnection())
+                  {
+                     auto cipher_info = GetCipherInfo();
+                     pClientInfo->SetCipherVersion(cipher_info.GetVersion().c_str());
+                     pClientInfo->SetCipherName(cipher_info.GetName().c_str());
+                     pClientInfo->SetCipherBits(cipher_info.GetBits());
+                  }
+
+                  pContainer->AddObject("HMAILSERVER_MESSAGE", current_message_, ScriptObject::OTMessage);
+                  pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
+
+                  String sEventCaller = "OnRecipientUnknown(HMAILSERVER_CLIENT, HMAILSERVER_MESSAGE)";
+                  ScriptServer::Instance()->FireEvent(ScriptServer::EventOnRecipientUnknown, sEventCaller, pContainer);
+               }
+            }
+         }
 		}
 
 		String sData;
