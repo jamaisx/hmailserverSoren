@@ -8,6 +8,7 @@ namespace HM
    class MessageRecipients;
    class MessageRecipient;
    class DistributionList;
+   class Message;
 
    class RecipientParser  
    {
@@ -41,5 +42,10 @@ namespace HM
       void AddRecipient_(std::shared_ptr<MessageRecipients> pRecipients, std::shared_ptr<MessageRecipient> pRecipient);
       DeliveryPossibility UserCanSendToList_(const String &sSender, bool bSenderIsAuthenticated, std::shared_ptr<const DistributionList> pList, String &sErrMsg, int iRecursionLevel);
 
+// *START*
+
+      std::shared_ptr<Message> current_message_;
+
+// *END*
    };
 }
