@@ -31,9 +31,7 @@ namespace HM
       has_on_external_account_download_(false),
       has_on_smtpdata_(false),
       has_on_helo_(false),
-      has_on_client_logon_(false),
-      has_on_recipient_unknown_(false),
-      has_on_too_many_invalid_comands_(false)
+      has_on_client_logon_(false)
    {
       
    }
@@ -103,8 +101,6 @@ namespace HM
          has_on_smtpdata_ = DoesFunctionExist_("OnSMTPData");
          has_on_helo_ = DoesFunctionExist_("OnHELO");
          has_on_client_logon_ = DoesFunctionExist_("OnClientLogon");
-         has_on_recipient_unknown_ = DoesFunctionExist_("OnRecipientUnknown");
-         has_on_too_many_invalid_comands_ = DoesFunctionExist_("OnTooManyInvalidCommands");
 
       }
       catch (...)
@@ -218,16 +214,6 @@ namespace HM
 		      return;
 	      event_name = _T("OnClientLogon");
 	      break;
-      case EventOnRecipientUnknown:
-         if (!has_on_recipient_unknown_)
-            return;
-         event_name = _T("OnRecipientUnknown");
-         break;
-      case EventOnTooManyInvalidCommands:
-         if (!has_on_too_many_invalid_comands_)
-            return;
-         event_name = _T("OnTooManyInvalidCommands");
-         break;
       case EventOnAcceptMessage:
 	      if (!has_on_accept_message_)
 		      return;

@@ -36,8 +36,6 @@
 namespace HM
 {
 
-   const String CONST_UNKNOWN_USER = "Unknown user";
-
    RecipientParser::RecipientParser()
    {
 
@@ -200,7 +198,7 @@ namespace HM
             return DP_Possible;
          }
 
-         sErrMsg = CONST_UNKNOWN_USER;
+         sErrMsg = "Unknown user";
          return DP_RecipientUnknown;
       }
    }
