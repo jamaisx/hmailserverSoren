@@ -1217,6 +1217,7 @@ namespace HM
 		 pClientInfo->SetUsername(username_);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
+         pClientInfo->SetSessionID(GetSessionID()); 
          pClientInfo->SetHELO(helo_host_);
          pClientInfo->SetIsAuthenticated(isAuthenticated_);
          pClientInfo->SetIsESMTP(is_esmtp_);
@@ -1544,6 +1545,7 @@ namespace HM
 
 		  pClientInfo->SetIPAddress(GetIPAddressString());
           pClientInfo->SetPort(GetLocalEndpointPort());
+          pClientInfo->SetSessionID(GetSessionID()); 
           pClientInfo->SetHELO(helo_host_);
           pClientInfo->SetIsESMTP(is_esmtp_);
 		  pClientInfo->SetIsTLS(start_tls_used_);
@@ -1619,6 +1621,7 @@ namespace HM
 
           pClientInfo->SetIPAddress(GetIPAddressString());
           pClientInfo->SetPort(GetLocalEndpointPort());
+          pClientInfo->SetSessionID(GetSessionID()); 
           pClientInfo->SetHELO(helo_host_);
           pClientInfo->SetIsESMTP(is_esmtp_);
           pClientInfo->SetIsTLS(start_tls_used_);
@@ -1722,6 +1725,7 @@ namespace HM
 		 pClientInfo->SetUsername(username_);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
+         pClientInfo->SetSessionID(GetSessionID());
          pClientInfo->SetHELO(helo_host_);
          pClientInfo->SetIsAuthenticated(isAuthenticated_);
          pClientInfo->SetIsESMTP(is_esmtp_);
@@ -2070,6 +2074,7 @@ namespace HM
 		 pClientInfo->SetUsername(sUsername);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
+         pClientInfo->SetSessionID(GetSessionID());
          pClientInfo->SetHELO(helo_host_);
          pClientInfo->SetIsAuthenticated(isAuthenticated_);
          pClientInfo->SetIsESMTP(is_esmtp_);

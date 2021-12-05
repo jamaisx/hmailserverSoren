@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2574.48"
+#define HMAILSERVER_BUILD "2574.49"
 
 /*
 [list=1]
@@ -48,5 +48,6 @@
 [*]Added: #383 DKIM signature for domain aliases
 [*]Added: New ClientInfo properties oClient.EncryptedConnection (Boolean), oClient.CipherVersion, oClient.CipherName and oClient.CipherBits
 [*]Added: DomainMembers DistributionList mode [url=https://github.com/hmailserver/hmailserver/pull/392]pull #392[/url]
+[*]Added: oClient.SessionID "The SessionID for TCP/IP connection."
 [/list]
 */

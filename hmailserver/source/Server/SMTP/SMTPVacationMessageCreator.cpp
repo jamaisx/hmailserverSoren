@@ -101,15 +101,15 @@ namespace HM
       pNewMsgData->SetReturnPath(recipientAccount->GetAddress());
       pNewMsgData->GenerateMessageID();
       pNewMsgData->SetSentTime(Time::GetCurrentMimeDate());
-      pNewMsgData->SetFieldValue("Content-Type", "text/plain; charset=\"utf-8\"");
+//      pNewMsgData->SetFieldValue("Content-Type", "text/plain; charset=\"utf-8\"");
+      pNewMsgData->SetAutoReplied();
+      pNewMsgData->IncreaseRuleLoopCount();
 
       // Optional headers
       pNewMsgData->SetFrom(recipientAccount->GetAddress());
       pNewMsgData->SetTo(sToAddress);
       pNewMsgData->SetSubject(sModifiedSubject);
       pNewMsgData->SetBody(sModifiedBody);
-	  pNewMsgData->SetAutoReplied();
-      pNewMsgData->IncreaseRuleLoopCount();
       
       // Write message data
       pNewMsgData->Write(newFileName);

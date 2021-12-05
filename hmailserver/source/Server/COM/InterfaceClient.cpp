@@ -132,6 +132,19 @@ STDMETHODIMP InterfaceClient::get_EncryptedConnection(VARIANT_BOOL *pVal)
    }
 }
 
+STDMETHODIMP InterfaceClient::get_SessionID(long* pVal)
+{
+   try
+   {
+      *pVal = client_info_->GetSessionID();
+      return S_OK;
+   }
+   catch (...)
+   {
+      return COMError::GenerateGenericMessage();
+   }
+}
+
 STDMETHODIMP InterfaceClient::get_CipherVersion(BSTR *pVal)
 {
    try

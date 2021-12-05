@@ -13,6 +13,7 @@
 #undef UNICODE
 
 #include <windns.h>
+#include <limits.h>
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
@@ -2389,7 +2390,12 @@ expand(spfrec* spfp, const char* s, const char* s1, const char* domain,
       num=0;
       while (ISDIGIT(*cp))
        {
-	num=num*10+*cp-'0';
+
+   // integer overflow check for SPF macro segment count
+   if (num > (INT_MAX - (*cp - '0')) / 10)
+     return SPF_PermError;
+
+   num = num * 10 + *cp - '0';
 	if (++cp>=s1)
 	  return SPF_PermError;
        }

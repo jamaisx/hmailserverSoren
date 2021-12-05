@@ -93,7 +93,7 @@ EXIT 0
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(hMailServerLibs)\boost_1_70_0;..\..\..\..\Libraries\mssqlce3.5;$(hMailServerLibs)\openssl-1.1.1l\out32\include;..\..\..\..\Libraries\pgsql8.2.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(hMailServerLibs)\boost_1_70_0;..\..\..\..\Libraries\mssqlce3.5;$(hMailServerLibs)\openssl-1.1.1l\out32\include;..\..\..\..\Libraries\pgsql8.2.4\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;UNICODE;_UNICODE;BOOST_DATE_TIME_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
@@ -151,7 +151,7 @@ EXIT 0
     <ClCompile>
       <AdditionalOptions>/MP
  %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(hMailServerLibs)\boost_1_70_0;..\..\..\..\Libraries\mssqlce3.5;$(hMailServerLibs)\openssl-1.1.1l\out32\include;..\..\..\..\Libraries\pgsql8.2.4\include;%(AdditionalIncludeDirectories);$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(hMailServerLibs)\boost_1_70_0;..\..\..\..\Libraries\mssqlce3.5;$(hMailServerLibs)\openssl-1.1.1l\out32\include;..\..\..\..\Libraries\pgsql8.2.4\include;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;UNICODE;_UNICODE;NDEBUG;BOOST_DATE_TIME_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

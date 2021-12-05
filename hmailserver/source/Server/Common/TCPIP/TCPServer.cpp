@@ -212,7 +212,7 @@ namespace HM
             return;
          }
 
-         if (!FireOnAcceptEvent(remoteAddress, localEndpoint.port()))
+         if (!FireOnAcceptEvent(connection, remoteAddress, localEndpoint.port()))
          {
             // Session has been created, but is now terminated by a custom script. Since we haven't started the
             // TCPConnection yet, we are still responsible for tracking connection count.
@@ -241,7 +241,7 @@ namespace HM
    }
 
    bool
-   TCPServer::FireOnAcceptEvent(const IPAddress &remoteAddress, int port)
+      TCPServer::FireOnAcceptEvent(std::shared_ptr<TCPConnection> connection, const IPAddress &remoteAddress, int port)
    {
       // Fire an event...
       if (!Configuration::Instance()->GetUseScriptServer())
@@ -253,6 +253,7 @@ namespace HM
 
 	  pClientInfo->SetIPAddress(remoteAddress.ToString());
       pClientInfo->SetPort(port);
+      pClientInfo->SetSessionID(connection->GetSessionID());
 
       pContainer->AddObject("HMAILSERVER_CLIENT", pClientInfo, ScriptObject::OTClient);
       pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
