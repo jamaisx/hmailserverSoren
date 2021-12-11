@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.8"
-#define HMAILSERVER_BUILD "2574.50"
+#define HMAILSERVER_BUILD "2574.51"
 
 /*
 [list=1]
@@ -50,5 +50,6 @@
 [*]Added: DomainMembers DistributionList mode [url=https://github.com/hmailserver/hmailserver/pull/392]pull #392[/url]
 [*]Added: oClient.SessionID "The SessionID for TCP/IP connection."
 [*]Added: X-hMailServer-Envelope-From header, grouping off all X-hMailServer-* headers, For consistency equalize Return-Path format used within hMailServer, eg: Return-Path: <return-route-addr> (always use angle brackets)
+[*]Added: TLS server cipher preference support and support for prioritizing ChaCha20Poly1305 [url=https://github.com/hmailserver/hmailserver/pull/379]pull 379[/url]
 [/list]
 */

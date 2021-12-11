@@ -17,10 +17,10 @@ namespace HM
       STListening = 6,
    };
 
-   enum ConnectionSecurity 
+   enum ConnectionSecurity
    {
-      CSNone     = 0,
-      CSSSL      = 1,
+      CSNone = 0,
+      CSSSL = 1,
       CSSTARTTLSOptional = 2,
       CSSTARTTLSRequired = 3
 
@@ -40,5 +40,12 @@ namespace HM
       TlsVersion11 = 4,
       TlsVersion12 = 8,
       TlsVersion13 = 16
+   };
+
+   enum TlsOption
+   {
+      TlsOptionPreferServerCiphers = 2,
+      TlsOptionPrioritizeChaCha = 4
+
    };
 }
