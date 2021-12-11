@@ -67,7 +67,8 @@ namespace HM
       // For SpamAssassin default rules and custom rules that rely on Return-Path header being present
       // We delete this header again after SpamAssassin checking has completed
       std::vector<std::pair<AnsiString, AnsiString> > fieldsToWrite;
-      fieldsToWrite.push_back(std::make_pair("Return-Path", pTestData->GetEnvelopeFrom()));
+      fieldsToWrite.push_back(std::make_pair("Return-Path", "<" + pTestData->GetEnvelopeFrom() + ">"));
+
       TraceHeaderWriter writer;
       writer.Write(sFilename, pMessage, fieldsToWrite);
 

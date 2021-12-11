@@ -89,6 +89,8 @@ namespace HM
 
       void PrependHeaders_();
       // Adds headers to the beginning of the message.
+      void AppendHeaders_();
+      // Adds headers to the end of the message.
 
       void QuitNow_();
       // Sends a QUIT message and switch over to
