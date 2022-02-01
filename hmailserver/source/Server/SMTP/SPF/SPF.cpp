@@ -24,7 +24,7 @@ namespace HM
 
    }
 
-+#ifdef _DEBUG
+#ifdef _DEBUG
    inline const char* EnumToString(int v)
    {
       switch (v)
@@ -47,7 +47,7 @@ namespace HM
             return "Unknown";
       }
    }
-+#endif
+#endif
 
    SPF::Result
    SPF::Test(const String &sSenderIP, const String &sSenderEmail, const String &sHeloHost, String &sExplanation)
@@ -78,9 +78,9 @@ namespace HM
          SPFFree(explain);
       }
 
-+#ifdef _DEBUG
+#ifdef _DEBUG
       LOG_DEBUG(Formatter::Format("Spam test: SpamTestSPF, Result: {0}", EnumToString(result)));
-+#endif
+#endif
 
       if (result == SPF_Fail)
       {
