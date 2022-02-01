@@ -267,8 +267,8 @@ namespace DBUpdater
                return "hMailServer 5.6 (Alpha 1)";
             case 5601:
                return "hMailServer 5.6";
-            case 5609:
-               return "hMailServer 5.6.8";
+            case 5605:
+               return "hMailServer 5.6.8 B2574.52";
             default:
                return "Unknown version";
          }
