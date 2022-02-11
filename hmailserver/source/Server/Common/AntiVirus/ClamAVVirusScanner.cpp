@@ -50,8 +50,6 @@ namespace HM
    {
       LOG_DEBUG("Connecting to ClamAV virus scanner...");
 
-      int streamPort = 0;
-
       TimeoutCalculator calculator;
 
       SynchronousConnection commandConnection(calculator.Calculate(IniFileSettings::Instance()->GetClamMinTimeout(), IniFileSettings::Instance()->GetClamMaxTimeout()));
@@ -61,28 +59,9 @@ namespace HM
             Formatter::Format("Unable to connect to ClamAV server at {0}:{1}.", hostName, primaryPort));
       }
 
-      if (!commandConnection.Write("STREAM\r\n"))
+      LOG_DEBUG("Send the INSTREAM command.");
+      if (!commandConnection.Write("nINSTREAM\n"))
          return VirusScanningResult("ClamAVVirusScanner::Scan", "Unable to write STREAM command.");
-
-      AnsiString readData;
-      if (!commandConnection.ReadUntil("\n", readData))
-         return VirusScanningResult("ClamAVVirusScanner::Scan", "Unable to read STREAM command response.");
-
-      if (!readData.StartsWith("PORT"))
-         return VirusScanningResult("ClamAVVirusScanner::Scan", Formatter::Format("Protocol error. Unexpected response: {0}.", readData));
-      
-      readData.TrimRight("\n");
-
-      // Determine port.
-      std::string portString = readData.Mid(5);
-      
-      if (!StringParser::TryParseInt(portString, streamPort))
-         return VirusScanningResult("ClamAVVirusScanner::Scan", Formatter::Format("Protocol error. Unexpected response: {0} (Unable to parse port).", readData));
-
-      LOG_DEBUG("Connecting to ClamAV stream port...");
-      SynchronousConnection streamConnection(15);
-      if (!streamConnection.Connect(hostName, streamPort))
-         return VirusScanningResult("ClamAVVirusScanner::Scan", Formatter::Format("Unable to connect to ClamAV stream port at {0}:{1}.", hostName, streamPort));
 
       // Send the file on the stream socket.
       File oFile;
@@ -101,17 +80,26 @@ namespace HM
          if (!pBuf)
             break;
 
+         int iInBufferSize = pBuf->GetSize();
+
          // Send the request.
-         if (!streamConnection.Write(*pBuf))
-            return VirusScanningResult("ClamAVVirusScanner::Scan", "Unable to write data to stream port.");
+         LOG_DEBUG(Formatter::Format("(loop #{0}) Send <length>(big endian, 4 bytes )" + to_string(htons(iInBufferSize)), i+1));
+         commandConnection.Write(to_string(htons(iInBufferSize))+"\n");
+
+         LOG_DEBUG(Formatter::Format("(loop #{0}) Send the chunk of data corresponding to the above length", i+1));
+         commandConnection.Write(*pBuf);
       }
 
-      streamConnection.Close();
+      LOG_DEBUG("Send a 0 - length block to mark end of stream");
+      commandConnection.Write(to_string(htons(0)));
 
+      AnsiString readData;
+      LOG_DEBUG("Get response");
       if (!commandConnection.ReadUntil("\n", readData))
          return VirusScanningResult("ClamAVVirusScanner::Scan", "Unable to read response (after streaming).");
 
       readData.TrimRight("\n");
+      LOG_DEBUG("Got response: " + readData);
 
       // Parse the response and see if a virus was reported.
       try
