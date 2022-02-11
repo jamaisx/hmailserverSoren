@@ -90,10 +90,10 @@ namespace HM
          foo.integer = iInBufferSize;
 
          // Send the request.
-         LOG_DEBUG(Formatter::Format("(loop #{0}) Send <length>(big endian, 4 bytes )" + iInBufferSize, i + 1));
+         LOG_DEBUG(Formatter::Format("(loop #{0}) Send <length>(big endian, 4 bytes) {1}", (i + 1), iInBufferSize));
          commandConnection.Write(to_string(foo.byte[3]) + to_string(foo.byte[2]) + to_string(foo.byte[1]) + to_string(foo.byte[0]));
 
-         LOG_DEBUG(Formatter::Format("(loop #{0}) Send the chunk of data corresponding to the above length", i+1));
+         LOG_DEBUG(Formatter::Format("(loop #{0}) Send the chunk of data corresponding to the above length", (i + 1)));
          commandConnection.Write(*pBuf);
       }
 
