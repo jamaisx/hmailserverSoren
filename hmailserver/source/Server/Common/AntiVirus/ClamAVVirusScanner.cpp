@@ -52,7 +52,7 @@ namespace HM
 
       union
       {
-         std::uint32_t integer;
+         unsigned int integer;
          unsigned char byte[4];
       } foo;
 
