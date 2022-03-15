@@ -85,7 +85,7 @@ namespace HM
          if (!pBuf)
             break;
 
-         foo.integer = htonl(static_cast<unsigned int>(pBuf->GetSize()));
+         foo.integer = htonl(static_cast<std::uint32_t>(pBuf->GetSize()));
          if (!commandConnection.Write(to_string(foo.byte[0]) + to_string(foo.byte[1]) + to_string(foo.byte[2]) + to_string(foo.byte[3])))
             return VirusScanningResult("ClamAVVirusScanner::Scan", "Unable to write packet size to stream port.");
 
