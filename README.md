@@ -55,7 +55,7 @@ Building OpenSSL
 
 Building Boost
 --------------
-1. Download Boost 1.72.0 from http://www.boost.org/ and put it into %hMailServerLibs%\<Boost-Version>.  
+1. Download Boost 1.70.0 from http://www.boost.org/ and put it into %hMailServerLibs%\<Boost-Version>.  
    You should now have a folder named %hMailServerLibs%\<Boost-Version>, for example C:\Dev\hMailLibs\boost_1_70_0
 2. Start a VS2013 x86 Native Tools Command Prompt
 3. Change dir to %hMailServerLibs%\<Boost-Version>.
