@@ -1,11 +1,11 @@
 [Setup]
 AppName=hMailServer
-AppVerName=hMailServer 5.6.9-B2587.A2-54
+AppVerName=hMailServer 5.6.9-B2587.A2-55
 AppCopyright=Copyright (C) 2022
 DefaultDirName={pf}\hMailServer
 DefaultGroupName=hMailServer
 PrivilegesRequired=admin
-OutputBaseFilename=hMailServer-5.6.9-B2587.A2-54
+OutputBaseFilename=hMailServer-5.6.9-B2587.A2-55
 SolidCompression=yes
 WizardImageFile=setup.bmp
 LicenseFile=license.rtf

@@ -35,6 +35,8 @@
 #include "../Common/AntiSpam/AntiSpamConfiguration.h"
 #include "../Common/AntiSpam/SpamProtection.h"
 
+#include <boost/algorithm/string.hpp>
+
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW
@@ -471,7 +473,6 @@ namespace HM
    POP3ClientConnection::StartMailboxCleanup_()
    {
       cur_message_ = downloaded_messages_.begin();
-	  SetReceiveBinary(false);
 
       MailboxCleanup_();
    }
@@ -1049,21 +1050,32 @@ namespace HM
    }
 
    void
-   POP3ClientConnection::ProcessMIMERecipients_(std::shared_ptr<MimeHeader> pHeader)
-   //---------------------------------------------------------------------------()
-   // DESCRIPTION:
-   // Goes through headers in the email and locates recipient. Adds these recipients
-   // to the message
-   //---------------------------------------------------------------------------()
+      POP3ClientConnection::ProcessMIMERecipients_(std::shared_ptr<MimeHeader> pHeader)
+      //---------------------------------------------------------------------------()
+      // DESCRIPTION:
+      // Goes through headers in the email and locates recipient. Adds these recipients
+      // to the message
+      //---------------------------------------------------------------------------()
    {
-      String sTo = pHeader->GetRawFieldValue("To");
-      String sCC = pHeader->GetRawFieldValue("CC");
-      String sXRCPTTo = pHeader->GetRawFieldValue("X-RCPT-TO");
-      String sXEnvelopeTo = pHeader->GetRawFieldValue("X-Envelope-To");
-      String sEnvelopeTo = pHeader->GetRawFieldValue("Envelope-To");
+      char sInput[] = "To;CC;X-RCPT-TO,X-Envelope-To,Envelope-To , X-Original-To";
 
+      vector<string> result;
+      vector<string> list;
+      boost::split(result, sInput, boost::is_any_of(";, "), boost::token_compress_on);
+      LOG_DEBUG(Formatter::Format("MIMERecipientHeaderSize: {0}", result.size()));
+      for (vector<string>::iterator it = result.begin(); it != result.end(); ++it)
+      {
+         LOG_DEBUG("MIMERecipientHeader: " + *it);
+         auto value = pHeader->GetRawFieldValue(*it);
+         if (value)
+         {
+            LOG_DEBUG(Formatter::Format("MIMERecipientHeaderValue: {0}", value));
+            list.push_back(value);
+         }
+      }
       //First check for explicit SMTP recipients
-      String sAllRecipients = sXRCPTTo + "," + sXEnvelopeTo + "," + sEnvelopeTo;
+      String sAllRecipients = boost::join(list, ",");
+      LOG_DEBUG(Formatter::Format("MIMERecipients: {0}", sAllRecipients));
 
       // Parse this list.
       AddresslistParser oListParser;
@@ -1090,46 +1102,11 @@ namespace HM
          iterAddress++;
       }
 
+      // Go through the Received headers
+      ProcessReceivedHeaders_(pHeader);
+
       // Remove non-existent accounts.
       RemoveInvalidRecipients_();
-
-      //If no explicit SMTP recipients then fallback to To, CC and Received headers
-      if (current_message_->GetRecipients()->GetCount() == 0)
-      {
-         String sAllRecipients = sTo + "," + sCC;
-
-         // Parse this list.
-         AddresslistParser oListParser;
-         std::vector<std::shared_ptr<Address> > vecAddresses = oListParser.ParseList(sAllRecipients);
-         auto iterAddress = vecAddresses.begin();
-
-         RecipientParser recipientParser;
-         while (iterAddress != vecAddresses.end())
-         {
-            std::shared_ptr<Address> pAddress = (*iterAddress);
-
-            if (pAddress->sMailboxName.IsEmpty() || pAddress->sDomainName.IsEmpty())
-            {
-               iterAddress++;
-               continue;
-            }
-
-            String sAddress = pAddress->sMailboxName + "@" + pAddress->sDomainName;
-
-            // Add the recipient to the message
-            bool recipientOK = false;
-            recipientParser.CreateMessageRecipientList(sAddress, current_message_->GetRecipients(), recipientOK);
-
-            iterAddress++;
-         }
-
-         // Go through the Received headers
-         ProcessReceivedHeaders_(pHeader);
-
-         // Remove non-existent accounts.
-         RemoveInvalidRecipients_();
-         
-      }
    }
 
    void 

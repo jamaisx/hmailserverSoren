@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2587.A2-54"
+#define HMAILSERVER_BUILD "2587.A2-55"
 
 /*
 [list=1]
@@ -55,5 +55,6 @@
 [*]Added: Prefer IPv6 over IPv4 [url=https://github.com/hmailserver/hmailserver/pull/415]pull #415[/url]
 [*]Fix: SpamTestHeloHost IPv6 Fix [url=https://github.com/hmailserver/hmailserver/pull/416]pull #416[/url]
 {*]Mod: Changed ClamAV Scan from STREAM to INSTREAM.
+[*]Removed: #251 External Fetch - First try (X-)Envelope-To and X-RCPT-TO headers
 [/list]
 */
