@@ -35,8 +35,6 @@
 #include "../Common/AntiSpam/AntiSpamConfiguration.h"
 #include "../Common/AntiSpam/SpamProtection.h"
 
-#include <boost/algorithm/string.hpp>
-
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW
@@ -1057,25 +1055,12 @@ namespace HM
       // to the message
       //---------------------------------------------------------------------------()
    {
-      char sInput[] = "To;CC;X-RCPT-TO,X-Envelope-To,Envelope-To , X-Original-To";
+      String sTo = pHeader->GetRawFieldValue("To");
+      String sCC = pHeader->GetRawFieldValue("CC");
+      String sXRCPTTo = pHeader->GetRawFieldValue("X-RCPT-TO");
+      String sXEnvelopeTo = pHeader->GetRawFieldValue("X-Envelope-To");
 
-      vector<string> result;
-      vector<string> list;
-      boost::split(result, sInput, boost::is_any_of(";, "), boost::token_compress_on);
-      LOG_DEBUG(Formatter::Format("MIMERecipientHeaderSize: {0}", result.size()));
-      for (vector<string>::iterator it = result.begin(); it != result.end(); ++it)
-      {
-         LOG_DEBUG("MIMERecipientHeader: " + *it);
-         auto value = pHeader->GetRawFieldValue(*it);
-         if (value)
-         {
-            LOG_DEBUG(Formatter::Format("MIMERecipientHeaderValue: {0}", value));
-            list.push_back(value);
-         }
-      }
-      //First check for explicit SMTP recipients
-      String sAllRecipients = boost::join(list, ",");
-      LOG_DEBUG(Formatter::Format("MIMERecipients: {0}", sAllRecipients));
+      String sAllRecipients = sTo + "," + sCC + "," + sXRCPTTo + "," + sXEnvelopeTo;
 
       // Parse this list.
       AddresslistParser oListParser;
