@@ -133,4 +133,4 @@
 #define PROPERTY_CLAMAV_PORT                 _T("ClamAVPort")
 #define PROPERTY_IPV6_PREFERRED  _T("IPv6Preferred")
 
-#define REQUIRED_DB_VERSION            5605
+#define REQUIRED_DB_VERSION            5606
