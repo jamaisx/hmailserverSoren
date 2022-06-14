@@ -75,8 +75,8 @@ Source: "System files\dnsapi.dll"; DestDir: "{sys}"; Flags: uninsneveruninstall 
 Source: "System files\ATL\atl70.dll"; DestDir: "{sys}";  Components: server;
 Source: "SQLCE\SSCERuntime-ENU.msi"; Flags: deleteafterinstall ; Excludes: ".svn"; DestDir: "{tmp}"; Components: server;
 Source: ".\Extras\7za.exe"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server;
-Source: "..\..\..\Libs\openssl-1.1.1o\out32\bin\libcrypto-1_1.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
-Source: "..\..\..\Libs\openssl-1.1.1o\out32\bin\libssl-1_1.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
+Source: "{#HMAILSERVERLIBS}\Libs\openssl-1.1.1o\out32\bin\libcrypto-1_1.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
+Source: "{#HMAILSERVERLIBS}\Libs\openssl-1.1.1o\out32\bin\libssl-1_1.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
 Source: "Microsoft.VC120.CRT\*"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
 
 ; Main server
@@ -101,7 +101,7 @@ Source: "..\source\tools\Administrator\bin\Release\Interop.hMailServer.dll"; Des
 Source: "..\source\Tools\Shared\Bin\Release\*.dll"; DestDir: "{app}\Addons\DataDirectorySynchronizer"; Flags: ignoreversion recursesubdirs;Components: server;
 
 Source: "..\source\Addons\*.*"; DestDir: "{app}\Addons"; Flags: ignoreversion recursesubdirs; Excludes: "Events";  Components: server;
-Source: "..\source\Addons\Events\*.*"; DestDir: "{app}\Events"; Flags: ignoreversion uninsneveruninstall; Components: server;
+Source: "..\source\Addons\Events\*.*"; DestDir: "{app}\Events"; Flags: onlyifdoesntexist uninsneveruninstall; Components: server;
 
 Source: "..\source\WebAdmin\*.*"; DestDir: "{app}\PHPWebAdmin"; Flags: recursesubdirs; Components: admintools;
 Source: "..\source\Translations\*"; Excludes: "CVS,.cvsignore,.#*"; DestDir: "{app}\Languages"; Components: server admintools;
