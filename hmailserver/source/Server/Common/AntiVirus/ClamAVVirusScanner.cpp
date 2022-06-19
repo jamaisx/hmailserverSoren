@@ -48,20 +48,20 @@ namespace HM
    VirusScanningResult
    ClamAVVirusScanner::Scan(const String &hostName, int primaryPort, const String &sFilename)
    {
-      LOG_DEBUG("Connecting to ClamAV virus scanner...");
 
       union
       {
          std::uint32_t integer;
          unsigned char byte[4];
-      } foo;
+      } bArray;
 
       TimeoutCalculator calculator;
-      SynchronousConnection commandConnection(calculator.Calculate(IniFileSettings::Instance()->GetClamMinTimeout(), IniFileSettings::Instance()->GetClamMaxTimeout()));
 
+      LOG_DEBUG("Connecting to ClamAV virus scanner...");
+      SynchronousConnection commandConnection(calculator.Calculate(IniFileSettings::Instance()->GetClamMinTimeout(), IniFileSettings::Instance()->GetClamMaxTimeout()));
       if (!commandConnection.Connect(hostName, primaryPort))
       {
-         return VirusScanningResult(_T("ClamAVVirusScanner::Scan"), 
+         return VirusScanningResult(_T("ClamAVVirusScanner::Scan"),
             Formatter::Format("Unable to connect to ClamAV server at {0}:{1}.", hostName, primaryPort));
       }
 
@@ -85,8 +85,9 @@ namespace HM
          if (!pBuf)
             break;
 
-         foo.integer = htonl(static_cast<std::uint32_t>(pBuf->GetSize()));
-         if (!commandConnection.Write(to_string(foo.byte[0]) + to_string(foo.byte[1]) + to_string(foo.byte[2]) + to_string(foo.byte[3])))
+         bArray.integer = htonl(static_cast<std::uint32_t>(pBuf->GetSize()));
+         // Send the request
+         if (!commandConnection.Write(to_string(bArray.byte[0]) + to_string(bArray.byte[1]) + to_string(bArray.byte[2]) + to_string(bArray.byte[3])))
             return VirusScanningResult("ClamAVVirusScanner::Scan", "Unable to write packet size to stream port.");
 
          if (!commandConnection.Write(*pBuf))
@@ -94,8 +95,8 @@ namespace HM
 
       }
 
-      foo.integer = 0;
-      if (!commandConnection.Write(to_string(foo.byte[0]) + to_string(foo.byte[1]) + to_string(foo.byte[2]) + to_string(foo.byte[3])))
+      bArray.integer = 0;
+      if (!commandConnection.Write(to_string(bArray.byte[0]) + to_string(bArray.byte[1]) + to_string(bArray.byte[2]) + to_string(bArray.byte[3])))
          return VirusScanningResult("ClamAVVirusScanner::Scan", "Unable to write end of stream.");
 
       AnsiString readData;
@@ -109,9 +110,9 @@ namespace HM
       // Parse the response and see if a virus was reported.
       try
       {
-         const regex expression("^stream.*: (.*) FOUND$"); 
-         cmatch what; 
-         if(regex_match(readData.c_str(), what, expression)) 
+         const regex expression("^stream.*: (.*) FOUND$");
+         cmatch what;
+         if(regex_match(readData.c_str(), what, expression))
          {
             LOG_DEBUG("Virus detected: " + what[1]);
             return VirusScanningResult(VirusScanningResult::VirusFound, String(what[1]));
@@ -122,11 +123,9 @@ namespace HM
             return VirusScanningResult(VirusScanningResult::NoVirusFound, Formatter::Format("Result: {0}", readData));
          }
       }
-      catch (std::runtime_error &) // regex_match will throw runtime_error if regexp is too complex.
+      catch (std::runtime_error&) // regex_match will throw runtime_error if regexp is too complex.
       {
          return VirusScanningResult("ClamAVVirusScanner::Scan", "Unable to parse regular expression.");
       }
-
-      
    }
 }
