@@ -31,10 +31,7 @@ namespace RegressionTests.AntiVirus
          Account account1 = SingletonProvider<TestSetup>.Instance.AddAccount(_domain, "test@test.com", "test");
          SmtpClientSimulator.StaticSend(account1.Address, account1.Address, "Mail 1", "DummyBody");
          Pop3ClientSimulator.AssertMessageCount(account1.Address, "test", 1);
-
-         // +OK POP3, since we are connecting to POP3 port
-         string defaultLog = LogHandler.ReadCurrentDefaultLog();
-         Assert.IsTrue(defaultLog.Contains("No virus detected: +OK POP3"));
+         CustomAsserts.AssertReportedError("Protocol error. Unexpected response: +OK");
       }
 
       [Test]
@@ -87,7 +84,7 @@ namespace RegressionTests.AntiVirus
 
          string defaultLog = LogHandler.ReadCurrentDefaultLog();
          Assert.IsTrue(defaultLog.Contains("Connecting to ClamAV"));
-         Assert.IsTrue(defaultLog.Contains("Message will be deleted (contained virus Eicar-Signature)."));
+         Assert.IsTrue(defaultLog.Contains("Message deleted (contained virus Eicar-Test-Signature)"));
       }
    }
 }
