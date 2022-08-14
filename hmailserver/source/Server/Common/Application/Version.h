@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2602.59 (x86)"
+#define HMAILSERVER_BUILD "2602.60 (x86)"
 
 /*
 [list=1]
@@ -56,5 +56,6 @@
 [*]Added: MIME Recipient Headers as configurable comma delimited string [url=https://github.com/hmailserver/hmailserver/pull/428]pull #428[/url]
 [*]Fix: AUTH PLAIN followed by base64 encoded username and password (on same line) in log exposed account password https://github.com/hmailserver/hmailserver/pull/437
 [*]Fix: After an AUTH command has been successfully completed, no more AUTH commands may be issued in the same session. https://github.com/hmailserver/hmailserver/pull/438
+[*]Fix: Typo in error message 5507 and 5508 in SpamTestSpamAssassin.cpp
 [/list]
 */
