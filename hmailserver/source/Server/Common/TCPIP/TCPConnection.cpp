@@ -573,6 +573,9 @@ namespace HM
    {
       UpdateAutoLogoutTimer();
 
+      if (error == boost::asio::error::eof)
+         LOG_APPLICATION("boost::asio::error::eof ...");
+
       if (!error || error == boost::asio::error::eof)
       {
          if (receive_binary_)
