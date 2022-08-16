@@ -580,11 +580,11 @@ namespace HM
       {
          if (receive_binary_)
          {
-               std::shared_ptr<ByteBuffer> pBuffer = std::shared_ptr<ByteBuffer>(new ByteBuffer());
+            std::shared_ptr<ByteBuffer> pBuffer = std::shared_ptr<ByteBuffer>(new ByteBuffer());
             pBuffer->Allocate(receive_buffer_.size());
 
             std::istream is(&receive_buffer_);
-            is.read((char*) pBuffer->GetBuffer(), receive_buffer_.size());
+            is.read((char*)pBuffer->GetBuffer(), receive_buffer_.size());
 
             try
             {
@@ -613,53 +613,56 @@ namespace HM
             // consume trailing \n on line.
             receive_buffer_.consume(1);
 
-      #ifdef _DEBUG
+#ifdef _DEBUG
             String sDebugOutput;
             sDebugOutput.Format(_T("RECEIVED: %s\r\n"), String(s).c_str());
             OutputDebugString(sDebugOutput);
-      #endif
+#endif
+            if (!error)
+            {
+               try
+               {
+                  ParseData(s);
+               }
+               catch (DisconnectedException&)
+               {
+                  throw;
+               }
+               catch (...)
+               {
+                  String message;
+                  message.Format(_T("An error occured while parsing data. Data length: %d, Data: %s."), s.size(), String(s).c_str());
 
-            try
-            {
-               ParseData(s);
+                  ReportError(ErrorManager::Medium, 5136, "TCPConnection::AsyncReadCompleted", message);
+
+                  throw;
+               }
             }
-            catch (DisconnectedException&)
+            else
             {
-               throw;
-            }
-            catch (...)
-            {
+               // display boost::asio::error::eof for SMTP, IMAP, POP
+               if (connection_state_ != StateConnected)
+               {
+                  // The read failed, but we've already started the disconnection. So we should not log the failure
+                  // or enqueue a new disconnect.
+                  return;
+               }
+
+               OnReadError(error.value());
+
                String message;
-               message.Format(_T("An error occured while parsing data. Data length: %d, Data: %s."), s.size(), String(s).c_str());
+               message.Format(_T("The read operation failed. Bytes transferred: %d"), bytes_transferred);
+               ReportDebugMessage(message, error);
 
-               ReportError(ErrorManager::Medium, 5136, "TCPConnection::AsyncReadCompleted", message);
+               if (error.value() == boost::asio::error::not_found)
+               {
+                  // read buffer is full...
+                  OnExcessiveDataReceived();
+               }
 
-               throw;
+               EnqueueDisconnect();
             }
          }
-      }
-      else
-      {
-         if (connection_state_ != StateConnected)
-         {
-            // The read failed, but we've already started the disconnection. So we should not log the failure
-            // or enqueue a new disconnect.
-            return;
-         }
-
-         OnReadError(error.value());
-
-         String message;
-         message.Format(_T("The read operation failed. Bytes transferred: %d"), bytes_transferred);
-         ReportDebugMessage(message, error);
-
-         if (error.value() == boost::asio::error::not_found)
-         {
-            // read buffer is full...
-            OnExcessiveDataReceived();
-         }
-
-         EnqueueDisconnect();
       }
       
       operation_queue_.Pop(IOOperation::BCTRead);
