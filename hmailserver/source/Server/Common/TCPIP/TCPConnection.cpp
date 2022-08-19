@@ -538,12 +538,11 @@ namespace HM
             // consume trailing \n on line.
             receive_buffer_.consume(1);
 
-#ifdef _DEBUG
+      #ifdef _DEBUG
             String sDebugOutput;
             sDebugOutput.Format(_T("RECEIVED: %s\r\n"), String(s).c_str());
             OutputDebugString(sDebugOutput);
-#endif
-
+      #endif
             if (!error)
             {
                try
@@ -579,12 +578,6 @@ namespace HM
                String message;
                message.Format(_T("The read operation failed. Bytes transferred: %d"), bytes_transferred);
                ReportDebugMessage(message, error);
-
-               if (error.value() == boost::asio::error::not_found)
-               {
-                  // read buffer is full...
-                  OnExcessiveDataReceived();
-               }
 
                EnqueueDisconnect();
             }

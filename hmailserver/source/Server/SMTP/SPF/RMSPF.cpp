@@ -136,7 +136,7 @@ static typIsamDelete* pIsamDelete;
 #define SPFARECSIZE 256 // size of buffer for data record with IP addresses
 #define SPFNRECSIZE 1024 // size of buffer for data record with domain names
 #define SPFKEYSIZE 255 // size of buffer for search key
-#define SPFMAXLOOKUPS 20 // max number of lookups
+#define SPFMAXLOOKUPS 10 // max number of lookups - changed to 10 from 20.
 
 #if defined(SPFFILECACHE) || defined(SPFMEMCACHE)
 #define SPFCACHE
