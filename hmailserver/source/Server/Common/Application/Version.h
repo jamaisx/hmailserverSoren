@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2602.61 (x86)"
+#define HMAILSERVER_BUILD "2602.62 (x86)"
 
 /*
 [list=1]
@@ -58,7 +58,8 @@
 [*]Fix: After an AUTH command has been successfully completed, no more AUTH commands may be issued in the same session. https://github.com/hmailserver/hmailserver/pull/438
 [*]Fix: Typo in error message 5507 and 5508 in SpamTestSpamAssassin.cpp
 [*]Fix: HM5157 SpamAssassinClient::OnReadError, The WinSock error code is 2. [url=https://github.com/hmailserver/hmailserver/issues/167]issue #167[/url]
-[*]Fix: TCP/IP Ports 'Default' button in GUI did not add the standard port SMTP 587 (this port is standard added by SQL script during installation)
+[*]Fix: TCP/IP Ports 'Default' button in GUI did not add the standard port SMTP 587 (this port is standard added by SQL script during installation) #pull 441
 [*]Fix: RMSPF version 1.12. Changed MAX SPF lookups from 20 to 10 as per RFC 7208.
+[*]Removed: Collection of statistics, since it's no longer being used. issue #435
 [/list]
 */
