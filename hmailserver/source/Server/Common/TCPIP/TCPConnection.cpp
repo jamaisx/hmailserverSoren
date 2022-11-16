@@ -474,11 +474,53 @@ namespace HM
    }
 
    void
-   TCPConnection::AsyncReadCompleted(const boost::system::error_code& error, size_t bytes_transferred)
+      TCPConnection::AsyncReadCompleted(const boost::system::error_code& error, size_t bytes_transferred)
    {
       UpdateAutoLogoutTimer();
 
-      if (error && error != boost::asio::error::eof)
+      auto saEnabled = Configuration::Instance()->GetAntiSpamConfiguration().GetSpamAssassinEnabled();
+      auto saPort = Configuration::Instance()->GetAntiSpamConfiguration().GetSpamAssassinPort();
+
+#ifdef _DEBUG
+      if (error.value() == boost::asio::error::eof)
+      {
+         LOG_APPLICATION(Formatter::Format("boost::asio::error::eof, Binary data: {0}, Remote port: {1}, is SpamAssassin: {2}", receive_binary_ ? "true" : "false", remote_port_, saEnabled && remote_port_ == saPort ? "true" : "false"));
+      }
+#endif
+
+      // Catch SpamAssassin WinSock error code is 2 (boost boost::asio::error::eof)
+      if ((error.value() == 0 || error.value() == boost::asio::error::eof) && receive_binary_ && saEnabled && remote_port_ == saPort)
+      {
+         // https://www.boost.org/doc/libs/1_70_0/doc/html/boost_asio/overview/core/streams.html
+         // Why EOF is an Error
+         // The end of a stream can cause read, async_read, read_until or async_read_until functions to violate their contract.E.g.a read of N bytes may finish early due to EOF.
+         // An EOF error may be used to distinguish the end of a stream from a successful read of size 0.
+
+         std::shared_ptr<ByteBuffer> pBuffer = std::shared_ptr<ByteBuffer>(new ByteBuffer());
+         pBuffer->Allocate(receive_buffer_.size());
+
+         std::istream is(&receive_buffer_);
+         is.read((char*)pBuffer->GetBuffer(), receive_buffer_.size());
+
+         try
+         {
+            ParseData(pBuffer);
+         }
+         catch (DisconnectedException&)
+         {
+            throw;
+         }
+         catch (...)
+         {
+            String message;
+            message.Format(_T("An error occured while parsing data. Data size: %d"), pBuffer->GetSize());
+
+            ReportError(ErrorManager::Medium, 5136, "TCPConnection::AsyncReadCompleted", message);
+
+            throw;
+         }
+      }
+      else if (error.value() != 0)
       {
          if (connection_state_ != StateConnected)
          {
@@ -493,7 +535,7 @@ namespace HM
          message.Format(_T("The read operation failed. Bytes transferred: %d"), bytes_transferred);
          ReportDebugMessage(message, error);
 
-         if (error == boost::asio::error::not_found)
+         if (error.value() == boost::asio::error::not_found)
          {
             // read buffer is full...
             OnExcessiveDataReceived();
@@ -538,48 +580,28 @@ namespace HM
             // consume trailing \n on line.
             receive_buffer_.consume(1);
 
-      #ifdef _DEBUG
+#ifdef _DEBUG
             String sDebugOutput;
             sDebugOutput.Format(_T("RECEIVED: %s\r\n"), String(s).c_str());
             OutputDebugString(sDebugOutput);
-      #endif
-            if (!error)
+#endif
+
+            try
             {
-               try
-               {
-                  ParseData(s);
-               }
-               catch (DisconnectedException&)
-               {
-                  throw;
-               }
-               catch (...)
-               {
-                  String message;
-                  message.Format(_T("An error occured while parsing data. Data length: %d, Data: %s."), s.size(), String(s).c_str());
-
-                  ReportError(ErrorManager::Medium, 5136, "TCPConnection::AsyncReadCompleted", message);
-
-                  throw;
-               }
+               ParseData(s);
             }
-            else
+            catch (DisconnectedException&)
             {
-               // display boost::asio::error::eof for SMTP, IMAP, POP
-               if (connection_state_ != StateConnected)
-               {
-                  // The read failed, but we've already started the disconnection. So we should not log the failure
-                  // or enqueue a new disconnect.
-                  return;
-               }
-
-               OnReadError(error.value());
-
+               throw;
+            }
+            catch (...)
+            {
                String message;
-               message.Format(_T("The read operation failed. Bytes transferred: %d"), bytes_transferred);
-               ReportDebugMessage(message, error);
+               message.Format(_T("An error occured while parsing data. Data length: %d, Data: %s."), s.size(), String(s).c_str());
 
-               EnqueueDisconnect();
+               ReportError(ErrorManager::Medium, 5136, "TCPConnection::AsyncReadCompleted", message);
+
+               throw;
             }
          }
       }

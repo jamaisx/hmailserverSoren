@@ -1,7 +1,7 @@
 #pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2602.63 (x86)"
+#define HMAILSERVER_BUILD "2602.64 (x86)"
 
 /*
 [list=1]
@@ -62,5 +62,6 @@
 [*]Fix: RMSPF version 1.12. Changed MAX SPF lookups from 20 to 10 as per RFC 7208.
 [*]Removed: Collection of statistics, since it's no longer being used. issue #435
 [*]Fix: If MSSQL OLE DB Provider 18 or later is installed, prefer that one, since it supports TLS1.1/1.2 which older providers do not. [url=https://github.com/hmailserver/hmailserver/issues/186]issue 186[/url]
+[*]Test: Rework of issue #167 to check for high CPU problem inside TCPConnection::AsyncReadCompleted.
 [/list]
 */
