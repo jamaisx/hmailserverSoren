@@ -16,6 +16,7 @@
 #include "../Common/BO/Message.h"
 #include "../Common/BO/Account.h"
 #include "../Common/BO/MessageRecipients.h"
+#include "../Common/Mime/Mime.h"
 #include "../Common/Cache/CacheContainer.h"
 #include "../Common/Util/Time.h"
 #include "../Common/Util/Utilities.h"
@@ -368,6 +369,21 @@ namespace HM
       // Run a custom function
       String sHeader = pAction->GetHeaderName();
       String sValue = pAction->GetValue();
+
+// Enable macro ??
+//      MimeHeader header;
+//      AnsiString sHeaderX = PersistentMessage::LoadHeader(PersistentMessage::GetFileName(account, pMsgData->GetMessage()));
+//      header.Load(sHeaderX, sHeaderX.GetLength(), true);
+//
+//      sValue.Replace(_T("%MACRO_ORIGINAL_HEADER%"), String(header.GetRawFieldValue(sHeader)));
+// End ...
+
+      MimeHeader mimeHeader;
+      AnsiString header = pMsgData->GetHeader();
+      mimeHeader.Load(header, header.GetLength(), true);
+
+      // Replace macro value
+      sValue.Replace(_T("%MACRO_ORIGINAL_HEADER%"), String(mimeHeader.GetRawFieldValue(sHeader)));
 
       pMsgData->SetFieldValue(sHeader, sValue);
 
