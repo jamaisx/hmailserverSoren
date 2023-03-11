@@ -653,6 +653,7 @@ namespace HM
       return true;
    }
 
+   /*
    void 
    POP3ClientConnection::PrependHeaders_()
    //---------------------------------------------------------------------------()
@@ -670,8 +671,8 @@ namespace HM
 
       transmission_buffer_->Append((BYTE*) sAnsiHeader.GetBuffer(), sAnsiHeader.GetLength());
    }
+   */
 
-   /* // **
    void
    POP3ClientConnection::AppendHeaders_()
    //---------------------------------------------------------------------------()
@@ -693,7 +694,6 @@ namespace HM
 
      messageData->Write(fileName);
    }
-   */
 
    void
    POP3ClientConnection::ParseData(std::shared_ptr<ByteBuffer> pBuf)
@@ -754,8 +754,7 @@ namespace HM
             return;
          }
 
-         // ** // PrependHeaders_();
-         PrependHeaders_();
+         // PrependHeaders_();
       }
 
       transmission_buffer_->Append(pBuf->GetBuffer(), pBuf->GetSize());
@@ -834,7 +833,7 @@ namespace HM
       if (!account_->GetUseAntiSpam())
       {
          // spam protection isn't enabled.
-         // ** AppendHeaders_();
+         AppendHeaders_();
          return true;
       }
 
@@ -848,10 +847,10 @@ namespace HM
       // The received header isn't safely parseable so we will always do anti-spam,
 
       if (SpamProtection::IsWhiteListed(senderAddress, ipAddress))
-      // ** {
-      // **    AppendHeaders_();
+      {
+         AppendHeaders_();
          return true;
-      // ** }
+      }
 
       std::set<std::shared_ptr<SpamTestResult> > setSpamTestResults;
       
@@ -872,10 +871,10 @@ namespace HM
       {
          std::shared_ptr<MessageData> messageData = SpamProtection::TagMessageAsSpam(current_message_, setSpamTestResults);
          if (messageData)
-         // ** {
-         // **    AppendHeaders_();
+         {
+            AppendHeaders_();
             messageData->Write(fileName);
-         // ** }
+         }
       }
 
       // Run PostTransmissionTests. These consists of more heavy stuff such as SURBL and SpamAssassin-
@@ -895,10 +894,10 @@ namespace HM
       {
          std::shared_ptr<MessageData> messageData = SpamProtection::TagMessageAsSpam(current_message_, setSpamTestResults);
          if (messageData)
-         // ** {
-         // **    AppendHeaders_();
+         {
+            AppendHeaders_();
             messageData->Write(fileName);
-         // ** }
+         }
       }
 
       return true;

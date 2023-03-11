@@ -18,7 +18,6 @@
 #include "../common/BO/SecurityRange.h"
 #include "../common/Mime/MimeCode.h"
 #include "../common/Mime/Mime.h"
-#include "../common/Util/TraceHeaderWriter.h"
 #include "../common/util/MessageUtilities.h"
 #include "../common/util/Utilities.h"
 #include "../common/util/File.h"
@@ -1172,15 +1171,9 @@ namespace HM
       std::shared_ptr<MessageData> pMsgData = std::shared_ptr<MessageData>(new MessageData());
 
       // Add "X-hMailServer-Envelope-From" header
-      //pMsgData->LoadFromMessage(fileName, current_message_);
-      //pMsgData->SetFieldValue("X-hMailServer-Envelope-From", current_message_->GetFromAddress());
-      //pMsgData->Write(fileName);
-
-      std::vector<std::pair<AnsiString, AnsiString>> fieldsToWrite;
-      fieldsToWrite.push_back(std::make_pair("X-hMailServer-Envelope-From", current_message_->GetFromAddress()));
-
-      TraceHeaderWriter writer;
-      writer.Write(fileName, current_message_, fieldsToWrite);
+      pMsgData->LoadFromMessage(fileName, current_message_);
+      pMsgData->SetFieldValue("X-hMailServer-Envelope-From", current_message_->GetFromAddress());
+      pMsgData->Write(fileName);
 
       //std::shared_ptr<MessageData> pMsgData;
 
@@ -1200,7 +1193,6 @@ namespace HM
 
       if (pMsgData)
          pMsgData->Write(fileName);
-      
    }
 
    void
