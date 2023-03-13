@@ -1166,16 +1166,7 @@ namespace HM
    // for example where message signature and spam-headers are added.
    //---------------------------------------------------------------------------()
    {
-      String fileName = PersistentMessage::GetFileName(current_message_);
-
-      std::shared_ptr<MessageData> pMsgData = std::shared_ptr<MessageData>(new MessageData());
-
-      // Add "X-hMailServer-Envelope-From" header
-      pMsgData->LoadFromMessage(fileName, current_message_);
-      pMsgData->SetFieldValue("X-hMailServer-Envelope-From", current_message_->GetFromAddress());
-      pMsgData->Write(fileName);
-
-      //std::shared_ptr<MessageData> pMsgData;
+      std::shared_ptr<MessageData> pMsgData;
 
       // Check if we should add a spam header.
       int iTotalSpamScore = SpamProtection::CalculateTotalSpamScore(spam_test_results_);
@@ -1192,7 +1183,7 @@ namespace HM
       SetMessageSignature_(pMsgData);
 
       if (pMsgData)
-         pMsgData->Write(fileName);
+         pMsgData->Write(PersistentMessage::GetFileName(current_message_));
    }
 
    void

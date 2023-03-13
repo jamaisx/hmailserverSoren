@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2602.66 (x86)"
+#define HMAILSERVER_BUILD "2602.66a (x86)"
 
 /*
 [list=1]
@@ -65,5 +65,6 @@
 [*]Fix: Rework of issue #167 to check for high CPU problem inside TCPConnection::AsyncReadCompleted.
 [*]Added: %MACRO_ORIGINAL_HEADER% macro expansion for 'Set header value' rules
 [*]Update: OpenSSL 1.1.1t
+[*]Remove: X-hMailServer-Envelope-From headers
 [/list]
 */
