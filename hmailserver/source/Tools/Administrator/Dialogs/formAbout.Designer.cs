@@ -75,7 +75,7 @@ namespace hMailServer.Administrator
             this.labelCopyright.Name = "labelCopyright";
             this.labelCopyright.Size = new System.Drawing.Size(200, 13);
             this.labelCopyright.TabIndex = 12;
-            this.labelCopyright.Text = "Copyright 2022 Martin Knafve and others";
+            this.labelCopyright.Text = "Copyright 2023 Martin Knafve and others";
             // 
             // linkVisitors
             // 
