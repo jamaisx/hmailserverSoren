@@ -17,6 +17,7 @@
 #include "../SMTP/RecipientParser.h"
 #include "../Common/Util/Parsing/AddressListParser.h"
 #include "../Common/Util/Utilities.h"
+#include "../Common/Util/TraceHeaderWriter.h"
 #include "../Common/Mime/Mime.h"
 #include "../Common/BO/FetchAccountUID.h"
 #include "../Common/BO/MessageRecipients.h"
@@ -473,6 +474,7 @@ namespace HM
    POP3ClientConnection::StartMailboxCleanup_()
    {
       cur_message_ = downloaded_messages_.begin();
+	  SetReceiveBinary(false);
 
       MailboxCleanup_();
    }
@@ -653,6 +655,7 @@ namespace HM
       return true;
    }
 
+   /*
    void 
    POP3ClientConnection::PrependHeaders_()
    //---------------------------------------------------------------------------()
@@ -669,6 +672,36 @@ namespace HM
       AnsiString sAnsiHeader = sHeader;
 
       transmission_buffer_->Append((BYTE*) sAnsiHeader.GetBuffer(), sAnsiHeader.GetLength());
+   }
+   */
+
+   void
+      POP3ClientConnection::PrependHeaders_()
+      //---------------------------------------------------------------------------()
+      // DESCRIPTION:
+      // Adds headers to the beginning of the message.
+      //---------------------------------------------------------------------------()
+   {
+      const String fileName = PersistentMessage::GetFileName(current_message_);
+
+      // Delete existing "X-hMailServer-Envelope-From" header
+      std::shared_ptr<MessageData> pMessageData = std::shared_ptr<MessageData>(new MessageData());
+      pMessageData->LoadFromMessage(fileName, current_message_);
+      if (!pMessageData->GetFieldValue("X-hMailServer-Envelope-From").IsEmpty())
+      {
+         pMessageData->DeleteField("X-hMailServer-Envelope-From");
+         pMessageData->Write(fileName);
+      }
+
+      std::vector<std::pair<AnsiString, AnsiString>> fieldsToWrite;
+      // Add a header with the name of the external account, so that
+      // we can check where we downloaded it from later on.
+      fieldsToWrite.push_back(std::make_pair("X-hMailServer-ExternalAccount", account_->GetName().c_str()));
+      // Add "X-hMailServer-Envelope-From" header
+      fieldsToWrite.push_back(std::make_pair("X-hMailServer-Envelope-From", current_message_->GetFromAddress()));
+
+      TraceHeaderWriter writer;
+      writer.Write(fileName, current_message_, fieldsToWrite);
    }
 
    void
@@ -730,7 +763,7 @@ namespace HM
             return;
          }
 
-         PrependHeaders_();
+         //PrependHeaders_();
       }
 
       transmission_buffer_->Append(pBuf->GetBuffer(), pBuf->GetSize());
@@ -809,6 +842,7 @@ namespace HM
       if (!account_->GetUseAntiSpam())
       {
          // spam protection isn't enabled.
+         PrependHeaders_();
          return true;
       }
 
@@ -822,7 +856,12 @@ namespace HM
       // The received header isn't safely parseable so we will always do anti-spam,
 
       if (SpamProtection::IsWhiteListed(senderAddress, ipAddress))
-        return true;
+      {
+         PrependHeaders_();
+         return true;
+      }
+
+      PrependHeaders_();
 
       std::set<std::shared_ptr<SpamTestResult> > setSpamTestResults;
       

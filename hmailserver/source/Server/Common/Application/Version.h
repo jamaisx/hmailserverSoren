@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2607.70 (x86)"
+#define HMAILSERVER_BUILD "2607.71 (x86)"
 
 /*
 [list=1]
@@ -65,6 +65,6 @@
 [*]Fix: Rework of issue #167 to check for high CPU problem inside TCPConnection::AsyncReadCompleted.
 [*]Added: %MACRO_ORIGINAL_HEADER% macro expansion for 'Set header value' rules
 [*]Update: OpenSSL 1.1.1t
-[*]Removed: X-hMailServer-Envelope-From header, grouping off all X-hMailServer-* headers.
+[*]Fix: S/MIME Signed Message Failing Signature Validation due to X-hMailServer-Envelope-From header position, effectively this means ungrouping of the X-hMailServer-* headers
 [/list]
 */
