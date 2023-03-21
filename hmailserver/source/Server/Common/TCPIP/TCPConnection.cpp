@@ -455,9 +455,13 @@ namespace HM
       if (is_ssl_)
       {
          if (delimitor.GetLength() == 0)
+         {
             boost::asio::async_read(ssl_socket_, receive_buffer_, boost::asio::transfer_at_least(1), AsyncReadCompletedFunction);
+         }
          else
-            boost::asio::async_read_until(ssl_socket_, receive_buffer_,  delimitor, AsyncReadCompletedFunction);
+         {
+         	boost::asio::async_read_until(ssl_socket_, receive_buffer_,  delimitor, AsyncReadCompletedFunction);
+         }
       }
       else
       {
@@ -487,7 +491,6 @@ namespace HM
          LOG_APPLICATION(Formatter::Format("boost::asio::error::eof, Binary data: {0}, Remote port: {1}, is SpamAssassin: {2}", receive_binary_ ? "true" : "false", remote_port_, saEnabled && remote_port_ == saPort ? "true" : "false"));
       }
 #endif
-
       // Catch SpamAssassin WinSock error code is 2 (boost boost::asio::error::eof)
       if ((error.value() == 0 || error.value() == boost::asio::error::eof) && receive_binary_ && saEnabled && remote_port_ == saPort)
       {
@@ -616,7 +619,7 @@ namespace HM
       AnsiString sTemp = sData;
       char *pBuf = sTemp.GetBuffer();
 
-         std::shared_ptr<ByteBuffer> pBuffer = std::shared_ptr<ByteBuffer>(new ByteBuffer());
+      std::shared_ptr<ByteBuffer> pBuffer = std::shared_ptr<ByteBuffer>(new ByteBuffer());
       pBuffer->Add((BYTE*) pBuf, sData.GetLength());
 
 #ifdef _DEBUG
@@ -634,7 +637,7 @@ namespace HM
    {
       ThrowIfNotConnected_();
 
-         std::shared_ptr<IOOperation> operation = std::shared_ptr<IOOperation>(new IOOperation(IOOperation::BCTWrite, pBuffer));
+      std::shared_ptr<IOOperation> operation = std::shared_ptr<IOOperation>(new IOOperation(IOOperation::BCTWrite, pBuffer));
 
       operation_queue_.Push(operation);
       ProcessOperationQueue_(0);
@@ -822,13 +825,13 @@ namespace HM
    void
    TCPConnection::OnTimeout(std::weak_ptr<TCPConnection> connection, boost::system::error_code const& err)
    {
-         std::shared_ptr<TCPConnection> conn = connection.lock();
+      std::shared_ptr<TCPConnection> conn = connection.lock();
       if (!conn)
       {
          return;
       }
 
-         if (err == boost::asio::error::operation_aborted) 
+      if (err == boost::asio::error::operation_aborted) 
       {
          // the timeout operation was cancelled.
          return;

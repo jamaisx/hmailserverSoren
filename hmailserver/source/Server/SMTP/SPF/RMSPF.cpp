@@ -3689,6 +3689,7 @@ check_host(spfrec* spfp, const char* domain)
 	if (redirect!=NULL) // already specified
 	 {
 	  spffree((void*)redirect);
+//	  redirect=NULL; // FIX.
 	  result=SPF_PermError;
 	  break;
 	 }
@@ -3708,7 +3709,10 @@ check_host(spfrec* spfp, const char* domain)
 	  && _memicmp(name,"exp",3)==0)
 	 {
 	  if (explain!=NULL) // already specified
-	    spffree((void*)explain);
+	   {
+	  	 spffree((void*)explain);
+//	  	 explain=NULL; // FIX.
+	  	}
 	  result1=get_modifier(spfp,&cp,domain,&explain);
 	  if (result1>0) // syntax error or no memory
 	   {
@@ -3895,33 +3899,33 @@ check_host(spfrec* spfp, const char* domain)
      }
    }
   if (redirect!=NULL)
-//   {
+   {
     spffree((void*)redirect);
-//    redirect=NULL;
-//   }
+//    redirect=NULL; // FIX.
+   }
 
   if (datap!=NULL)
-//   {
+   {
     spffree((void*)datap);
-//    datap=NULL;
-//   }
+//    datap=NULL; // FIX.
+   }
 
   if (explain!=NULL)
    {
     if (result==SPF_Fail)
      {
       if (spfp->spf_expdom!=NULL)
-//       {
+       {
 		  spffree((void*)spfp->spf_expdom);
-//		  spfp->spf_expdom!=NULL;
-//		 }
+//		  spfp->spf_expdom!=NULL; // FIX.
+		 }
       spfp->spf_expdom=explain;
      }
     else
-//     {
+     {
       spffree((void*)explain);
-//		explain=NULL;
-//	  }
+//		explain=NULL; // FIX.
+	  }
    }
 
   if (result==SPF_NoMatch)

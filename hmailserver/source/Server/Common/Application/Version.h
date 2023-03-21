@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2607.71 (x86)"
+#define HMAILSERVER_BUILD "2607.72 (x86)"
 
 /*
 [list=1]
@@ -66,5 +66,7 @@
 [*]Added: %MACRO_ORIGINAL_HEADER% macro expansion for 'Set header value' rules
 [*]Update: OpenSSL 1.1.1t
 [*]Fix: S/MIME Signed Message Failing Signature Validation due to X-hMailServer-Envelope-From header position, effectively this means ungrouping of the X-hMailServer-* headers
+[*]Fix: Error logged if email address length exceeds 254 characters [url=https://github.com/hmailserver/hmailserver/issues/393]issue #393[/url]
+[*]Fix: DKIM Signing Not Performed On Messages > 10 MB [url=https://github.com/hmailserver/hmailserver/issues/387]issue #387[/url]
 [/list]
 */
