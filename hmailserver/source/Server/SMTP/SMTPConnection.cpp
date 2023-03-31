@@ -1172,15 +1172,34 @@ namespace HM
       // Delete existing "X-hMailServer-Envelope-From" header
       std::shared_ptr<MessageData> pMessageData = std::shared_ptr<MessageData>(new MessageData());
       pMessageData->LoadFromMessage(fileName, current_message_);
+
       if (!pMessageData->GetFieldValue("X-hMailServer-Envelope-From").IsEmpty())
       {
          pMessageData->DeleteField("X-hMailServer-Envelope-From");
          pMessageData->Write(fileName);
       }
 
+      if (!pMessageData->GetFieldValue("X-hMailServer-Envelope-To").IsEmpty())
+      {
+         pMessageData->DeleteField("X-hMailServer-Envelope-To");
+         pMessageData->Write(fileName);
+      }
+
       std::vector<std::pair<AnsiString, AnsiString>> fieldsToWrite;
+
       // Add "X-hMailServer-Envelope-From" header
       fieldsToWrite.push_back(std::make_pair("X-hMailServer-Envelope-From", current_message_->GetFromAddress()));
+
+      // Add "X-hMailServer-Envelope-To" header
+      String envelopeToAddresses;
+      for (std::shared_ptr<MessageRecipient> recipipent : current_message_->GetRecipients()->GetVector())
+      {
+         if (!envelopeToAddresses.IsEmpty())
+            envelopeToAddresses += ",";
+
+         envelopeToAddresses += recipipent->GetOriginalAddress();
+      }
+      fieldsToWrite.push_back(std::make_pair("X-hMailServer-Envelope-To", envelopeToAddresses));
 
       TraceHeaderWriter writer;
       writer.Write(fileName, current_message_, fieldsToWrite);
