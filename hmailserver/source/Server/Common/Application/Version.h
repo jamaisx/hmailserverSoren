@@ -70,5 +70,6 @@
 [*]Fix: DKIM Signing Not Performed On Messages > 10 MB [url=https://github.com/hmailserver/hmailserver/issues/387]issue #387[/url]
 [*]Fix: DKIM (header) verification fails when an email is received with no subject issue #245
 [*]Update: Added "X-hMailServer-Envelope-To to SMTP processing. POPFetch already know client so no change.
+[*]Minor update: Renamed "X-hMailServer-Envelope-To/From" to "X-Envelope-To/From" in order to follow common usage by 3'rd party.
 [/list]
 */

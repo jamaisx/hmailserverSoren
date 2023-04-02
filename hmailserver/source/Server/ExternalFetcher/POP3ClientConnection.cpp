@@ -684,12 +684,12 @@ namespace HM
    {
       const String fileName = PersistentMessage::GetFileName(current_message_);
 
-      // Delete existing "X-hMailServer-Envelope-From" header
+      // Delete existing "X-Envelope-From" header
       std::shared_ptr<MessageData> pMessageData = std::shared_ptr<MessageData>(new MessageData());
       pMessageData->LoadFromMessage(fileName, current_message_);
-      if (!pMessageData->GetFieldValue("X-hMailServer-Envelope-From").IsEmpty())
+      if (!pMessageData->GetFieldValue("X-Envelope-From").IsEmpty())
       {
-         pMessageData->DeleteField("X-hMailServer-Envelope-From");
+         pMessageData->DeleteField("X-Envelope-From");
          pMessageData->Write(fileName);
       }
 
@@ -697,8 +697,8 @@ namespace HM
       // Add a header with the name of the external account, so that
       // we can check where we downloaded it from later on.
       fieldsToWrite.push_back(std::make_pair("X-hMailServer-ExternalAccount", account_->GetName().c_str()));
-      // Add "X-hMailServer-Envelope-From" header
-      fieldsToWrite.push_back(std::make_pair("X-hMailServer-Envelope-From", current_message_->GetFromAddress()));
+      // Add "X-Envelope-From" header
+      fieldsToWrite.push_back(std::make_pair("X-Envelope-From", current_message_->GetFromAddress()));
 
       TraceHeaderWriter writer;
       writer.Write(fileName, current_message_, fieldsToWrite);
