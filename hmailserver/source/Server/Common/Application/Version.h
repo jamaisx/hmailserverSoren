@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2607.73 (x86)"
+#define HMAILSERVER_BUILD "2607.74 (x86)"
 
 /*
 [list=1]
@@ -71,5 +71,6 @@
 [*]Fix: DKIM (header) verification fails when an email is received with no subject issue #245
 [*]Update: Added "X-hMailServer-Envelope-To to SMTP processing. POPFetch already know client so no change.
 [*]Minor update: Renamed "X-hMailServer-Envelope-To/From" to "X-Envelope-To/From" in order to follow common usage by 3'rd party.
+[*]Added: DKIM signing support for CSA-Compliant Mail Headers, eg: X-CSA-Complaints and List-Unsubscribe-Post headers.
 [/list]
 */

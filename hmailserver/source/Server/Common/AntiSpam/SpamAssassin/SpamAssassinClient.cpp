@@ -56,12 +56,12 @@ namespace HM
       SetReceiveBinary(true);
       message_size_ = FileUtilities::FileSize(message_file_);
       EnqueueWrite("PROCESS SPAMC/1.2\r\n");
-	  //LOG_DEBUG("SENT: PROCESS SPAMC/1.2");
-	  String sConLen;
-	  sConLen.Format(_T("Content-length: %d\r\n"), message_size_);
-	  EnqueueWrite(sConLen);
-	  EnqueueWrite("\r\n");
-     SendFileContents_(message_file_);
+      String sConLen;
+      sConLen.Format(_T("Content-length: %d\r\n"), message_size_);
+      EnqueueWrite(sConLen);
+      // EnqueueWrite("User: sr\r\n");
+      EnqueueWrite("\r\n");
+      SendFileContents_(message_file_);
    }
 
    AnsiString 
