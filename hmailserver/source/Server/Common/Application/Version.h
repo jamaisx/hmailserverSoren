@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2607.75 (x86)"
+#define HMAILSERVER_BUILD "2607.76 (x86)"
 
 /*
 [list=1]
@@ -64,7 +64,6 @@
 [*]Fix: If MSSQL OLE DB Provider 18 or later is installed, prefer that one, since it supports TLS1.1/1.2 which older providers do not. [url=https://github.com/hmailserver/hmailserver/issues/186]issue 186[/url]
 [*]Fix: Rework of issue #167 to check for high CPU problem inside TCPConnection::AsyncReadCompleted.
 [*]Added: %MACRO_ORIGINAL_HEADER% macro expansion for 'Set header value' rules
-[*]Update: OpenSSL 1.1.1t
 [*]Fix: S/MIME Signed Message Failing Signature Validation due to X-hMailServer-Envelope-From header position, effectively this means ungrouping of the X-hMailServer-* headers
 [*]Fix: Error logged if email address length exceeds 254 characters [url=https://github.com/hmailserver/hmailserver/issues/393]issue #393[/url]
 [*]Fix: DKIM Signing Not Performed On Messages > 10 MB [url=https://github.com/hmailserver/hmailserver/issues/387]issue #387[/url]
@@ -73,5 +72,6 @@
 [*]Minor update: Renamed "X-hMailServer-Envelope-To/From" to "X-Envelope-To/From" in order to follow common usage by 3'rd party.
 [*]Added: DKIM signing support for CSA-Compliant Mail Headers, eg: X-CSA-Complaints and List-Unsubscribe-Post headers.
 [*]Bugfix: DNSResolver - if IPv6 is preferred first return IPv6 DNS Lookup(s)
+[*]Update: OpenSSL 1.1.1u
 [/list]
 */
