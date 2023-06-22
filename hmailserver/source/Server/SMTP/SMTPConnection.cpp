@@ -1169,16 +1169,17 @@ namespace HM
    {
       const String fileName = PersistentMessage::GetFileName(current_message_);
 
-      // Delete existing "X-Envelope-From" header
       std::shared_ptr<MessageData> pMessageData = std::shared_ptr<MessageData>(new MessageData());
       pMessageData->LoadFromMessage(fileName, current_message_);
 
+      // Delete existing "X-Envelope-From" header
       if (!pMessageData->GetFieldValue("X-Envelope-From").IsEmpty())
       {
          pMessageData->DeleteField("X-Envelope-From");
          pMessageData->Write(fileName);
       }
 
+      // Delete existing "X-Envelope-To" header
       if (!pMessageData->GetFieldValue("X-Envelope-To").IsEmpty())
       {
          pMessageData->DeleteField("X-Envelope-To");
@@ -1190,16 +1191,24 @@ namespace HM
       // Add "X-Envelope-From" header
       fieldsToWrite.push_back(std::make_pair("X-Envelope-From", current_message_->GetFromAddress()));
 
-      // Add "X-Envelope-To" header
-      String envelopeToAddresses;
-      for (std::shared_ptr<MessageRecipient> recipipent : current_message_->GetRecipients()->GetVector())
-      {
-         if (!envelopeToAddresses.IsEmpty())
-            envelopeToAddresses += ",";
+      //*(1)* WORK IN PROGRESS
 
-         envelopeToAddresses += recipipent->GetOriginalAddress();
-      }
-      fieldsToWrite.push_back(std::make_pair("X-Envelope-To", envelopeToAddresses));
+      //*(1)* Only apply "X-Envelope-To/From" if coming from MTA (NOT local AND NOT AUTH'd)
+      //*(1)*bool IsLocalSender = GetIsLocalSender_();
+      //*(1)*if (!IsLocalSender && !isAuthenticated_)
+      //*(1)*{
+
+         // Add "X-Envelope-To" header
+         String envelopeToAddresses;
+         for (std::shared_ptr<MessageRecipient> recipipent : current_message_->GetRecipients()->GetVector())
+         {
+            if (!envelopeToAddresses.IsEmpty())
+               envelopeToAddresses += ",";
+
+            envelopeToAddresses += recipipent->GetOriginalAddress();
+         }
+         fieldsToWrite.push_back(std::make_pair("X-Envelope-To", envelopeToAddresses));
+      //*(1)*}
 
       TraceHeaderWriter writer;
       writer.Write(fileName, current_message_, fieldsToWrite);
