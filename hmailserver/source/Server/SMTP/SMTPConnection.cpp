@@ -1188,15 +1188,12 @@ namespace HM
 
       std::vector<std::pair<AnsiString, AnsiString>> fieldsToWrite;
 
-      // Add "X-Envelope-From" header
-      fieldsToWrite.push_back(std::make_pair("X-Envelope-From", current_message_->GetFromAddress()));
-
-      //*(1)* WORK IN PROGRESS
-
-      //*(1)* Only apply "X-Envelope-To/From" if coming from MTA (NOT local AND NOT AUTH'd)
-      //*(1)*bool IsLocalSender = GetIsLocalSender_();
-      //*(1)*if (!IsLocalSender && !isAuthenticated_)
-      //*(1)*{
+      // Only apply "X-Envelope-To/From" if coming from MTA (NOT local AND NOT AUTH'd)
+      bool IsLocalSender = GetIsLocalSender_();
+      if (!IsLocalSender || !isAuthenticated_)
+      {
+         // Add "X-Envelope-From" header
+         fieldsToWrite.push_back(std::make_pair("X-Envelope-From", current_message_->GetFromAddress()));
 
          // Add "X-Envelope-To" header
          String envelopeToAddresses;
@@ -1208,7 +1205,7 @@ namespace HM
             envelopeToAddresses += recipipent->GetOriginalAddress();
          }
          fieldsToWrite.push_back(std::make_pair("X-Envelope-To", envelopeToAddresses));
-      //*(1)*}
+      }
 
       TraceHeaderWriter writer;
       writer.Write(fileName, current_message_, fieldsToWrite);

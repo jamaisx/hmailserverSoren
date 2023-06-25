@@ -73,5 +73,6 @@
 [*]Added: DKIM signing support for CSA-Compliant Mail Headers, eg: X-CSA-Complaints and List-Unsubscribe-Post headers.
 [*]Bugfix: DNSResolver - if IPv6 is preferred first return IPv6 DNS Lookup(s)
 [*]Update: OpenSSL 1.1.1u
+[*]Update: Reverted a workaround to Thunderbird bug https://bugzilla.mozilla.org/show_bug.cgi?id=460443
 [/list]
 */
