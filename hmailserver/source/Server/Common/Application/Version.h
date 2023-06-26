@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2607.76 (x86)"
+#define HMAILSERVER_BUILD "2607.77 (x86)"
 
 /*
 [list=1]
@@ -71,8 +71,9 @@
 [*]Update: Added "X-hMailServer-Envelope-To to SMTP processing. POPFetch already know client so no change.
 [*]Minor update: Renamed "X-hMailServer-Envelope-To/From" to "X-Envelope-To/From" in order to follow common usage by 3'rd party.
 [*]Added: DKIM signing support for CSA-Compliant Mail Headers, eg: X-CSA-Complaints and List-Unsubscribe-Post headers.
-[*]Bugfix: DNSResolver - if IPv6 is preferred first return IPv6 DNS Lookup(s)
-[*]Update: OpenSSL 1.1.1u
+[*]Fix: Prefer IPv6 over IPv4 didn't do anything, added the missing part (sorting of found IP Addresses)
 [*]Update: Reverted a workaround to Thunderbird bug https://bugzilla.mozilla.org/show_bug.cgi?id=460443
+[*]Added: Received-SPF: diagnostic header controlled with INI setting "AddReceivedSPFHeader" (skip for authenticated client connections or localhost!)
+[*]Added: (envelope-from <user@domain.com>), for <user@domain.com> to Received: header (if single recipient!)
 [/list]
 */

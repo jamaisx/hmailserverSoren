@@ -245,7 +245,7 @@ namespace HM
          boost::wregex expression(sRegex, boost::wregex::icase);
          boost::wsmatch matches;
          // AUTH PLAIN command and both user name and password in line. 
-         if (boost::regex_match(sLogData, matches, expression) && current_state_ == HEADER)
+         if (current_state_ == HEADER && boost::regex_match(sLogData, matches, expression))
          {
             if (matches.size() > 0)
             {
@@ -871,7 +871,16 @@ namespace HM
       {
          std::shared_ptr<MimeHeader> original_headers = Utilities::GetMimeHeader(transmission_buffer_->GetBuffer()->GetBuffer(), transmission_buffer_->GetBuffer()->GetSize());
 
-         SMTPMessageHeaderCreator header_creator(username_, GetIPAddressString(), isAuthenticated_, helo_host_, original_headers);
+         String sEnvelopFrom = current_message_->GetFromAddress();
+         String sEnvelopTo;
+         
+            std::shared_ptr<MessageRecipients> pRecipients = current_message_->GetRecipients();
+         std::vector<std::shared_ptr<MessageRecipient> > &recipients = pRecipients->GetVector();
+         if (recipients.size() > 0 && recipients.size() < 2)
+            sEnvelopTo = (*recipients.begin())->GetOriginalAddress();
+
+         SMTPMessageHeaderCreator header_creator(username_, sEnvelopFrom, sEnvelopTo, GetIPAddressString(), isAuthenticated_, helo_host_, original_headers);
+         //SMTPMessageHeaderCreator header_creator(username_, GetIPAddressString(), isAuthenticated_, helo_host_, original_headers);
          
          if (IsSSLConnection())
             header_creator.SetCipherInfo(GetCipherInfo());
