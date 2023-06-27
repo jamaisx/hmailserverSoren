@@ -71,6 +71,9 @@ namespace HM
       return Neutral;
    }
 
+   //
+   // RFC 7208
+   //
    String
    SPF::ReceivedSPFHeader(const String &sHostname, const String &sSenderIP, const String &sSenderEmail, const String &sHeloHost, String &sResult)
    {
@@ -100,25 +103,25 @@ namespace HM
       switch (result)
       {
          case SPF_Pass:
-            sResultMessage.Format(_T("%s (%s: domain of\r\n\t%s designates\r\n\t%s as permitted sender)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderEmail.c_str(), sSenderIP.c_str());
+            sResultMessage.Format(_T("%s (%s: domain of %s designates %s as permitted sender)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderEmail.c_str(), sSenderIP.c_str());
             break;
          case SPF_SoftFail:
-            sResultMessage.Format(_T("%s (%s: domain of transitioning\r\n\t%s does not designate\r\n\t%s as permitted sender)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderEmail.c_str(), sSenderIP.c_str());
+            sResultMessage.Format(_T("%s (%s: domain of transitioning %s does not designate %s as permitted sender)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderEmail.c_str(), sSenderIP.c_str());
             break;
          case SPF_Fail:
-            sResultMessage.Format(_T("%s (%s: domain of\r\n\t%s does not designate\r\n\t%s as permitted sender)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderEmail.c_str(), sSenderIP.c_str());
+            sResultMessage.Format(_T("%s (%s: domain of %s does not designate %s as permitted sender)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderEmail.c_str(), sSenderIP.c_str());
             break;
          case SPF_Neutral:
-            sResultMessage.Format(_T("%s (%s: %s is neither permitted\r\n\tnor denied by domain of %s)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderIP.c_str(), sSenderEmail.c_str());
+            sResultMessage.Format(_T("%s (%s: %s is neither permitted nor denied by domain of %s)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderIP.c_str(), sSenderEmail.c_str());
             break;
          case SPF_None:
-            sResultMessage.Format(_T("%s (%s: domain of\r\n\t%s does not designate permitted sender hosts)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderEmail.c_str());
+            sResultMessage.Format(_T("%s (%s: domain of %s does not designate permitted sender hosts)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderEmail.c_str());
             break;
          case SPF_TempError:
-            sResultMessage.Format(_T("%s (%s: temporary error\r\n\tin processing during lookup of\r\n\t%s: DNS Timeout)"), sSPFResultString.c_str(), sHostname.c_str(), sDomain.c_str());
+            sResultMessage.Format(_T("%s (%s: temporary error in processing during lookup of %s: DNS Timeout)"), sSPFResultString.c_str(), sHostname.c_str(), sDomain.c_str());
             break;
          case SPF_PermError:
-            sResultMessage.Format(_T("%s (%s: permanent error\r\n\tin processing during lookup of\r\n\t%s)"), sSPFResultString.c_str(), sHostname.c_str(), sDomain.c_str());
+            sResultMessage.Format(_T("%s (%s: permanent error in processing during lookup of %s)"), sSPFResultString.c_str(), sHostname.c_str(), sDomain.c_str());
             break;
       }
       

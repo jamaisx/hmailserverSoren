@@ -149,31 +149,24 @@ namespace HM
       if (is_authenticated_)
          esmtp_additions += "A";
 
-      String envelopeFrom;
-      if (!envelopeFrom_.IsEmpty() && !is_authenticated_)
-         envelopeFrom.Format(_T(" (envelope-from\r\n\t<%s>)\r\n\t"), envelopeFrom_.c_str());
-      
-      String envelopeTo;
-      if (!envelopeTo_.IsEmpty())
-         envelopeTo.Format(_T(" for <%s>"), envelopeTo_.c_str());
+      String envelopeTo = envelopeTo_.c_str();
 
       String cipher_line;
 
       if (is_tls_)
-         cipher_line.Format(_T("\t(version=%s cipher=%s bits=%d)\r\n"), String(cipher_info_.GetVersion()).c_str(), String(cipher_info_.GetName()).c_str(), cipher_info_.GetBits());
+         cipher_line.Format(_T("(version=%s cipher=%s bits=%d)\r\n"), String(cipher_info_.GetVersion()).c_str(), String(cipher_info_.GetName()).c_str(), cipher_info_.GetBits());
 
       String sResult;
       sResult.Format(_T("Received: from %s (%s [%s])\r\n")
          _T("\tby %s with ESMTP%s\r\n")
-         _T("%s%s")
-         _T("%s")
+         _T("\tfor <%s>\r\n")
+         _T("\t%s")
          _T("\t; %s\r\n"),
          remote_hostname.c_str(),
          ptr_record_host.c_str(),
          overriden_received_ip.c_str(),
          local_computer_name.c_str(),
          esmtp_additions.c_str(),
-         envelopeFrom.c_str(),
          envelopeTo.c_str(),
          cipher_line.c_str(),
          Time::GetCurrentMimeDate().c_str());
