@@ -75,5 +75,8 @@
 [*]Update: Reverted a workaround to Thunderbird bug https://bugzilla.mozilla.org/show_bug.cgi?id=460443
 [*]Added: Received-SPF: diagnostic header controlled with INI setting "AddReceivedSPFHeader" (skip for authenticated client connections or localhost!)
 [*]Added: (envelope-from <user@domain.com>), for <user@domain.com> to Received: header (if single recipient!)
+[*]Experiment: Moving "Return-Path" header handling to SMTPMessageHeaderCreator.
+[*]Experiment: Scripting "Received" header to handle HELO/EHLO/ESMTP/SMTP in header.
+[*]Experiment: Only create "X-Envelope-To/From" headers if NOT local AND NOT authenticated.
 [/list]
 */
