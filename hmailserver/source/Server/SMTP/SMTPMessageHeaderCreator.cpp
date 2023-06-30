@@ -85,10 +85,18 @@ namespace HM
       new_header_lines += GenerateReceivedHeader_(sComputerName, overriden_received_ip_address);
 
       // Add Message-ID header if it does not exist.
+      //if (!original_headers_->FieldExists("Message-ID"))
+      //{
+      //   String sTemp;
+      //   sTemp.Format(_T("Message-ID: %s\r\n"), Utilities::GenerateMessageID().c_str());
+      //   new_header_lines += sTemp;
+      //}
+
+      // Add Message-ID header if it does not exist.
       if (!original_headers_->FieldExists("Message-ID"))
       {
          String sTemp;
-         sTemp.Format(_T("Message-ID: %s\r\n"), Utilities::GenerateMessageID().c_str());
+         sTemp.Format(_T("Message-ID: %s\r\n"), messageID_.c_str());
          new_header_lines += sTemp;
       }
 
@@ -152,7 +160,6 @@ namespace HM
       String remote_hostname = helo_host_.IsEmpty() ? remote_ip_address_ : helo_host_;
 
       String esmtp;
-      String helo;
       if (is_esmtp_)
       {
          esmtp = "ESMTP";
@@ -160,12 +167,10 @@ namespace HM
             esmtp += "S";
          if (is_authenticated_)
             esmtp += "A";
-         helo = "EHLO";
       }
       else
       {
          esmtp = "SMTP";
-         helo = "HELO";
       }
 
       String envelopeFrom = envelopeFrom_.c_str();
@@ -173,23 +178,30 @@ namespace HM
 
       String cipher_line;
 
+      if (!original_headers_->FieldExists("Message-ID"))
+         messageID_ = Utilities::GenerateMessageID().c_str();
+      else
+         messageID_ = original_headers_->GetRawFieldValue("Message-ID");
+      String messageID = messageID_.c_str();
+
       if (is_tls_)
-         cipher_line.Format(_T("(version=%s cipher=%s bits=%d)\r\n"), String(cipher_info_.GetVersion()).c_str(), String(cipher_info_.GetName()).c_str(), cipher_info_.GetBits());
+         cipher_line.Format(_T("\t(version=%s cipher=%s bits=%d)\r\n"), String(cipher_info_.GetVersion()).c_str(), String(cipher_info_.GetName()).c_str(), cipher_info_.GetBits());
 
       String sResult;
-      sResult.Format(_T("Received: from %s (%s %s [%s])\r\n")
+      sResult.Format(_T("Received: from %s (%s [%s])\r\n")
          _T("\t(envelope-sender <%s>)\r\n")
          _T("\tby %s with %s\r\n")
+         _T("\tid %s\r\n")
          _T("\tfor <%s>\r\n")
-         _T("\t%s")
+         _T("%s")
          _T("\t; %s\r\n"),
          remote_hostname.c_str(),
-         helo.c_str(),
          ptr_record_host.c_str(),
          overriden_received_ip.c_str(),
          envelopeFrom.c_str(),
          local_computer_name.c_str(),
          esmtp.c_str(),
+         messageID.c_str(),
          envelopeTo.c_str(),
          cipher_line.c_str(),
          Time::GetCurrentMimeDate().c_str());

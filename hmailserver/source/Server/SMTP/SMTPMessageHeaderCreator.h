@@ -28,6 +28,7 @@ namespace HM
       String username_;
       String envelopeFrom_;
       String envelopeTo_;
+      String messageID_;
       AnsiString remote_ip_address_;
       AnsiString helo_host_;
       std::shared_ptr<MimeHeader> original_headers_;
