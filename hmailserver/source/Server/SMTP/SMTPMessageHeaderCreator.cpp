@@ -22,7 +22,7 @@
 
 namespace HM
 {
-   SMTPMessageHeaderCreator::SMTPMessageHeaderCreator(const String &username, const String &envelopeFrom, const String &envelopeTo, const AnsiString &remote_ip_address, bool is_authenticated, String helo_host, std::shared_ptr<MimeHeader> original_headers) :
+   SMTPMessageHeaderCreator::SMTPMessageHeaderCreator(const String &username, const String &envelopeFrom, const String &envelopeTo, const AnsiString &remote_ip_address, bool is_authenticated, String helo_host, std::shared_ptr<MimeHeader> original_headers, bool is_esmtp) :
       username_(username),
       envelopeFrom_(envelopeFrom),
       envelopeTo_(envelopeTo),
@@ -30,7 +30,8 @@ namespace HM
       is_authenticated_(is_authenticated),
       original_headers_(original_headers),
       helo_host_(helo_host),
-      is_tls_(false)
+      is_tls_(false),
+      is_esmtp_(is_esmtp)
    {
 
    }
@@ -73,6 +74,14 @@ namespace HM
          new_header_lines += GenerateReceivedSPFHeader_(sComputerName);
 
       new_header_lines += GenerateReceivedHeader_(sComputerName, overriden_received_ip_address);
+
+      // Add Return-Path header if it does not exist.
+      if (!original_headers_->FieldExists("Return-Path"))
+      {
+         String sTemp;
+         sTemp.Format(_T("Return-Path: %s\r\n"), envelopeFrom_.c_str());
+         new_header_lines += sTemp;
+      }
 
       // Add Message-ID header if it does not exist.
       if (!original_headers_->FieldExists("Message-ID"))
@@ -141,14 +150,24 @@ namespace HM
 
       String remote_hostname = helo_host_.IsEmpty() ? remote_ip_address_ : helo_host_;
 
-      String esmtp_additions;
+      String esmtp;
+      String helo;
+      if (is_esmtp_)
+      {
+         esmtp = "ESMTP";
+         if (is_tls_)
+            esmtp += "S";
+         if (is_authenticated_)
+            esmtp += "A";
+         helo = "EHLO";
+      }
+      else
+      {
+         esmtp = "SMTP";
+         helo = "HELO";
+      }
 
-      if (is_tls_)
-         esmtp_additions += "S";
-
-      if (is_authenticated_)
-         esmtp_additions += "A";
-
+      String envelopeFrom = envelopeFrom_.c_str();
       String envelopeTo = envelopeTo_.c_str();
 
       String cipher_line;
@@ -157,16 +176,19 @@ namespace HM
          cipher_line.Format(_T("(version=%s cipher=%s bits=%d)\r\n"), String(cipher_info_.GetVersion()).c_str(), String(cipher_info_.GetName()).c_str(), cipher_info_.GetBits());
 
       String sResult;
-      sResult.Format(_T("Received: from %s (%s [%s])\r\n")
-         _T("\tby %s with ESMTP%s\r\n")
+      sResult.Format(_T("Received: from %s (%s %s [%s])\r\n")
+         _T("\t(envelope-sender <%s>)\r\n")
+         _T("\tby %s with %s\r\n")
          _T("\tfor <%s>\r\n")
          _T("\t%s")
          _T("\t; %s\r\n"),
          remote_hostname.c_str(),
+         helo.c_str(),
          ptr_record_host.c_str(),
          overriden_received_ip.c_str(),
+         envelopeFrom.c_str(),
          local_computer_name.c_str(),
-         esmtp_additions.c_str(),
+         esmtp.c_str(),
          envelopeTo.c_str(),
          cipher_line.c_str(),
          Time::GetCurrentMimeDate().c_str());

@@ -872,15 +872,16 @@ namespace HM
          std::shared_ptr<MimeHeader> original_headers = Utilities::GetMimeHeader(transmission_buffer_->GetBuffer()->GetBuffer(), transmission_buffer_->GetBuffer()->GetSize());
 
          String sEnvelopFrom = current_message_->GetFromAddress();
-         String sEnvelopTo;
+         String sEnvelopeTo;
          
-            std::shared_ptr<MessageRecipients> pRecipients = current_message_->GetRecipients();
+         std::shared_ptr<MessageRecipients> pRecipients = current_message_->GetRecipients();
          std::vector<std::shared_ptr<MessageRecipient> > &recipients = pRecipients->GetVector();
          if (recipients.size() > 0 && recipients.size() < 2)
-            sEnvelopTo = (*recipients.begin())->GetOriginalAddress();
+            sEnvelopeTo = (*recipients.begin())->GetOriginalAddress();
+         else
+            sEnvelopeTo = "Undisclosed Recipients";
 
-         SMTPMessageHeaderCreator header_creator(username_, sEnvelopFrom, sEnvelopTo, GetIPAddressString(), isAuthenticated_, helo_host_, original_headers);
-         //SMTPMessageHeaderCreator header_creator(username_, GetIPAddressString(), isAuthenticated_, helo_host_, original_headers);
+         SMTPMessageHeaderCreator header_creator(username_, sEnvelopFrom, sEnvelopeTo, GetIPAddressString(), isAuthenticated_, helo_host_, original_headers, is_esmtp_);
          
          if (IsSSLConnection())
             header_creator.SetCipherInfo(GetCipherInfo());
@@ -1303,7 +1304,7 @@ namespace HM
          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
          std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-		 pClientInfo->SetUsername(username_);
+         pClientInfo->SetUsername(username_);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
          pClientInfo->SetSessionID(GetSessionID()); 
@@ -1702,18 +1703,18 @@ namespace HM
       //
       if (Configuration::Instance()->GetUseScriptServer())
       {
-          std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
-          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
-          std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
+         std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
+         std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+         std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-		  is_esmtp_ = false;
+		   is_esmtp_ = false;
 
-          pClientInfo->SetIPAddress(GetIPAddressString());
-          pClientInfo->SetPort(GetLocalEndpointPort());
-          pClientInfo->SetSessionID(GetSessionID()); 
-          pClientInfo->SetHELO(helo_host_);
-          pClientInfo->SetIsESMTP(is_esmtp_);
-          pClientInfo->SetIsTLS(start_tls_used_);
+         pClientInfo->SetIPAddress(GetIPAddressString());
+         pClientInfo->SetPort(GetLocalEndpointPort());
+         pClientInfo->SetSessionID(GetSessionID()); 
+         pClientInfo->SetHELO(helo_host_);
+         pClientInfo->SetIsESMTP(is_esmtp_);
+         pClientInfo->SetIsTLS(start_tls_used_);
          pClientInfo->SetIsEncryptedConnection(IsSSLConnection());
          if (IsSSLConnection())
          {
@@ -1811,7 +1812,7 @@ namespace HM
          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
          std::shared_ptr<ClientInfo> pClientInfo = std::shared_ptr<ClientInfo>(new ClientInfo);
 
-		 pClientInfo->SetUsername(username_);
+         pClientInfo->SetUsername(username_);
          pClientInfo->SetIPAddress(GetIPAddressString());
          pClientInfo->SetPort(GetLocalEndpointPort());
          pClientInfo->SetSessionID(GetSessionID());

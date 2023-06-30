@@ -287,7 +287,7 @@ namespace HM
       if (result_ != nullptr)
       {
          result_->Close();
-         //FileUtilities::DeleteFile(result_->GetName());
+         FileUtilities::DeleteFile(result_->GetName());
          result_ = nullptr;
       }
    }

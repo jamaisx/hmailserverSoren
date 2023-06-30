@@ -199,7 +199,7 @@ namespace HM
       }
 
       // Do the final delivery of the message.
-      AddTraceHeaders_(account, accountLevelMessage, sOriginalAddress);
+      //AddTraceHeaders_(account, accountLevelMessage, sOriginalAddress);
 
       //
       // Move to IMAP folder. This must be done after we've executed account level rules

@@ -56,9 +56,9 @@ namespace HM
 
       mime_mail_ = std::shared_ptr<MimeBody>(new MimeBody);
 
-      const int MaxSize = 1024*1024 * 80; // we'll ignore messages larger than 80MB.
-      if (FileUtilities::FileSize(message_file_name_) > MaxSize)
-         return false;
+      //const int MaxSize = 1024*1024 * 80; // we'll ignore messages larger than 80MB.
+      //if (FileUtilities::FileSize(message_file_name_) > MaxSize)
+      //   return false;
 
       bool bNewMessage = false;
       try
