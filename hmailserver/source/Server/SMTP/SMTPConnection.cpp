@@ -1178,47 +1178,47 @@ namespace HM
    //---------------------------------------------------------------------------()
    {
       const String fileName = PersistentMessage::GetFileName(current_message_);
-
-      std::shared_ptr<MessageData> pMessageData = std::shared_ptr<MessageData>(new MessageData());
-      pMessageData->LoadFromMessage(fileName, current_message_);
-
+      
+      //std::shared_ptr<MessageData> pMessageData = std::shared_ptr<MessageData>(new MessageData());
+      //pMessageData->LoadFromMessage(fileName, current_message_);
+      //
       // Delete existing "X-Envelope-From" header
-      if (!pMessageData->GetFieldValue("X-Envelope-From").IsEmpty())
-      {
-         pMessageData->DeleteField("X-Envelope-From");
-         pMessageData->Write(fileName);
-      }
-
+      //if (!pMessageData->GetFieldValue("X-Envelope-From").IsEmpty())
+      //{
+      //   pMessageData->DeleteField("X-Envelope-From");
+      //   pMessageData->Write(fileName);
+      //}
+      //
       // Delete existing "X-Envelope-To" header
-      if (!pMessageData->GetFieldValue("X-Envelope-To").IsEmpty())
-      {
-         pMessageData->DeleteField("X-Envelope-To");
-         pMessageData->Write(fileName);
-      }
-
-      std::vector<std::pair<AnsiString, AnsiString>> fieldsToWrite;
-
+      //if (!pMessageData->GetFieldValue("X-Envelope-To").IsEmpty())
+      //{
+      //   pMessageData->DeleteField("X-Envelope-To");
+      //   pMessageData->Write(fileName);
+      //}
+      //
+      //std::vector<std::pair<AnsiString, AnsiString>> fieldsToWrite;
+      //
       // Only apply "X-Envelope-To/From" if coming from MTA (NOT local AND NOT AUTH'd)
-      bool IsLocalSender = GetIsLocalSender_();
-      if (!IsLocalSender || !isAuthenticated_)
-      {
-         // Add "X-Envelope-From" header
-         fieldsToWrite.push_back(std::make_pair("X-Envelope-From", current_message_->GetFromAddress()));
-
-         // Add "X-Envelope-To" header
-         String envelopeToAddresses;
-         for (std::shared_ptr<MessageRecipient> recipipent : current_message_->GetRecipients()->GetVector())
-         {
-            if (!envelopeToAddresses.IsEmpty())
-               envelopeToAddresses += ",";
-
-            envelopeToAddresses += recipipent->GetOriginalAddress();
-         }
-         fieldsToWrite.push_back(std::make_pair("X-Envelope-To", envelopeToAddresses));
-      }
-
-      TraceHeaderWriter writer;
-      writer.Write(fileName, current_message_, fieldsToWrite);
+      //bool IsLocalSender = GetIsLocalSender_();
+      //if (!IsLocalSender || !isAuthenticated_)
+      //{
+      //   // Add "X-Envelope-From" header
+      //   fieldsToWrite.push_back(std::make_pair("X-Envelope-From", current_message_->GetFromAddress()));
+      //
+      //   // Add "X-Envelope-To" header
+      //   String envelopeToAddresses;
+      //   for (std::shared_ptr<MessageRecipient> recipipent : current_message_->GetRecipients()->GetVector())
+      //   {
+      //      if (!envelopeToAddresses.IsEmpty())
+      //         envelopeToAddresses += ",";
+      //
+      //      envelopeToAddresses += recipipent->GetOriginalAddress();
+      //   }
+      //   fieldsToWrite.push_back(std::make_pair("X-Envelope-To", envelopeToAddresses));
+      //}
+      //
+      //TraceHeaderWriter writer;
+      //writer.Write(fileName, current_message_, fieldsToWrite);
 
       std::shared_ptr<MessageData> pMsgData;
 

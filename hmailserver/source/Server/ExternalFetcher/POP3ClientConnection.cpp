@@ -687,18 +687,18 @@ namespace HM
       // Delete existing "X-Envelope-From" header
       std::shared_ptr<MessageData> pMessageData = std::shared_ptr<MessageData>(new MessageData());
       pMessageData->LoadFromMessage(fileName, current_message_);
-      if (!pMessageData->GetFieldValue("X-Envelope-From").IsEmpty())
-      {
-         pMessageData->DeleteField("X-Envelope-From");
-         pMessageData->Write(fileName);
-      }
+      //if (!pMessageData->GetFieldValue("X-Envelope-From").IsEmpty())
+      //{
+      //   pMessageData->DeleteField("X-Envelope-From");
+      //   pMessageData->Write(fileName);
+      //}
 
       std::vector<std::pair<AnsiString, AnsiString>> fieldsToWrite;
       // Add a header with the name of the external account, so that
       // we can check where we downloaded it from later on.
       fieldsToWrite.push_back(std::make_pair("X-hMailServer-ExternalAccount", account_->GetName().c_str()));
       // Add "X-Envelope-From" header
-      fieldsToWrite.push_back(std::make_pair("X-Envelope-From", current_message_->GetFromAddress()));
+      //fieldsToWrite.push_back(std::make_pair("X-Envelope-From", current_message_->GetFromAddress()));
 
       TraceHeaderWriter writer;
       writer.Write(fileName, current_message_, fieldsToWrite);

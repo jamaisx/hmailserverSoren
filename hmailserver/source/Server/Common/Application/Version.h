@@ -78,5 +78,6 @@
 [*]Experiment: Moving "Return-Path" header handling to SMTPMessageHeaderCreator.
 [*]Experiment: Scripting "Received" header to handle HELO/EHLO/ESMTP/SMTP in header.
 [*]Experiment: Only create "X-Envelope-To/From" headers if NOT local AND NOT authenticated.
+[*]Experiment: Removed X-Envelope headers.
 [/list]
 */
