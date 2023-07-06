@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2607.77 (x86)"
+#define HMAILSERVER_BUILD "2607.78 (x86)"
 
 /*
 [list=1]
@@ -79,5 +79,7 @@
 [*]Experiment: Scripting "Received" header to handle HELO/EHLO/ESMTP/SMTP in header.
 [*]Experiment: Only create "X-Envelope-To/From" headers if NOT local AND NOT authenticated.
 [*]Experiment: Removed X-Envelope headers.
+[*]Update: Distinguish more clearly between helo/mailfrom SPF results/checks
+[*]Experiment: Remove .NET 2.0 requirement. New minimum version required is .NET 4.5.
 [/list]
 */
