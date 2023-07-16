@@ -1,11 +1,11 @@
 [Setup]
 AppName=hMailServer
-AppVerName=hMailServer 5.6.9-B2607.78 (x86)
+AppVerName=hMailServer 5.6.9-B2607.77 (x86)
 AppCopyright=Copyright (C) 2023
 DefaultDirName={pf}\hMailServer
 DefaultGroupName=hMailServer
 PrivilegesRequired=admin
-OutputBaseFilename=hMailServer-5.6.9-B2607.78-(x86)
+OutputBaseFilename=hMailServer-5.6.9-B2607.77-(x86)
 SolidCompression=yes
 WizardImageFile=setup.bmp
 LicenseFile=license.rtf
@@ -25,7 +25,7 @@ MSI31Title=Windows Installer 3.1
 IE6Title=Internet Explorer 6
 MDACTitle=MDAC 2.8
 JETTitle=JET 4
-// DOTNET20Title=Microsoft .NET Framework 2.0
+DOTNET20Title=Microsoft .NET Framework 2.0
 
 ;memos
 en.DependenciesDownloadTitle=Download Dependencies
@@ -43,14 +43,14 @@ en.MSI31DownloadSize=~2.5 MB
 en.IE6DownloadSize=~46 MB
 en.MDACDownloadSize=~5.4 MB
 en.JETDownloadSize=~3.7 MB
-// en.DOTNET20DownloadSize=~23 MB
+en.DOTNET20DownloadSize=~23 MB
 
 en.MSI20InstallMsg=Installing Windows Installer 2.0... (May take a few minutes)
 en.MSI31InstallMsg=Installing Windows Installer 3.1... (This may take a few minutes)
 en.IE6InstallMsg=Installing Internet Explorer 6... (May take a few minutes)
 en.MDACInstallMsg=Installing MDAC 2.8... (May take a few minutes)
 en.JETInstallMsg=Installing JET 4... (May take a few minutes)
-// en.DOTNET20InstallMsg=Installing Microsoft .NET Framework 2.0... (May take a few minutes)
+en.DOTNET20InstallMsg=Installing Microsoft .NET Framework 2.0... (May take a few minutes)
 
 [Languages]
 Name: "en"; MessagesFile: "compiler:Default.isl"
@@ -147,7 +147,7 @@ Filename: {ini:{tmp}\dep.ini,install,msi31}; Description: {cm:MSI31Title}; Statu
 Filename: {ini:{tmp}\dep.ini,install,ie}; Description: {cm:IE6Title}; StatusMsg: {cm:IE6InstallMsg}; Parameters: "/Q /C:""ie6wzd /QU /R:N /S:#e"""; Flags: skipifdoesntexist
 Filename: {ini:{tmp}\dep.ini,install,mdac}; Description: {cm:MDACTitle}; StatusMsg: {cm:MDACInstallMsg}; Parameters: "/Q /C:""setup /QNT"""; Flags: skipifdoesntexist
 Filename: {ini:{tmp}\dep.ini,install,jet}; Description: {cm:JETTitle}; StatusMsg: {cm:JETInstallMsg}; Parameters: /Q; Flags: skipifdoesntexist
-// Filename: {ini:{tmp}\dep.ini,install,dotnet20}; Description: {cm:DOTNET20Title}; StatusMsg: {cm:DOTNET20InstallMsg}; Parameters: "/Q /T:{tmp}\dotnetfx /C:""install /q"""; Flags: skipifdoesntexist
+Filename: {ini:{tmp}\dep.ini,install,dotnet20}; Description: {cm:DOTNET20Title}; StatusMsg: {cm:DOTNET20InstallMsg}; Parameters: "/Q /T:{tmp}\dotnetfx /C:""install /q"""; Flags: skipifdoesntexist
 Filename: "{app}\Bin\hMailAdmin.exe";  Flags: skipifsilent postinstall nowait; Description: Run hMailServer Administrator; Components: admintools;
 
 [UninstallRun]
