@@ -11,7 +11,8 @@ var
   rdoUseExternal : TRadioButton;
 
   // BEGIN .NET INSTALLER
-  mdacPath, dotnet20Path: string;
+  //mdacPath, dotnet20Path: string;
+  mdacPath: string;
   downloadNeeded: boolean;
   neededDependenciesDownloadMemo: string;
   neededDependenciesInstallMemo: string;
@@ -69,7 +70,7 @@ const
 
   // BEGIN .NET INSTALLER	
   mdacURL = 'http://download.microsoft.com/download/4/a/a/4aafff19-9d21-4d35-ae81-02c48dcbbbff/MDAC_TYP.EXE';
-  dotnet20URL = 'http://download.microsoft.com/download/5/6/7/567758a3-759e-473e-bf8f-52154438565a/dotnetfx.exe';
+  //dotnet20URL = 'http://download.microsoft.com/download/5/6/7/567758a3-759e-473e-bf8f-52154438565a/dotnetfx.exe';
   // END .NET INSTALLER	
 
 function ControlService(hService :HANDLE; dwControl :cardinal;var ServiceStatus :SERVICE_STATUS) : boolean;
@@ -515,20 +516,20 @@ begin
   end;
 
   // Check for required dotnetfx 2.0 installation
-  if (not RegKeyExists(HKLM, 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v2.0.50727')) then begin
-    neededDependenciesInstallMemo := neededDependenciesInstallMemo + '      ' + CustomMessage('DOTNET20Title') + #13;
-    dotnet20Path := ExpandConstant('{src}') + '\' + CustomMessage('DependenciesDir') + '\dotnetfx.exe';
-    if not FileExists(dotnet20Path) then begin
-      dotnet20Path := ExpandConstant('{tmp}\dotnetfx.exe');
-      if not FileExists(dotnet20Path) then begin
-        neededDependenciesDownloadMemo := neededDependenciesDownloadMemo + '      ' + CustomMessage('DOTNET20Title') + #13;
-        neededDependenciesDownloadMsg := neededDependenciesDownloadMsg + CustomMessage('DOTNET20Title') + ' (' + CustomMessage('DOTNET20DownloadSize') + ')' + #13;
-        isxdl_AddFile(dotnet20URL, dotnet20Path);
-        downloadNeeded := true;
-      end;
-    end;
-    SetIniString('install', 'dotnet20', dotnet20Path, ExpandConstant('{tmp}\dep.ini'));
-  end;
+  //if (not RegKeyExists(HKLM, 'SOFTWARE\Microsoft\NET Framework Setup\NDP\v2.0.50727')) then begin
+  //  neededDependenciesInstallMemo := neededDependenciesInstallMemo + '      ' + CustomMessage('DOTNET20Title') + #13;
+  //  dotnet20Path := ExpandConstant('{src}') + '\' + CustomMessage('DependenciesDir') + '\dotnetfx.exe';
+  //  if not FileExists(dotnet20Path) then begin
+  //    dotnet20Path := ExpandConstant('{tmp}\dotnetfx.exe');
+  //    if not FileExists(dotnet20Path) then begin
+  //      neededDependenciesDownloadMemo := neededDependenciesDownloadMemo + '      ' + CustomMessage('DOTNET20Title') + #13;
+  //      neededDependenciesDownloadMsg := neededDependenciesDownloadMsg + CustomMessage('DOTNET20Title') + ' (' + CustomMessage('DOTNET20DownloadSize') + ')' + #13;
+  //      isxdl_AddFile(dotnet20URL, dotnet20Path);
+  //      downloadNeeded := true;
+  //    end;
+  //  end;
+  //  SetIniString('install', 'dotnet20', dotnet20Path, ExpandConstant('{tmp}\dep.ini'));
+  //end;
 
 end;
 
