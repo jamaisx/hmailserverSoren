@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2607.78 (x86)"
+#define HMAILSERVER_BUILD "2607.79 (x86)"
 
 /*
 [list=1]
@@ -75,11 +75,12 @@
 [*]Update: Reverted a workaround to Thunderbird bug https://bugzilla.mozilla.org/show_bug.cgi?id=460443
 [*]Added: Received-SPF: diagnostic header controlled with INI setting "AddReceivedSPFHeader" (skip for authenticated client connections or localhost!)
 [*]Added: (envelope-from <user@domain.com>), for <user@domain.com> to Received: header (if single recipient!)
-[*]Experiment: Moving "Return-Path" header handling to SMTPMessageHeaderCreator.
-[*]Experiment: Scripting "Received" header to handle HELO/EHLO/ESMTP/SMTP in header.
-[*]Experiment: Only create "X-Envelope-To/From" headers if NOT local AND NOT authenticated.
-[*]Experiment: Removed X-Envelope headers.
+[*]Moving "Return-Path" header handling to SMTPMessageHeaderCreator.
+[*]Scripting "Received" header to handle HELO/EHLO/ESMTP/SMTP in header.
+[*]Commented: Only create "X-Envelope-To/From" headers if NOT local AND NOT authenticated.
+[*]Update: Removed X-Envelope headers.
 [*]Update: Distinguish more clearly between helo/mailfrom SPF results/checks
 [*]Experiment: Remove .NET 2.0 requirement during install.
+[*]Update hm_smtp_antivirus.php issue #471
 [/list]
 */

@@ -1179,23 +1179,24 @@ namespace HM
    {
       const String fileName = PersistentMessage::GetFileName(current_message_);
       
-      //std::shared_ptr<MessageData> pMessageData = std::shared_ptr<MessageData>(new MessageData());
-      //pMessageData->LoadFromMessage(fileName, current_message_);
-      //
+      // belongs to "X-Envelope-From"/"X-Envelope-To handling"
+      std::shared_ptr<MessageData> pMessageData = std::shared_ptr<MessageData>(new MessageData());
+      pMessageData->LoadFromMessage(fileName, current_message_);
+      
       // Delete existing "X-Envelope-From" header
-      //if (!pMessageData->GetFieldValue("X-Envelope-From").IsEmpty())
-      //{
-      //   pMessageData->DeleteField("X-Envelope-From");
-      //   pMessageData->Write(fileName);
-      //}
-      //
+      if (!pMessageData->GetFieldValue("X-Envelope-From").IsEmpty())
+      {
+         pMessageData->DeleteField("X-Envelope-From");
+         pMessageData->Write(fileName);
+      }
+      
       // Delete existing "X-Envelope-To" header
-      //if (!pMessageData->GetFieldValue("X-Envelope-To").IsEmpty())
-      //{
-      //   pMessageData->DeleteField("X-Envelope-To");
-      //   pMessageData->Write(fileName);
-      //}
-      //
+      if (!pMessageData->GetFieldValue("X-Envelope-To").IsEmpty())
+      {
+         pMessageData->DeleteField("X-Envelope-To");
+         pMessageData->Write(fileName);
+      }
+      
       //std::vector<std::pair<AnsiString, AnsiString>> fieldsToWrite;
       //
       // Only apply "X-Envelope-To/From" if coming from MTA (NOT local AND NOT AUTH'd)
