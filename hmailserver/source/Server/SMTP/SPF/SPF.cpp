@@ -97,7 +97,6 @@ namespace HM
       int result = SPFQuery(family, BinaryIP, T2A(sSenderEmail), NULL, T2A(sHeloHost), NULL, NULL);
       
       String sSPFResultString = SPFResultString(result);
-      String sIdentity = !sSenderEmail.IsEmpty() ? "mailfrom" : "helo";
       String sResultMessage;
       
       switch (result)
@@ -128,7 +127,7 @@ namespace HM
       if (!sSenderEmail.IsEmpty())
          sResult.Format(_T("Received-SPF: %s\r\n\tidentity=mailfrom;\r\n\tclient-ip=%s;\r\n\tenvelope-from=<%s>;\r\n"), sResultMessage.c_str(), sSenderIP.c_str(), sSenderEmail.c_str());
       else
-          sResult.Format(_T("Received-SPF: %s\r\n\tidentity=helo;\r\n\tclient-ip=%s;\r\n\thelo=%s;\r\n"), sResultMessage.c_str(), sSenderIP.c_str(), sHeloHost.c_str());
+         sResult.Format(_T("Received-SPF: %s\r\n\tidentity=helo;\r\n\tclient-ip=%s;\r\n\thelo=%s;\r\n"), sResultMessage.c_str(), sSenderIP.c_str(), sHeloHost.c_str());
 
       return sResult;
    }
@@ -137,7 +136,7 @@ namespace HM
    {
       String sExplanation;
       
-      if (SPF::Instance()->Test("185.216.75.37", "example@hmailserver.com", sExplanation) != SPF::Pass)
+      if (SPF::Instance()->Test("185.216.75.37", "example@hmailserver.com", "mail.hmailserver.com", sExplanation) != SPF::Pass)
       {
          // Should be allowed.
          throw;

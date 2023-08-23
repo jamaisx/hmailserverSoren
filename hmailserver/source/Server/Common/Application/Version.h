@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2607.79 (x86)"
+#define HMAILSERVER_BUILD "2607.80 (x86)"
 
 /*
 [list=1]
@@ -82,5 +82,6 @@
 [*]Update: Distinguish more clearly between helo/mailfrom SPF results/checks
 [*]Experiment: Remove .NET 2.0 requirement during install.
 [*]Update hm_smtp_antivirus.php issue #471
+[*]OpenSSL 1.1.1u compiled with "no-ssl2 no-ssl3" since we don't support them.
 [/list]
 */

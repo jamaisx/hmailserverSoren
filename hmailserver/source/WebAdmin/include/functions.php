@@ -238,7 +238,7 @@ function  PrintCheckboxRow($name, $caption, $checked, $disabled = false)
    "
    	<tr>
    		<td>$caption</td>
-        <td><input type=\"checkbox\"' . $disabledstr . 'name=\"$name\" value=\"1\" $checked_text></td>
+        <td><input type=\"checkbox\"$disabledstr name=\"$name\" value=\"1\" $checked_text></td>
    	</tr>	
     ";
 }
