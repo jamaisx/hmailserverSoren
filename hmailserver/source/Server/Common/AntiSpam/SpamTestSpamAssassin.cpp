@@ -59,13 +59,13 @@ namespace HM
 
       // Add Return-Path as topmost header if none exist (ExternalAccount download?)
       // For SpamAssassin default rules and custom rules that rely on Return-Path header being present
-      //if (pTestData->GetMessageData()->GetReturnPath().IsEmpty())
-      //{
-      //   std::vector<std::pair<AnsiString, AnsiString> > fieldsToWrite;
-      //   fieldsToWrite.push_back(std::make_pair("Return-Path", "<" + pTestData->GetEnvelopeFrom() + ">"));
-      //   TraceHeaderWriter writer;
-      //   writer.Write(sFilename, pMessage, fieldsToWrite);
-      //}
+      if (pTestData->GetMessageData()->GetReturnPath().IsEmpty())
+      {
+         std::vector<std::pair<AnsiString, AnsiString> > fieldsToWrite;
+         fieldsToWrite.push_back(std::make_pair("Return-Path", pTestData->GetEnvelopeFrom()));
+         TraceHeaderWriter writer;
+         writer.Write(sFilename, pMessage, fieldsToWrite);
+      }
 
       std::shared_ptr<IOService> pIOService = Application::Instance()->GetIOService();
 
@@ -119,8 +119,8 @@ namespace HM
 
       // The Return-Path header was added above to help SpamAssassin with its SPF checks.
       // We should remove it again to restore the headers to original state (except for any added by SA).
-      //pMessageData->DeleteField("Return-Path");
-      //pMessageData->Write(sFilename);
+      pMessageData->DeleteField("Return-Path");
+      pMessageData->Write(sFilename);
 
       bool bIsSpam = false;
       AnsiString sSpamStatus = pMessageData->GetFieldValue("X-Spam-Status");

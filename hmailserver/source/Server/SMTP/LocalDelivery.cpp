@@ -199,7 +199,7 @@ namespace HM
       }
 
       // Do the final delivery of the message.
-      //AddTraceHeaders_(account, accountLevelMessage, sOriginalAddress);
+      AddTraceHeaders_(account, accountLevelMessage, sOriginalAddress);
 
       //
       // Move to IMAP folder. This must be done after we've executed account level rules
@@ -318,7 +318,7 @@ namespace HM
    {
       std::vector<std::pair<AnsiString, AnsiString> > fieldsToWrite;
 
-      fieldsToWrite.push_back(std::make_pair("Return-Path", "<" + pMessage->GetFromAddress() + ">"));
+      fieldsToWrite.push_back(std::make_pair("Return-Path", pMessage->GetFromAddress()));
 
       if (Configuration::Instance()->GetSMTPConfiguration()->GetAddDeliveredToHeader())
          fieldsToWrite.push_back(std::make_pair("Delivered-To", sOriginalAddress));
