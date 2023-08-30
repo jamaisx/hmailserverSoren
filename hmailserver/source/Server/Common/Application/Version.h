@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2607.80 (x86)"
+#define HMAILSERVER_BUILD "2607.82 (x86)"
 
 /*
 [list=1]
@@ -83,5 +83,7 @@
 [*]Experiment: Remove .NET 2.0 requirement during install.
 [*]Update hm_smtp_antivirus.php issue #471
 [*]OpenSSL 1.1.1u compiled with "no-ssl2 no-ssl3" since we don't support them.
+[*]OpenSSL 3.0.10 compiled with "--api=1.1.1 no-deprecated no-ssl3", removed "enable-weak-ssl-ciphers".
+[*]Fix: Redefined deprecated OpenSSL calls in dkim.cpp.
 [/list]
 */

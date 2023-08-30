@@ -40,8 +40,9 @@ namespace HM
    void 
    DKIM::Initialize()
    {
-      OpenSSL_add_all_algorithms();
-      ERR_load_crypto_strings();
+      // Deprecated: OpenSSL_add_all_algorithms();
+      // Deprecated: ERR_load_crypto_strings();
+      OPENSSL_init_crypto(OPENSSL_INIT_LOAD_CRYPTO_STRINGS | OPENSSL_INIT_ADD_ALL_CIPHERS | OPENSSL_INIT_ADD_ALL_DIGESTS, NULL);
       ERR_load_EVP_strings();
 
       recommendedHeaderFields_.push_back("From");
