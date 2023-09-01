@@ -6,9 +6,7 @@
 #include "../PasswordGenerator.h"
 #include "../../Mime/MimeCode.h"
 
-#include <openssl/sha.h>
 #include <openssl/md5.h>
-#include <openssl/evp.h>
 
 #include "HashCreator.h"
 

@@ -16,13 +16,6 @@
 #include "../../Util/TraceHeaderWriter.h"
 #include "../../Persistence/PersistentMessage.h"
 
-#include <openssl/rsa.h>
-#include <openssl/obj_mac.h>
-#include <openssl/pem.h>
-#include <openssl/err.h>
-#include <openssl/evp.h>
-
-
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #define new DEBUG_NEW
@@ -40,10 +33,6 @@ namespace HM
    void 
    DKIM::Initialize()
    {
-      OpenSSL_add_all_algorithms();
-      ERR_load_crypto_strings();
-      ERR_load_EVP_strings();
-
       recommendedHeaderFields_.push_back("From");
       recommendedHeaderFields_.push_back("Sender");
       recommendedHeaderFields_.push_back("Reply-To");
