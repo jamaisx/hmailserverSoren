@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2607.81 (x86)"
+#define HMAILSERVER_BUILD "2641.82 (x86)"
 
 /*
 [list=1]
@@ -68,8 +68,6 @@
 [*]Fix: Error logged if email address length exceeds 254 characters [url=https://github.com/hmailserver/hmailserver/issues/393]issue #393[/url]
 [*]Fix: DKIM Signing Not Performed On Messages > 10 MB [url=https://github.com/hmailserver/hmailserver/issues/387]issue #387[/url]
 [*]Fix: DKIM (header) verification fails when an email is received with no subject issue #245
-[*]Update: Added "X-hMailServer-Envelope-To to SMTP processing. POPFetch already know client so no change.
-[*]Minor update: Renamed "X-hMailServer-Envelope-To/From" to "X-Envelope-To/From" in order to follow common usage by 3'rd party.
 [*]Added: DKIM signing support for CSA-Compliant Mail Headers, eg: X-CSA-Complaints and List-Unsubscribe-Post headers.
 [*]Fix: Prefer IPv6 over IPv4 didn't do anything, added the missing part (sorting of found IP Addresses)
 [*]Update: Reverted a workaround to Thunderbird bug https://bugzilla.mozilla.org/show_bug.cgi?id=460443
@@ -77,12 +75,10 @@
 [*]Added: (envelope-from <user@domain.com>), for <user@domain.com> to Received: header (if single recipient!)
 [*]Moving "Return-Path" header handling to SMTPMessageHeaderCreator.
 [*]Scripting "Received" header to handle HELO/EHLO/ESMTP/SMTP in header.
-[*]Commented: Only create "X-Envelope-To/From" headers if NOT local AND NOT authenticated.
 [*]Update: Removed X-Envelope headers.
 [*]Update: Distinguish more clearly between helo/mailfrom SPF results/checks
-[*]Experiment: Remove .NET 2.0 requirement during install.
+[*]Update: Remove .NET 2.0 requirement during install.
 [*]Update hm_smtp_antivirus.php issue #471
-[*]OpenSSL 1.1.1u compiled with "no-ssl2 no-ssl3" since we don't support them.
-[*]OpenSSL 1.1.1v compiled with "no-ssl2 no-ssl3 no-deprecated" and without "enable-weak-ssl-ciphers". DKIM.cpp and HashCreator.cpp corrected for deprecated OpenSSL function.
+[*]OpenSSL 3.0.10 compiled with "-DOPENSSL_TLS_SECURITY_LEVEL=0 --api=1.1.1 no-deprecated" to allow backwards compatibility with version 1.1.0.
 [/list]
 */
