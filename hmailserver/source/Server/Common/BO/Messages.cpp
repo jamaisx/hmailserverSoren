@@ -267,6 +267,7 @@ namespace HM
       else
          sSQL += " order by messageuid asc";
 
+      LOG_DEBUG("Fetch list of messages: " + sSQL);
 
       command.SetQueryString(sSQL);
 

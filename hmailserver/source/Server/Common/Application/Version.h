@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2641.82 (x86)"
+#define HMAILSERVER_BUILD "2641.83 (x86)"
 
 /*
 [list=1]
@@ -79,6 +79,7 @@
 [*]Update: Distinguish more clearly between helo/mailfrom SPF results/checks
 [*]Update: Remove .NET 2.0 requirement during install.
 [*]Update hm_smtp_antivirus.php issue #471
-[*]OpenSSL 3.0.10 compiled with "-DOPENSSL_TLS_SECURITY_LEVEL=0 --api=1.1.1 no-deprecated" to allow backwards compatibility with version 1.1.0.
+[*]OpenSSL 3.0.10 "no-asm VC-WIN32 --prefix=%cd%\out32 --openssldir=%cd%\out32 -D_WIN32_WINNT=0x501 -DOPENSSL_TLS_SECURITY_LEVEL=0 enable-weak-ssl-ciphers --api=1.1.1 no-deprecated"
+[*]Update: Adjusted the number of triggers of "invalid command" in SMTPConnection.cpp
 [/list]
 */
