@@ -420,6 +420,9 @@ namespace HM
          GetBytesToSend_(iSize, oPart, iByteStart, iByteCount);
 
          BYTE *pBuf = new BYTE[iByteCount];
+
+         LOG_APPLICATION(Formatter::Format(_T("IMAPFetch.cpp; FileUtilities::ReadFileToBuf messageFileName {0}, iSize {1}, iByteStart {2}, iByteCount {3}."), messageFileName, iSize, iByteStart, iByteCount));
+
          FileUtilities::ReadFileToBuf(messageFileName, pBuf, iByteStart, iByteCount);
          pOutBuf->Add(pBuf, iByteCount);
          delete [] pBuf;

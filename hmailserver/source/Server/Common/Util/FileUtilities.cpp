@@ -266,7 +266,7 @@ namespace HM
 
       std::shared_ptr<ByteBuffer> bytes = file.ReadChunk(iCount);
 
-      memcpy(OutBuf, bytes->GetBuffer(), iCount);
+      std::memcpy(OutBuf, bytes->GetBuffer(), iCount);
 
    }
 
