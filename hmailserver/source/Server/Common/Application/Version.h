@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2641.83.1 (x86)"
+#define HMAILSERVER_BUILD "2641.83.2 (x86)"
 
 /*
 [list=1]
@@ -82,5 +82,6 @@
 [*]OpenSSL 3.0.10 "no-asm VC-WIN32 --prefix=%cd%\out32 --openssldir=%cd%\out32 -D_WIN32_WINNT=0x501 -DOPENSSL_TLS_SECURITY_LEVEL=0 enable-weak-ssl-ciphers --api=1.1.1 no-deprecated"
 [*]Update: Adjusted the number of triggers of "invalid command" in SMTPConnection.cpp
 [*]Version 83.1 chasing bug!
+[*]Version 83.2 Check fix for RFC822.SIZE https://github.com/hmailserver/hmailserver/issues/476
 [/list]
 */

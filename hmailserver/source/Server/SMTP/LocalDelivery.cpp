@@ -156,6 +156,9 @@ namespace HM
       // message state. If it's "Delivering", it won't save the changes to the database.
       accountLevelMessage->SetState(Message::Delivered); 
 
+      // Recalculate filesize after Return-Path and optionally Delivered-To header(s) are added
+      accountLevelMessage->SetSize(FileUtilities::FileSize(PersistentMessage::GetFileName(account, accountLevelMessage)));
+
       PersistentMessage::SaveObject(accountLevelMessage);
 
       // Tell the folder container that the users inbox is updated this will 
