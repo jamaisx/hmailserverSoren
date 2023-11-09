@@ -29,7 +29,6 @@ if($action == "save")
    $antiSpamSettings->UseMXChecksScore = hmailGetVar("usemxchecksscore",0);
    $antiSpamSettings->CheckHostInHelo = hmailGetVar("checkhostinhelo", 0);
    $antiSpamSettings->CheckHostInHeloScore = hmailGetVar("checkhostinheloscore", 0);
-	
    $antiSpamSettings->CheckPTR = hmailGetVar("checkptr", 0);
    $antiSpamSettings->CheckPTRScore = hmailGetVar("checkptrscore", 0);
 

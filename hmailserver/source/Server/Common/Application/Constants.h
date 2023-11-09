@@ -132,4 +132,15 @@
 #define PROPERTY_CLAMAV_PORT                 _T("ClamAVPort")
 #define PROPERTY_IPV6_PREFERRED  _T("IPv6Preferred")
 
+/*
+I added 5 setting properties so REQUIRED_DB_VERSION 5601 + 5 = 5606
+[list]
+[*]PROPERTY_TLSOPTIONS
+[*]PROPERTY_AS_CHECKPTR
+[*]PROPERTY_AS_CHECKPTRSCORE
+[*]PROPERTY_IPV6_PREFERRED
+[*]PersistentFetchAccount -> famimerecipientheaders
+[/list]
+*/
+
 #define REQUIRED_DB_VERSION            5606

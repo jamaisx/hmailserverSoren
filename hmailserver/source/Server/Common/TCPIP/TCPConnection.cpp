@@ -554,7 +554,7 @@ namespace HM
             pBuffer->Allocate(receive_buffer_.size());
 
             std::istream is(&receive_buffer_);
-            is.read((char*)pBuffer->GetBuffer(), receive_buffer_.size());
+            is.read((char*) pBuffer->GetBuffer(), receive_buffer_.size());
 
             try
             {

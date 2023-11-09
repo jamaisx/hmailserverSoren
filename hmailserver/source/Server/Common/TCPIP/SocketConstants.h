@@ -19,8 +19,8 @@ namespace HM
 
    enum ConnectionSecurity
    {
-      CSNone = 0,
-      CSSSL = 1,
+      CSNone             = 0,
+      CSSSL              = 1,
       CSSTARTTLSOptional = 2,
       CSSTARTTLSRequired = 3
 

@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2641.84 (x86)"
+#define HMAILSERVER_BUILD "2641.85 (x86)"
 
 /*
 [list=1]
@@ -82,5 +82,6 @@
 [*]Update: Adjusted the number of triggers of "invalid command" in SMTPConnection.cpp
 [*]Fix: RFC822.SIZE https://github.com/hmailserver/hmailserver/issues/476
 [*]Update: OpenSSL 3.0.12
+[*]Added: OnRecipientUnknown(oClient, oMessage) and OnTooManyInvalidCommands(oClient, oMessage)
 [/list]
 */

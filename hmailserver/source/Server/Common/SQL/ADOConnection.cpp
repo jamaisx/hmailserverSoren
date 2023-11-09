@@ -99,7 +99,8 @@ namespace HM
             else
             {
                sProvider = "sqloledb";
-            }         }
+            }
+         }
          else
          {
             sProvider = "SQLNCLI";

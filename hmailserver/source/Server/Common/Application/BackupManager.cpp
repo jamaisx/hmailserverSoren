@@ -166,7 +166,9 @@ namespace HM
       {
          std::shared_ptr<ScriptObjectContainer> pContainer = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
          std::shared_ptr<Result> pResult = std::shared_ptr<Result>(new Result);
+
          pContainer->AddObject("Result", pResult, ScriptObject::OTResult);
+
          String sEventCaller = "OnBackupCompleted()";
          ScriptServer::Instance()->FireEvent(ScriptServer::EventOnBackupCompleted, sEventCaller, pContainer);
       }

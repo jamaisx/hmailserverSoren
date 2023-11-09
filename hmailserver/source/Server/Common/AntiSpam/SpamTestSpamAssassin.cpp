@@ -57,15 +57,30 @@ namespace HM
       std::shared_ptr<Message> pMessage = pTestData->GetMessageData()->GetMessage();
       const String sFilename = PersistentMessage::GetFileName(pMessage);
 
-      // Add Return-Path as topmost header if none exist (ExternalAccount download?)
-      // For SpamAssassin default rules and custom rules that rely on Return-Path header being present
-      if (pTestData->GetMessageData()->GetReturnPath().IsEmpty())
+//      // Add Return-Path as topmost header if none exist (ExternalAccount download?)
+//      // For SpamAssassin default rules and custom rules that rely on Return-Path header being present
+//      if (pTestData->GetMessageData()->GetReturnPath().IsEmpty())
+//      {
+//         std::vector<std::pair<AnsiString, AnsiString> > fieldsToWrite;
+//         fieldsToWrite.push_back(std::make_pair("Return-Path", pTestData->GetEnvelopeFrom()));
+//         TraceHeaderWriter writer;
+//         writer.Write(sFilename, pMessage, fieldsToWrite);
+//      }
+
+      // SMTP servers making final delivery MAY/SHOULD remove Return-path header fields before adding their own. See: rfc2821 and rfc5321
+      while (!pTestData->GetMessageData()->GetReturnPath().IsEmpty())
       {
-         std::vector<std::pair<AnsiString, AnsiString> > fieldsToWrite;
-         fieldsToWrite.push_back(std::make_pair("Return-Path", pTestData->GetEnvelopeFrom()));
-         TraceHeaderWriter writer;
-         writer.Write(sFilename, pMessage, fieldsToWrite);
+         pTestData->GetMessageData()->DeleteField("Return-Path");
       }
+
+      // Add Return-Path as topmost header to help SpamAssassin with its SPF checks.
+      // SpamAssassin default rules and custom rules also rely on Return-Path header being present
+      // We delete this header again after SpamAssassin checking has completed
+      std::vector<std::pair<AnsiString, AnsiString>> fieldsToWrite;
+      fieldsToWrite.push_back(std::make_pair("Return-Path", "<" + pTestData->GetEnvelopeFrom() + ">"));
+
+      TraceHeaderWriter writer;
+      writer.Write(sFilename, pMessage, fieldsToWrite);
 
       std::shared_ptr<IOService> pIOService = Application::Instance()->GetIOService();
 

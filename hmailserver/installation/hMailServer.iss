@@ -1,11 +1,11 @@
 [Setup]
 AppName=hMailServer
-AppVerName=hMailServer 5.6.9-B2641.84 (x86)
+AppVerName=hMailServer 5.6.9-B2641.85 (x86)
 AppCopyright=Copyright (C) 2023
 DefaultDirName={pf}\hMailServer
 DefaultGroupName=hMailServer
 PrivilegesRequired=admin
-OutputBaseFilename=hMailServer-5.6.9-B2641.84-(x86)
+OutputBaseFilename=hMailServer-5.6.9-B2641.85-(x86)
 SolidCompression=yes
 WizardImageFile=setup.bmp
 LicenseFile=license.rtf
@@ -75,8 +75,8 @@ Source: "System files\dnsapi.dll"; DestDir: "{sys}"; Flags: uninsneveruninstall 
 Source: "System files\ATL\atl70.dll"; DestDir: "{sys}";  Components: server;
 Source: "SQLCE\SSCERuntime-ENU.msi"; Flags: deleteafterinstall ; Excludes: ".svn"; DestDir: "{tmp}"; Components: server;
 Source: ".\Extras\7za.exe"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server;
-Source: "..\..\..\Libs\openssl-3.0.12\out32\bin\libcrypto-3.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
-Source: "..\..\..\Libs\openssl-3.0.12\out32\bin\libssl-3.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
+Source: "{#GetEnv("HMAILSERVERLIBS")}\openssl-3.0.12\out32\bin\libcrypto-3.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
+Source: "{#GetEnv("HMAILSERVERLIBS")}\openssl-3.0.12\out32\bin\libssl-3.dll"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
 Source: "Microsoft.VC120.CRT\*"; DestDir: "{app}\Bin"; Flags: ignoreversion; Components: server admintools;
 
 ; Main server
@@ -100,7 +100,7 @@ Source: "..\source\Tools\DataDirectorySynchronizer\Bin\Release\*.exe"; DestDir: 
 Source: "..\source\tools\Administrator\bin\Release\Interop.hMailServer.dll"; DestDir: "{app}\Addons\DataDirectorySynchronizer"; Flags: ignoreversion; Components: admintools;
 Source: "..\source\Tools\Shared\Bin\Release\*.dll"; DestDir: "{app}\Addons\DataDirectorySynchronizer"; Flags: ignoreversion recursesubdirs;Components: server;
 
-Source: "..\source\Addons\*.*"; DestDir: "{app}\Addons"; Flags: ignoreversion recursesubdirs; Excludes: "Events"; Components: server;
+Source: "..\source\Addons\*.*"; DestDir: "{app}\Addons"; Flags: onlyifdoesntexist recursesubdirs; Excludes: "Events"; Components: server;
 Source: "..\source\Addons\Events\*.*"; DestDir: "{app}\Events"; Flags: onlyifdoesntexist uninsneveruninstall; Components: server;
 
 Source: "..\source\WebAdmin\*.*"; DestDir: "{app}\PHPWebAdmin"; Flags: recursesubdirs; Components: admintools;

@@ -18,6 +18,7 @@ if($action == "save")
 	$obSettings->TlsVersion11Enabled = hmailGetVar("TlsVersion11Enabled", 0);
 	$obSettings->TlsVersion12Enabled = hmailGetVar("TlsVersion12Enabled", 0);
 	$obSettings->TlsVersion13Enabled = hmailGetVar("TlsVersion13Enabled", 0);
+
 	$obSettings->TlsOptionPreferServerCiphersEnabled = hmailGetVar("TlsOptionPreferServerCiphersEnabled", 0);
 	if (hmailGetVar("TlsVersion12Enabled", 0) > 0 || hmailGetVar("TlsVersion13Enabled", 0) > 0 ) {
 		$obSettings->TlsOptionPrioritizeChaChaEnabled = hmailGetVar("TlsOptionPrioritizeChaChaEnabled", 0);

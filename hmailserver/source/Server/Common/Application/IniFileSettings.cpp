@@ -27,7 +27,7 @@ namespace HM
       greylisting_enabled_during_record_expiration_(true),
       greylisting_expiration_interval_(240),
       preferred_hash_algorithm_(3),
-      dnsbl_checks_after_mail_from_(true),
+      dnsbl_checks_after_mail_from_(false),
       log_level_(9),
       max_log_line_len_(500),
       quick_retries_(0),
@@ -59,7 +59,7 @@ namespace HM
       blocked_iphold_seconds_(0),
       smtpdmax_size_drop_(0),
       backup_messages_dbonly_(false),
-      add_xauth_user_ip_(0),
+      add_xauth_user_ip_(false),
       use_dns_cache_(true),
       add_received_spf_header_(false)
    {

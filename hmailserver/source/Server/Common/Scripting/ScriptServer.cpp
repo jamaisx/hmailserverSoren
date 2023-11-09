@@ -31,7 +31,9 @@ namespace HM
       has_on_external_account_download_(false),
       has_on_smtpdata_(false),
       has_on_helo_(false),
-      has_on_client_logon_(false)
+      has_on_client_logon_(false),
+      has_on_recipient_unknown_(false),
+      has_on_too_many_invalid_comands_(false)
    {
       
    }
@@ -53,6 +55,8 @@ namespace HM
          sExtension = "vbs";
       else if (sScriptLanguage == _T("JScript"))
          sExtension = "js";
+//      else if (sScriptLanguage == _T("LuaScript"))
+//         sExtension = "lua";
       else
          sExtension = "";
 
@@ -72,6 +76,8 @@ namespace HM
             script_extension_ = "vbs";
          else if (script_language_ == _T("JScript"))
             script_extension_ = "js";
+//         else if (script_language_ == _T("LuaScript"))
+//            script_extension_ = "lua";
          else
             script_extension_ = "";
 
@@ -101,6 +107,8 @@ namespace HM
          has_on_smtpdata_ = DoesFunctionExist_("OnSMTPData");
          has_on_helo_ = DoesFunctionExist_("OnHELO");
          has_on_client_logon_ = DoesFunctionExist_("OnClientLogon");
+         has_on_recipient_unknown_ = DoesFunctionExist_("OnRecipientUnknown");
+         has_on_too_many_invalid_comands_ = DoesFunctionExist_("OnTooManyInvalidCommands");
 
       }
       catch (...)
@@ -121,6 +129,8 @@ namespace HM
          sScriptExtension = "vbs";
       else if (sScriptLanguage == _T("JScript"))
          sScriptExtension = "js";
+//      else if (sScriptLanguage == _T("LuaScript"))
+//         sScriptExtension = "lua";
       else
          sScriptExtension = "";
 
@@ -137,6 +147,8 @@ namespace HM
    bool 
    ScriptServer::DoesFunctionExist_(const String &sProcedure)
    {
+      LOG_DEBUG("DoesFunctionExist_ " + sProcedure);
+
       // Create an instance of the script engine and execute the script.
       CComObject<CScriptSiteBasic>* pBasic;
       CComObject<CScriptSiteBasic>::CreateInstance(&pBasic);
@@ -264,6 +276,16 @@ namespace HM
 		      return;
 	      event_name = _T("OnHELO");
 	      break;
+      case EventOnRecipientUnknown:
+         if (!has_on_recipient_unknown_)
+            return;
+         event_name = _T("OnRecipientUnknown");
+         break;
+      case EventOnTooManyInvalidCommands:
+         if (!has_on_too_many_invalid_comands_)
+            return;
+         event_name = _T("OnTooManyInvalidCommands");
+         break;
       case EventCustom:
 	      break;
       default:
@@ -282,6 +304,8 @@ namespace HM
          sScript = script_contents_ + "\r\n\r\n" + "Call " + sEventCaller + "\r\n";
       else if (script_language_ == _T("JScript"))
          sScript = script_contents_ + "\r\n\r\n" + sEventCaller + ";\r\n";
+//      else if (script_language_ == _T("LuaScript"))
+//         sScript = script_contents_ + "\r\n\r\n" + sEventCaller + ";\r\n";
 
       CComObject<CScriptSiteBasic>* pBasic;
       CComObject<CScriptSiteBasic>::CreateInstance(&pBasic);

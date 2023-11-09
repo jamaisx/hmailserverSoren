@@ -10,11 +10,11 @@
 
 #include "../../BO/Message.h"
 #include "../../BO/Domain.h"
+#include "../../BO/DomainAliases.h"
 #include "../../BO/Alias.h"
 #include "../../Application/ObjectCache.h"
 #include "../../Cache/CacheContainer.h"
 #include "../../Util/Hashing/HashCreator.h"
-#include "../../BO/DomainAliases.h"
 
 #ifdef _DEBUG
 #define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
@@ -50,7 +50,6 @@ namespace HM
       // main domain signing enabled, do we have the sender address from the main domain or do we allow signing of the aliases?
       if (!(pDomain->GetDKIMAliasesEnabled() || sameDomain))
          return;
-
 
       LOG_DEBUG("Signing message using DKIM...");
 

@@ -86,7 +86,7 @@ namespace HM
 
          bool bUserOK = SSPIValidation::ValidateUser(sADDomain, sADUsername, sPassword);
 
-         if(bUserOK)
+         if (bUserOK)
             return true;
          else
             return false;
