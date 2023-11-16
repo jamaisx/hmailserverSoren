@@ -824,12 +824,12 @@ namespace HM
                   */
 
                   int charsSinceSpace = (int) output.size() - lastSpacePos;
-                  /*
-                     2023-06-25
-                     Reverting the change from 2008
-					 
-                     output.Insert(lastSpacePos, "\r\n");
-                  */
+
+                  //output.Insert(lastSpacePos, "\r\n");
+                  //
+                  //   2023-06-25
+                  //   Reverting the change from 2008
+                  //
                   output.Insert(lastSpacePos, "\r\n\t");
                   
    				   lastSpacePos = -1;

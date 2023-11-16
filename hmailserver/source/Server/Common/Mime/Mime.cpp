@@ -110,11 +110,16 @@ namespace HM
       if (!FindParameter(pszAttr, nPos, nSize, encodedParameter))	// add new parameter
       {
          value_.reserve(value_.size() + ::strlen(pszAttr) + strValue.size() + 5);
-         //if (MimeEnvironment::AutoFolding())
-         //	value_ += ";\r\n\t";
-         //else
-         //	value_ += "; ";
-         value_ += "; ";
+
+// *SR* ->
+         if (MimeEnvironment::AutoFolding())
+             value_ += ";\r\n\t";
+         else
+             value_ += "; ";
+
+// -> *SR*
+//         value_ += "; ";
+
          value_ += pszAttr;
          value_ += '=';
          value_ += strValue;
