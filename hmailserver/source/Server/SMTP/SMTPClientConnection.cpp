@@ -399,8 +399,8 @@ namespace HM
    {
       String sFrom = delivery_message_->GetFromAddress();
       String sData = "MAIL FROM:<" + sFrom + ">";
-      EnqueueWrite_(sData);
       current_state_ = MAILFROMSENT;
+      EnqueueWrite_(sData);
    }
 
    //---------------------------------------------------------------------------()
