@@ -146,15 +146,15 @@ namespace HM
          }
 //         else if (sScriptLanguage == _T("LuaScript"))
 //         {
-//            sRecipientCopy.Replace(_T("\""), _T(""));
-//            sErrorMessageCopy.Replace(_T("\""), _T(""));
+//         sRecipientCopy.Replace(_T("\""), _T(""));
+//         sErrorMessageCopy.Replace(_T("\""), _T(""));
 //
-//            sErrorMessageCopy.Replace(_T("\r\n"), _T("\" + vbCRLF + \""));
+//         sErrorMessageCopy.Replace(_T("\r\n"), _T("\\r\\n"));
 //
-//            sErrorMessageCopy.TrimLeft();
-//            sErrorMessageCopy.TrimRight();
+//         sErrorMessageCopy.TrimLeft();
+//         sErrorMessageCopy.TrimRight();
 //
-//            sEventCaller.Format(_T("OnDeliveryFailed(HMAILSERVER_MESSAGE, \"%s\", \"%s\")"), sRecipientCopy.c_str(), sErrorMessageCopy.c_str());
+//         sEventCaller.Format(_T("OnDeliveryFailed(HMAILSERVER_MESSAGE, \"%s\", \"%s\")"), sRecipientCopy.c_str(), sErrorMessageCopy.c_str());
 //         }
 
          ScriptServer::Instance()->FireEvent(ScriptServer::EventOnDeliveryFailed, sEventCaller, pContainer);
@@ -201,12 +201,12 @@ namespace HM
       }
 //      else if (sScriptLanguage == _T("LuaScript"))
 //      {
-//         sRemoteUIDCopy.Replace(_T("\""), _T("\"\""));
+//      sRemoteUIDCopy.Replace(_T("\""), _T("\"\""));
 //
-//         if (pMessage)
-//            sEventCaller.Format(_T("OnExternalAccountDownload(HMAILSERVER_FETCHACCOUNT, HMAILSERVER_MESSAGE, \"%s\")"), sRemoteUIDCopy.c_str());
-//         else
-//            sEventCaller.Format(_T("OnExternalAccountDownload(HMAILSERVER_FETCHACCOUNT, Nothing, \"%s\")"), sRemoteUIDCopy.c_str());
+//      if (pMessage)
+//         sEventCaller.Format(_T("OnExternalAccountDownload(HMAILSERVER_FETCHACCOUNT, HMAILSERVER_MESSAGE, \"%s\")"), sRemoteUIDCopy.c_str());
+//      else
+//         sEventCaller.Format(_T("OnExternalAccountDownload(HMAILSERVER_FETCHACCOUNT, Nothing, \"%s\")"), sRemoteUIDCopy.c_str());
 //      }
 
       std::shared_ptr<ScriptObjectContainer> pContainer  = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);

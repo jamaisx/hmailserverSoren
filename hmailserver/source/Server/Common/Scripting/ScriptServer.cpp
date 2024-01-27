@@ -305,7 +305,7 @@ namespace HM
       else if (script_language_ == _T("JScript"))
          sScript = script_contents_ + "\r\n\r\n" + sEventCaller + ";\r\n";
 //      else if (script_language_ == _T("LuaScript"))
-//         sScript = script_contents_ + "\r\n\r\n" + sEventCaller + ";\r\n";
+//         sScript = script_contents_ + "\r\n\r\n" + sEventCaller + "\r\n";
 
       CComObject<CScriptSiteBasic>* pBasic;
       CComObject<CScriptSiteBasic>::CreateInstance(&pBasic);
