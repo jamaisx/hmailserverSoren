@@ -205,17 +205,17 @@ namespace HM
             sEventCaller.Format(_T("OnError(%d, %d, '%s', '%s')"), 
                iSeverity, iErrorID, tempSource.c_str(), tempDescription.c_str());
          }
-//         else if (sScriptLanguage == _T("LuaScript"))
-//         {
-//         String tempSource = sSource;
-//         String tempDescription = sDescription;
-//
-//         tempSource.Replace(_T("\""), _T("\"\""));
-//         tempDescription.Replace(_T("\""), _T("\"\""));
-//
-//         sEventCaller.Format(_T("OnError(%d, %d, \"%s\", \"%s\")"),
-//            iSeverity, iErrorID, tempSource.c_str(), tempDescription.c_str());
-//         }
+         else if (sScriptLanguage == _T("LuaScript"))
+         {
+         String tempSource = sSource;
+         String tempDescription = sDescription;
+
+         tempSource.Replace(_T("\""), _T("\"\""));
+         tempDescription.Replace(_T("\""), _T("\"\""));
+
+         sEventCaller.Format(_T("OnError(%d, %d, \"%s\", \"%s\")"),
+            iSeverity, iErrorID, tempSource.c_str(), tempDescription.c_str());
+         }
 
          std::shared_ptr<ScriptObjectContainer> pContainer  = std::shared_ptr<ScriptObjectContainer>(new ScriptObjectContainer);
          

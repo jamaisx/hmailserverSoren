@@ -55,8 +55,8 @@ namespace HM
          sExtension = "vbs";
       else if (sScriptLanguage == _T("JScript"))
          sExtension = "js";
-//      else if (sScriptLanguage == _T("LuaScript"))
-//         sExtension = "lua";
+      else if (sScriptLanguage == _T("LuaScript"))
+         sExtension = "lua";
       else
          sExtension = "";
 
@@ -76,8 +76,8 @@ namespace HM
             script_extension_ = "vbs";
          else if (script_language_ == _T("JScript"))
             script_extension_ = "js";
-//         else if (script_language_ == _T("LuaScript"))
-//            script_extension_ = "lua";
+         else if (script_language_ == _T("LuaScript"))
+            script_extension_ = "lua";
          else
             script_extension_ = "";
 
@@ -129,8 +129,8 @@ namespace HM
          sScriptExtension = "vbs";
       else if (sScriptLanguage == _T("JScript"))
          sScriptExtension = "js";
-//      else if (sScriptLanguage == _T("LuaScript"))
-//         sScriptExtension = "lua";
+      else if (sScriptLanguage == _T("LuaScript"))
+         sScriptExtension = "lua";
       else
          sScriptExtension = "";
 
@@ -304,8 +304,8 @@ namespace HM
          sScript = script_contents_ + "\r\n\r\n" + "Call " + sEventCaller + "\r\n";
       else if (script_language_ == _T("JScript"))
          sScript = script_contents_ + "\r\n\r\n" + sEventCaller + ";\r\n";
-//      else if (script_language_ == _T("LuaScript"))
-//         sScript = script_contents_ + "\r\n\r\n" + sEventCaller + "\r\n";
+      else if (script_language_ == _T("LuaScript"))
+         sScript = script_contents_ + "\r\n\r\n" + sEventCaller + "\r\n";
 
       CComObject<CScriptSiteBasic>* pBasic;
       CComObject<CScriptSiteBasic>::CreateInstance(&pBasic);
