@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2641.88 (x86)"
+#define HMAILSERVER_BUILD "2641.89 (x86)"
 
 /*
 [list=1]
@@ -81,9 +81,10 @@
 [*]Update hm_smtp_antivirus.php issue #471
 [*]Update: Adjusted the number of triggers of "invalid command" in SMTPConnection.cpp
 [*]Fix: RFC822.SIZE https://github.com/hmailserver/hmailserver/issues/476
-[*]Update: OpenSSL 3.0.12
 [*]Added: OnRecipientUnknown(oClient, oMessage) and OnTooManyInvalidCommands(oClient, oMessage)
 [*]Update: Done som MIME Folding changes and changed a few error messages.
 [*]Fix: hMailServer AUTH PLAIN in SMTP fails when authzid is supplied
+[*]Fix: fileutilities.cpp - bytes->GetSize() crashes when bytes = std::shared_ptr<ByteBuffer> empty;
+[*]Update: OpenSSL 3.0.13
 [/list]
 */
