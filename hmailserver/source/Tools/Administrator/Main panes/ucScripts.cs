@@ -28,7 +28,6 @@ namespace hMailServer.Administrator
 
          comboLanguage.AddItem("VBScript", "VBScript");
          comboLanguage.AddItem("JScript", "JScript");
-         comboLanguage.AddItem("LuaScript", "LuaScript");
 
          hMailServer.Application app = APICreator.Application;
          hMailServer.Settings settings = app.Settings;
