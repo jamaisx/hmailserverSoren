@@ -59,7 +59,12 @@ namespace HM
       String sConLen;
       sConLen.Format(_T("Content-length: %d\r\n"), message_size_);
       EnqueueWrite(sConLen);
-      // EnqueueWrite("User: sr\r\n");
+
+      // String sDevTest = "development";
+      // String sUserCnf;
+      // sUserCnf.Format(_T("User: %s\r\n"), sDevTest);
+      // EnqueueWrite(sUserCnf);
+
       EnqueueWrite("\r\n");
       SendFileContents_(message_file_);
    }
