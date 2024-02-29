@@ -136,7 +136,7 @@ static typIsamDelete* pIsamDelete;
 #define SPFARECSIZE 256 // size of buffer for data record with IP addresses
 #define SPFNRECSIZE 1024 // size of buffer for data record with domain names
 #define SPFKEYSIZE 255 // size of buffer for search key
-#define SPFMAXLOOKUPS 10 // max number of lookups - changed to 10 from 20.
+#define SPFMAXLOOKUPS 20 // max number of lookups
 
 #if defined(SPFFILECACHE) || defined(SPFMEMCACHE)
 #define SPFCACHE
@@ -3594,8 +3594,8 @@ check_host(spfrec* spfp, const char* domain)
       return result;
     else if (result!=SPF_None)
      {
-      if (result==SPF_PermError) // domain does not exist
-	return SPF_None|SPF_NoDomain;
+//      if (result==SPF_PermError) // domain does not exist
+//	return SPF_None|SPF_NoDomain;
       return result;
      }
     else if (bestguess_a!=NULL && !spfp->spf_testhelo

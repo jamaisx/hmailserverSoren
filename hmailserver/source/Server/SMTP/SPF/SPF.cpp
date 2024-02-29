@@ -122,6 +122,10 @@ namespace HM
          case SPF_PermError:
             sResultMessage.Format(_T("%s (%s: permanent error in processing during lookup of %s)"), sSPFResultString.c_str(), sHostname.c_str(), sDomain.c_str());
             break;
+         default:
+            sResultMessage.Format(_T("%s (%s: undefined return code %d resolving SPF record for %s)"), sSPFResultString.c_str(), sHostname.c_str(), result, sDomain.c_str());
+            LOG_APPLICATION(Formatter::Format("Spam test: SpamTestSPF, RMSPF Result: {0} - {1}", result, SPFResultString(result)));
+            break;
       }
 
       if (!sSenderEmail.IsEmpty())
