@@ -4,10 +4,12 @@
 #include "StdAfx.h"
 
 #include "SMTPMessageHeaderCreator.h"
+#include "SMTPConfiguration.h"
 
 #include "../Common/TCPIP/CipherInfo.h"
 #include "../Common/TCPIP/DNSResolver.h"
 
+#include "../common/Util/MessageUtilities.h"
 #include "../Common/Util/Utilities.h"
 #include "../Common/Util/Time.h"
 #include "../Common/Util/ByteBuffer.h"
@@ -119,6 +121,35 @@ namespace HM
          // skip for localhost/loopback clients
          if (LocalIPAddresses::Instance()->IsWithinLoopbackRange(address))
             return sReceivedSPFHeader;
+
+         std::shared_ptr<IncomingRelays> incomingRelays = Configuration::Instance()->GetSMTPConfiguration()->GetIncomingRelays();
+         if (incomingRelays->IsIncomingRelay(address))
+         {
+            String hostName;
+
+            // Load original Received headers from the message.
+            std::shared_ptr<MimeHeader> pHeader = original_headers_;
+
+            std::list<String> receivedHeaders;
+
+            AnsiString sHeaderName = "Received";
+            std::vector<MimeField>& lstFields = pHeader->Fields();
+            auto iter = lstFields.begin();
+            auto iterEnd = lstFields.end();
+
+            for (; iter != iterEnd; iter++)
+            {
+               MimeField& fd = *iter;
+
+               if (sHeaderName.CompareNoCase(fd.GetName()) == 0)
+               {
+                  receivedHeaders.push_back(fd.GetValue());
+               }
+            }
+
+            if (MessageUtilities::RetrieveOriginatingAddress(receivedHeaders, hostName, address))
+               return SPF::Instance()->ReceivedSPFHeader(sHostname, address.ToString(), envelopeFrom_, hostName, sReceivedSPFHeader);
+         }
          
          return SPF::Instance()->ReceivedSPFHeader(sHostname, remote_ip_address_, envelopeFrom_, helo_host_, sReceivedSPFHeader);
    }

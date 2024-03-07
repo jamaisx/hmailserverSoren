@@ -47,6 +47,8 @@ namespace HM
       const char* explain;
       int result=SPFQuery(family,BinaryIP,T2A(sSenderEmail),NULL,T2A(sHeloHost),NULL,&explain);
 
+      LOG_APPLICATION(Formatter::Format("SPF::Test &sSenderIP = {0}, &sSenderEmail = {1}, &sHeloHost = {2}, result = {3}, &explain = {4}", sSenderIP, sSenderEmail, sHeloHost, result, explain));
+
       if (explain != NULL)
       {
          sExplanation = explain;
@@ -99,33 +101,44 @@ namespace HM
       String sSPFResultString = SPFResultString(result);
       String sResultMessage;
       
+      // http://www.open-spf.org/SPF_Received_Header/
       switch (result)
       {
-         case SPF_Pass:
+         case SPF_Pass: // 0
             sResultMessage.Format(_T("%s (%s: domain of %s designates %s as permitted sender)"), sSPFResultString.c_str(), sHostname.c_str(), !sSenderEmail.IsEmpty() ? sSenderEmail.c_str() : sHeloHost.c_str(), sSenderIP.c_str());
             break;
-         case SPF_SoftFail:
+         case SPF_SoftFail: // 1
             sResultMessage.Format(_T("%s (%s: domain of transitioning %s does not designate %s as permitted sender)"), sSPFResultString.c_str(), sHostname.c_str(), !sSenderEmail.IsEmpty() ? sSenderEmail.c_str() : sHeloHost.c_str(), sSenderIP.c_str());
             break;
-         case SPF_Fail:
+         case SPF_Fail: // 2
             sResultMessage.Format(_T("%s (%s: domain of %s does not designate %s as permitted sender)"), sSPFResultString.c_str(), sHostname.c_str(), !sSenderEmail.IsEmpty() ? sSenderEmail.c_str() : sHeloHost.c_str(), sSenderIP.c_str());
             break;
-         case SPF_Neutral:
+         case SPF_Neutral: // 3
             sResultMessage.Format(_T("%s (%s: %s is neither permitted nor denied by domain of %s)"), sSPFResultString.c_str(), sHostname.c_str(), sSenderIP.c_str(), !sSenderEmail.IsEmpty() ? sSenderEmail.c_str() : sHeloHost.c_str());
             break;
-         case SPF_None:
+         case SPF_None: // 4
             sResultMessage.Format(_T("%s (%s: domain of %s does not designate permitted sender hosts)"), sSPFResultString.c_str(), sHostname.c_str(), !sSenderEmail.IsEmpty() ? sSenderEmail.c_str() : sHeloHost.c_str());
             break;
-         case SPF_TempError:
+         case SPF_None|SPF_BadDomain: // 20
+            sResultMessage.Format(_T("%s (%s: domain of %s does not designate permitted sender hosts because of malformed domain %s)"), sSPFResultString.c_str(), sHostname.c_str(), !sSenderEmail.IsEmpty() ? sSenderEmail.c_str() : sHeloHost.c_str(), sDomain.c_str());
+            break;
+         case SPF_None|SPF_NoDomain: // 36
+            sResultMessage.Format(_T("%s (%s: domain of %s does not designate permitted sender hosts because the domain %s does not exist)"), sSPFResultString.c_str(), sHostname.c_str(), !sSenderEmail.IsEmpty() ? sSenderEmail.c_str() : sHeloHost.c_str(), sDomain.c_str());
+            break;
+         case SPF_None|SPF_Literal: // 52
+            sResultMessage.Format(_T("%s (%s: domain of %s does not designate permitted sender hosts because the domain %s is an address literal)"), sSPFResultString.c_str(), sHostname.c_str(), !sSenderEmail.IsEmpty() ? sSenderEmail.c_str() : sHeloHost.c_str(), sDomain.c_str());
+            break;
+         case SPF_TempError: // 5
             sResultMessage.Format(_T("%s (%s: temporary error in processing during lookup of %s: DNS Timeout)"), sSPFResultString.c_str(), sHostname.c_str(), sDomain.c_str());
             break;
-         case SPF_PermError:
+         case SPF_PermError: // 6
             sResultMessage.Format(_T("%s (%s: permanent error in processing during lookup of %s)"), sSPFResultString.c_str(), sHostname.c_str(), sDomain.c_str());
             break;
          default:
-            sResultMessage.Format(_T("%s (%s: undefined return code %d resolving SPF record for %s)"), sSPFResultString.c_str(), sHostname.c_str(), result, sDomain.c_str());
             LOG_APPLICATION(Formatter::Format("Spam test: SpamTestSPF, RMSPF Result: {0} - {1}", result, SPFResultString(result)));
-            break;
+            //sResultMessage.Format(_T("%s (%s: undefined return code %d resolving SPF record for %s)"), sSPFResultString.c_str(), sHostname.c_str(), result, sDomain.c_str());
+            //break;
+            return sResult;
       }
 
       if (!sSenderEmail.IsEmpty())

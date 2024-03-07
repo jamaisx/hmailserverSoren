@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2641.90 (x86)"
+#define HMAILSERVER_BUILD "2641.91 (x86)"
 
 /*
 [list=1]
@@ -86,5 +86,6 @@
 [*]Fix: hMailServer AUTH PLAIN in SMTP fails when authzid is supplied
 [*]Fix: fileutilities.cpp - bytes->GetSize() crashes when bytes = std::shared_ptr<ByteBuffer> empty;
 [*]Update: OpenSSL 3.0.13
+[*]SPF bug fix ...
 [/list]
 */
