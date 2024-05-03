@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2644.91 (x86)"
+#define HMAILSERVER_BUILD "2644.92 (x86)"
 
 /*
 [list=1]
@@ -87,5 +87,6 @@
 [*]Fix: fileutilities.cpp - bytes->GetSize() crashes when bytes = std::shared_ptr<ByteBuffer> empty;
 [*]Update: OpenSSL 3.0.13
 [*]Fix: Minor bugfix where the Received-SPF diagnostic header gave inaccurate results when receiving mail through a (trusted/internal) relay
+[*]Added: IPv6 Support for BLCheck [url=https://github.com/hmailserver/hmailserver/pull/487]pull 487[/url]
 [/list]
 */
