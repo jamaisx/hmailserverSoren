@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #define HMAILSERVER_VERSION "5.6.9"
-#define HMAILSERVER_BUILD "2644.92 (x86)"
+#define HMAILSERVER_BUILD "2644.93 (x86)"
 
 /*
 [list=1]
@@ -88,5 +88,6 @@
 [*]Update: OpenSSL 3.0.13
 [*]Fix: Minor bugfix where the Received-SPF diagnostic header gave inaccurate results when receiving mail through a (trusted/internal) relay
 [*]Added: IPv6 Support for BLCheck [url=https://github.com/hmailserver/hmailserver/pull/487]pull 487[/url]
+[*]Update: Replacement for the old SA "winsock error 2" workaround/fix and eliminates (all) EOF errors/warnings (and forced disconnects, possible related to HM5136?) altogether
 [/list]
 */
