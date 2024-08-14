@@ -44,3 +44,6 @@ hmailserver/installation/Output/*
 *.old
 *.org
 *.mod
+/hmailserver/source/Server/hMailServer/.vs/hMailServer
+/hmailserver/source/Server/hMailServer/hMailServer/x64/Release
+/hmailserver/source/Server/hMailServer/packages
