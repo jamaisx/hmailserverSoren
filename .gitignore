@@ -47,3 +47,7 @@ hmailserver/installation/Output/*
 /hmailserver/source/Server/hMailServer/.vs/hMailServer
 /hmailserver/source/Server/hMailServer/hMailServer/x64/Release
 /hmailserver/source/Server/hMailServer/packages
+/hmailserver/source/Server/hMailServer/hMailServer/x64/DBGX64x
+/hmailserver/source/Tools/.vs/hMailServer Tools
+/hmailserver/source/Tools/Administrator/.vs/Administrator
+/hmailserver/tools/.vs/DevTools
