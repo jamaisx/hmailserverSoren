@@ -1359,7 +1359,7 @@ namespace HM
       for (BodyList::const_iterator it=bodies_.begin(); it!=bodies_.end(); it++)
       {
          // If the initial body ends with \r\n, remove them. We add new ones below.
-// PP patch cast a int
+// PP patch cast a int  output[(int)output.size()-2] == '\r' && output[(int)output.size()-1] == '\n')
          if (bodies_.begin() == it && output.size() >= 2 && 
             output[(int)output.size()-2] == '\r' && output[(int)output.size()-1] == '\n')
          {
