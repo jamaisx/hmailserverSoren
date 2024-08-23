@@ -761,10 +761,6 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 
 #endif
 
-// PP patch
-#undef SS_USE_FACET
-#define SS_USE_FACET(loc, fac) std::use_facet<fac >(loc)
-
 // =============================================================================
 // UNICODE/MBCS conversion macros.  Made to work just like the MFC/ATL ones.
 // =============================================================================
