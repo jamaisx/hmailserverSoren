@@ -290,7 +290,7 @@ EXIT 0
     <ClCompile>
       <AdditionalOptions>/MP
  %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>$(hMailServerLibs)\mssqlce3.5;$(hMailServerLibs)\libpq-12.2;$(ProjectDir);C:\Users\ppientini\Desktop\secchio\hmailserverSorenMio\hmailserver\source\Server\hMailServer\packages\boost.1.72.0.0\lib\native\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(hMailServerLibs)\mssqlce3.5;$(hMailServerLibs)\libpq-12.2;$(ProjectDir);$(ProjectDir)packages\boost.1.72.0.0\lib\native\include\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;UNICODE;_UNICODE;NDEBUG;BOOST_DATE_TIME_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
