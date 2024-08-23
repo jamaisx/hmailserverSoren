@@ -1,3 +1,7 @@
+*
+*** WARNING***: this fork is detached from original and is adapted to my needs!
+*
+
 hMailServer
 ===========
 
