@@ -98,7 +98,8 @@ namespace DataDirectorySynchronizer.Pages
                 fullName.ToLower().EndsWith(".hma"))
             {
                if (Globals.Mode == Globals.ModeType.Import)
-                  imported = _utilities.ImportMessageFromFile(fullName, accountID);
+                    // PP dryrun
+                    if(! Globals.gDryRun) imported = _utilities.ImportMessageFromFile(fullName, accountID);
                else
                {
                   // does it exist?
@@ -106,8 +107,9 @@ namespace DataDirectorySynchronizer.Pages
 
                   if (messageID == 0)
                   {
-                     // no. delete the file.
-                     File.Delete(file.FullName);
+                    // no. delete the file.
+                    // PP dryrun
+                    if (!Globals.gDryRun) File.Delete(file.FullName);
                   }
 
                   imported = true;
@@ -153,8 +155,12 @@ namespace DataDirectorySynchronizer.Pages
                hMailServer.Account account =
                   domain.Accounts.get_ItemByAddress(directory.Name + "@" + domainName);
 
-               IterateAccountFolders(account.ID, directory);
-
+               // PP controllo elaborazione singolo account
+               if(("".Equals(Globals.gCasella)) || (account.Address.Equals(Globals.gCasella)))
+               {
+                        
+                    IterateAccountFolders(account.ID, directory);
+               }
                Marshal.ReleaseComObject(account);
             }
             catch (Exception)

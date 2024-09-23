@@ -22,9 +22,16 @@ namespace DataDirectorySynchronizer
 
       private static hMailServer.Application _application;
 
+        // PP aggiunto controllo elaborazione singolo account e dryrun
+        public static string gCasella;
+        public static bool gDryRun;
+
       static Globals()
       {
          SelectedDomains = new List<string>();
+            // PP 
+            gCasella = "";
+            gDryRun = false;
       }
 
       public static void SetApp(hMailServer.Application application)

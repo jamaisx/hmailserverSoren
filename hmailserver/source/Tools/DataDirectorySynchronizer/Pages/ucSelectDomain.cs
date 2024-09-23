@@ -56,6 +56,9 @@ namespace DataDirectorySynchronizer.Pages
                Globals.SelectedDomains.Add(item.Text);
          }
 
+       // PP valorizzo 
+       if (! "".Equals(ucCasella.Text)) Globals.gCasella = ucCasella.Text;
+            if (chkDryRun.Checked) Globals.gDryRun = true;
          return true;
       }
 
@@ -75,5 +78,10 @@ namespace DataDirectorySynchronizer.Pages
          foreach (ListViewItem item in listViewDomains.Items)
             item.Checked = false;
       }
-   }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
